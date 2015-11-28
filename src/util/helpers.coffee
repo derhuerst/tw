@@ -14,36 +14,6 @@ Array::remove = (thing) ->
 
 
 
-random = () ->
-	min = 0
-	max = 1
-	round = false
-	switch arguments.length
-		when 3
-			min = arguments[0]
-			max = arguments[1]
-			round = !!arguments[2]
-		when 2
-			if (helpers.typeof arguments[1]) is 'boolean'
-				max = arguments[0]
-				round = !!arguments[1]
-			else
-				min = arguments[0]
-				max = arguments[1]
-		when 1
-			if (helpers.typeof arguments[0]) is 'boolean'
-				round = !!arguments[0]
-			else
-				max = arguments[1]
-	result = min + Math.random() * (max - min)
-	if round
-		return Math.round result
-	return result
-
-
-
-
-
 uid = (length = 6) ->
 	# Shortest possible random ID generator
 	# Leon Ochmann <leonochmann@outlook.com>, Jannis R <mail@jannisr.de>
@@ -57,5 +27,4 @@ uid = (length = 6) ->
 
 
 module.exports =
-	random:			random
 	uid:			uid

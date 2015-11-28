@@ -1,4 +1,5 @@
 {EventEmitter} =	require 'events'
+random =			require 'lodash/number/random'
 
 helpers =			require '../util/helpers'
 GameError =			require '../util/GameError'
@@ -126,11 +127,11 @@ class World extends EventEmitter
 
 
 	villagePosition: () ->
-		x = helpers.random 0, @map.length - 1, true
-		y = helpers.random 0, @map[x].length - 1, true
+		x = random 0, @map.length - 1
+		y = random 0, @map[x].length - 1
 		while @village x, y
-			x = helpers.random 0, @map.length - 1, true
-			y = helpers.random 0, @map[x].length - 1, true
+			x = random 0, @map.length - 1
+			y = random 0, @map[x].length - 1
 		return new Vector x, y
 
 
