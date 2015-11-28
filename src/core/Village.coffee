@@ -79,7 +79,7 @@ class Village extends EventEmitter
 
 
 	add: (building) ->
-		return if not building
+		return unless building
 
 		if @[building.type]
 			throw new GameError "A #{building.config.title} does already exist in this village."
@@ -96,10 +96,10 @@ class Village extends EventEmitter
 
 
 	remove: (building) ->
-		return if not building
+		return unless building
 
 		building = if building.isBuilding then @[building.type] else @[building]
-		if not building
+		unless building
 			throw new GameError "There is no #{building.config.title} in this village."
 
 		@[building.type] = null

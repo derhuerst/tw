@@ -41,10 +41,10 @@ class Headquarter extends Building
 
 
 	upgrade: (building) ->
-		return if not building
+		return unless building
 
 		building = if building.isBuilding then @village[building.type] else @village[building]
-		if not building
+		unless building
 			throw new GameError "There is no #{building.config.title} in this village."
 
 		# todo: check level >= maximumLevel, incorporating all queued up- & downgrades
@@ -56,10 +56,10 @@ class Headquarter extends Building
 
 
 	downgrade: (building) ->
-		return if not building
+		return unless building
 
 		building = if building.isBuilding then @village[building.type] else @village[building]
-		if not building
+		unless building
 			throw new GameError "There is no #{building.config.title} in this village."
 
 		downgrade = new Downgrade building

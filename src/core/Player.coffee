@@ -49,7 +49,7 @@ class Player extends EventEmitter
 
 
 	remove: (village) ->
-		if not @villages[village.id]
+		unless @villages[village.id]
 			throw new GameError "#{village} does not belong to this player."
 
 		@villages[village.id] = null

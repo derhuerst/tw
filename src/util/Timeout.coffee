@@ -54,7 +54,7 @@ class Timeout extends EventEmitter
 
 
 	pause: () ->
-		return if not @running()
+		return unless @running()
 
 		@_remaining -= Date.now() - @_started
 		clearTimeout @_callback
@@ -74,7 +74,7 @@ class Timeout extends EventEmitter
 
 
 	stop: () ->
-		return if not @running()
+		return unless @running()
 
 		@_started = 0
 		@_remaining = 0
@@ -85,7 +85,7 @@ class Timeout extends EventEmitter
 
 
 	finish: () ->
-		return if not @running()
+		return unless @running()
 
 		@_started = 0
 		@_remaining = 0
@@ -97,7 +97,7 @@ class Timeout extends EventEmitter
 
 
 	progress: () ->
-		return 0 if not @running()
+		return 0 unless @running()
 		return (@_duration.milliseconds() - @_remaining + Date.now() - @_started) / @_duration.milliseconds() # todo: correct?
 
 
@@ -105,7 +105,7 @@ class Timeout extends EventEmitter
 	running: () -> !!@_timeout
 
 	remaining: () ->
-		return 0 if not @running()
+		return 0 unless @running()
 		return @_duration.clone().multiply 1 - @progress()
 
 

@@ -48,7 +48,7 @@ class World extends EventEmitter
 
 
 	add: (player) ->
-		return if not player
+		return unless player
 
 		if @players[player.id]
 			throw new GameError "#{player} does already take part in this game."
@@ -67,10 +67,10 @@ class World extends EventEmitter
 
 
 	remove: (player) ->
-		return if not player
+		return unless player
 
 		player = if player.isPlayer then player else @players[player.id]
-		if not player
+		unless player
 			throw new GameError "#{player} doesn't take part in this game."
 
 		@players.remove player
@@ -102,7 +102,7 @@ class World extends EventEmitter
 
 
 	removeVillage: (village) ->
-		return if not @village village.id
+		return unless @village village.id
 
 		@villages.remove village
 		@villages[village.id] = null
