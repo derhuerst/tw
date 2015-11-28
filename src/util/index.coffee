@@ -2,7 +2,6 @@ module.exports =
 
 	helpers:		require './helpers'
 
-	config:			require './config'
 	helpers:		require './helpers'
 	GameError:		require './GameError'
 

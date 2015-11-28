@@ -1,6 +1,7 @@
+config =			require 'config'
+
 Timeout =			require '../util/Timeout'
 GameError =			require '../util/GameError'
-config =			require '../util/config'
 
 
 

@@ -1,4 +1,5 @@
-config =			require '../util/config'
+config =			require 'config'
+
 Stocks =			require '../util/Stocks'
 
 Building =			require '../core/Building'
