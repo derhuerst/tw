@@ -14,17 +14,4 @@ Array::remove = (thing) ->
 
 
 
-uid = (length = 6) ->
-	# Shortest possible random ID generator
-	# Leon Ochmann <leonochmann@outlook.com>, Jannis R <mail@jannisr.de>
-	string = (Math.random() * 26 + 10 | 0).toString 36    # random letter
-	while --length
-		string += (Math.random() * 36 | 0).toString 36    # random letter or digit
-	return string
-
-
-
-
-
-module.exports =
-	uid:			uid
+module.exports = {}

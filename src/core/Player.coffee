@@ -1,4 +1,5 @@
 {EventEmitter} =	require 'events'
+shortid =			require 'shortid'
 
 helpers =			require '../util/helpers'
 
@@ -25,7 +26,7 @@ class Player extends EventEmitter
 	constructor: (options) ->
 		options = options or {}
 
-		@id = options.id or helpers.uid 6
+		@id = options.id or shortid.generate()
 		@name = options.name or @id
 
 		@points = new NumericValue (options.points or 0), 'p'

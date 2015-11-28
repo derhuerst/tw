@@ -1,4 +1,5 @@
 {EventEmitter} =	require 'events'
+shortid =			require 'shortid'
 random =			require 'lodash/number/random'
 
 helpers =			require '../util/helpers'
@@ -113,16 +114,16 @@ class World extends EventEmitter
 
 	# todo: this system sucks: it might happen that when a village already received an id but isn't yet added to @villages, we give another village that same id. then, upon adding the two villages, one of them doesn't get added. The same goes for playerId.
 	villageId: () ->
-		id = helpers.uid 9
+		id = shortid.generate()
 		while !!@villages[id]
-			id = helpers.uid 9
+			id = shortid.generate()
 		return id
 
 	# todo: see todo for @villageId
 	playerId: () ->
-		id = helpers.uid 6
+		id = shortid.generate()
 		while !!@players[id]
-			id = helpers.uid 6
+			id = shortid.generate()
 		return id
 
 

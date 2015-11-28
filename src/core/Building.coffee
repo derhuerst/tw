@@ -1,5 +1,6 @@
 {EventEmitter} =	require 'events'
 config =			require 'config'
+shortid =			require 'shortid'
 
 helpers =			require '../util/helpers'
 
@@ -30,7 +31,7 @@ class Building extends EventEmitter
 	constructor: (options) ->
 		options = options or {}
 
-		@id = options.id or helpers.uid 12
+		@id = options.id or shortid.generate()
 		@type = options.type or null
 		@config = config.buildings[@type] or null
 

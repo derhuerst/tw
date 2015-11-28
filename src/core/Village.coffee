@@ -1,5 +1,6 @@
 {EventEmitter} =	require 'events'
 config =			require 'config'
+shortid =			require 'shortid'
 
 helpers =			require '../util/helpers'
 GameError =			require '../util/GameError'
@@ -53,7 +54,7 @@ class Village extends EventEmitter
 	constructor: (options) ->
 		options = options or {}
 
-		@id = options.id or helpers.uid 9
+		@id = options.id or shortid.generate()
 		@name = options.name or @id
 		@position = options.position or new Vector()
 
