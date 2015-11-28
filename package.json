@@ -1,32 +1,17 @@
 {
-	"name": "tw",
-	"description": "tw is an open source strategy browser game.",
-	"version": "0.1.0",
-	"main": "src/index.coffee",
-	"keywords": [
-		"tw",
-		"strategy",
-		"browser",
-		"game",
-		"tribal wars",
-		"realtime",
-		"cofeescript"
-	],
-	"author": {
-		"name": "Jannis R",
-		"email": "mail@jannisr.de",
-		"url": "http://jannisr.de"
-	},
+	"name":			"tw",
+	"description":	"tw is an open source strategy browser game.",
+	"version":		"0.1.0",
+	"main":			"src/index.coffee",
+	"keywords": [ "tw", "strategy", "browser", "game", "tribal wars", "realtime", "cofeescript" ],
+	"author": "Jannis R <mail@jannisr.de>",
 	"homepage": "https://github.com/derhuerst/tw",
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/derhuerst/tw.git"
-	},
+	"repository": "git://github.com/derhuerst/tw.git",
 	"license": "MIT",
 	"dependencies": {
 		"coffee-script":		"^1.8.0"
 	},
 	"scripts": {
-		"test":					"bin/test.coffee"
+		"test":					"coffee test/index.coffee"
 	}
 }
