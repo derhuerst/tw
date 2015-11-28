@@ -1,21 +1,21 @@
 module.exports =
 
-	headquarter:	require './Headquarter'
-	wall:			require './Wall'
+	headquarter:	require './headquarter'
+	wall:			require './wall'
 
-	barracks:		require './Barracks'
-	workshop:		require './Workshop'
-	stable:			require './Stable'
-	academy:		require './Academy'
-	smithy:			require './Smithy'
+	barracks:		require './barracks'
+	workshop:		require './workshop'
+	stable:			require './stable'
+	academy:		require './academy'
+	smithy:			require './smithy'
 
-	rallyPoint:		require './RallyPoint'
-	market:			require './Market'
+	rallyPoint:		require './rally-point'
+	market:			require './market'
 
-	timberCamp:		require './TimberCamp'
-	clayPit:		require './ClayPit'
-	ironMine:		require './IronMine'
-	farm:			require './Farm'
+	timberCamp:		require './timber-camp'
+	clayPit:		require './clay-pit'
+	ironMine:		require './iron-mine'
+	farm:			require './farm'
 
-	warehouse:		require './Warehouse'
-	stash:			require './Stash'
+	warehouse:		require './warehouse'
+	stash:			require './stash'

@@ -16,5 +16,5 @@ module.exports =
 		iron: 1000
 	initialWorkers: 0
 
-	units:			require './units.coffee'
-	buildings:		require './buildings/index.coffee'
+	units:			require './units'
+	buildings:		require './buildings'
