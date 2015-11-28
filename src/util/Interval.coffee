@@ -43,18 +43,15 @@ class Interval
 
 
 
-	_callback: () =>
-		@callback()
+	_callback: () => @callback()
 
 
 
-	clone: () ->
-		return new Interval this.interval
+	clone: () -> new Interval this.interval
 
 
 
-	toString: () ->
-		return "itv #{@interval}"
+	toString: () -> "itv #{@interval}"
 
 
 

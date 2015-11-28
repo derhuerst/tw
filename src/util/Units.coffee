@@ -173,8 +173,7 @@ class Units extends EventEmitter
 
 
 
-	clone: () ->
-		return new Units this
+	clone: () -> new Units this
 
 
 

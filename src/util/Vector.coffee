@@ -58,23 +58,17 @@ class Vector
 
 
 
-	distanceTo: (vector) ->
-		return vector.clone().subtract this
+	distanceTo: (vector) -> vector.clone().subtract this
 
 
 
-	clone: () ->
-		return new Vector @x, @y
+	clone: () -> new Vector @x, @y
 
 
 
-	valueOf: () ->
-		return Math.sqrt Math.pow(2, @x) + Math.pow(2, @y)
+	valueOf: () -> Math.sqrt Math.pow(2, @x) + Math.pow(2, @y)
 
-
-
-	toString: () ->
-		return "#{@x}|#{@y}"
+	toString: () -> "#{@x}|#{@y}"
 
 
 

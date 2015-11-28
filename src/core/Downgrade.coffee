@@ -59,8 +59,7 @@ class Downgrade extends Timeout
 
 
 
-	toString: () ->
-		return "(#{@building}) -1"
+	toString: () -> "(#{@building}) -1"
 
 
 

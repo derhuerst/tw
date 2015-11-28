@@ -58,7 +58,7 @@ class Movement extends Timeout
 
 
 	onStop: () ->
-		@returning = true	
+		@returning = true
 		# todo: improve event names?
 		origin.emit 'outgoing-movement.stop', this
 		target.emit 'incoming-movement.stop', this
@@ -71,8 +71,7 @@ class Movement extends Timeout
 
 
 
-	toString: () ->
-		return "(#{@building}) +1"
+	toString: () -> "(#{@building}) +1"
 
 
 

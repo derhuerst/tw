@@ -92,8 +92,7 @@ class Resources extends EventEmitter
 		return result
 
 
-	count: () ->
-		return @wood + @clay + @iron
+	count: () -> @wood + @clay + @iron
 
 
 	moreThan: (resources) ->
@@ -101,8 +100,7 @@ class Resources extends EventEmitter
 
 
 
-	clone: () ->
-		return new Resources this
+	clone: () -> new Resources this
 
 
 	subset: (types) ->
@@ -114,8 +112,7 @@ class Resources extends EventEmitter
 
 
 
-	toString: () ->
-		return "#{@wood}w|#{@clay}c|#{@iron}i"
+	toString: () -> "#{@wood}w|#{@clay}c|#{@iron}i"
 
 
 

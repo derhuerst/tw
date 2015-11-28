@@ -59,8 +59,7 @@ class Recruitment extends Timeout
 
 
 
-	toString: () ->
-		return "+ (#{@units})"
+	toString: () -> "+ (#{@units})"
 
 
 

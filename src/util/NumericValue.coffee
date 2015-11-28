@@ -69,17 +69,13 @@ class NumericValue extends EventEmitter
 
 
 
-	clone: () ->
-		return new NumericValue @value
+	clone: () -> new NumericValue @value
 
 
 
-	valueOf: () ->
-		return @value
+	valueOf: () -> @value
 
-
-	toString: () ->
-		return "#{@value}#{@abbreviation}"
+	toString: () -> "#{@value}#{@abbreviation}"
 
 
 

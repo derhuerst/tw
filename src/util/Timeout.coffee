@@ -30,8 +30,7 @@ class Timeout extends EventEmitter
 
 
 
-	running: () ->
-		return !!@_timeout
+	running: () -> !!@_timeout
 
 
 
@@ -104,8 +103,8 @@ class Timeout extends EventEmitter
 		return @duration.clone().multiply 1 - @progress()
 
 
-	toString: () ->
-		return "tmt #{@duration}"
+
+	toString: () -> "tmt #{@duration}"
 
 
 

@@ -36,25 +36,15 @@ class Duration extends NumericValue
 
 
 
-	milliseconds: () ->
-		return @value
-
-	seconds: () ->
-		return Math.floor @value / @units.s
-
-	minutes: () ->
-		return Math.floor @value / @units.m
-
-	hours: () ->
-		return Math.floor @value / @units.h
-
-	days: () ->
-		return Math.floor @value / @units.d
+	milliseconds: () -> @value
+	seconds: () -> Math.floor @value / @units.s
+	minutes: () -> Math.floor @value / @units.m
+	hours: () -> Math.floor @value / @units.h
+	days: () -> Math.floor @value / @units.d
 
 
 
-	clone: () ->
-		return new Duration @value
+	clone: () -> new Duration @value
 
 
 
@@ -93,10 +83,7 @@ class Duration extends NumericValue
 
 		return string
 
-
-
-	valueOf: () ->
-		return @value
+	valueOf: () -> @value
 
 
 

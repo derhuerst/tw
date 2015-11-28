@@ -54,8 +54,7 @@ class Stocks extends Resources
 
 
 
-	clone: () ->
-		return new Stocks this
+	clone: () -> new Stocks this
 
 
 

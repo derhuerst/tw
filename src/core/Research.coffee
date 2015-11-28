@@ -65,8 +65,7 @@ class Research extends Timeout
 
 
 
-	toString: () ->
-		return "* (#{@config.units[@type].title}"
+	toString: () -> "* (#{@config.units[@type].title}"
 
 
 

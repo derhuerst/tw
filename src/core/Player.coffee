@@ -61,8 +61,7 @@ class Player extends EventEmitter
 
 
 
-	toString: () ->
-		return "plyr #{@name} #{@id}"
+	toString: () -> "plyr #{@name} #{@id}"
 
 
 

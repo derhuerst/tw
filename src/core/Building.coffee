@@ -44,8 +44,7 @@ class Building extends EventEmitter
 
 
 
-	toString: () ->
-		return "#{@config.abbreviation}#{@level} ##{@id}"
+	toString: () -> "#{@config.abbreviation}#{@level} ##{@id}"
 
 
 

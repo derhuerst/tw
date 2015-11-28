@@ -63,13 +63,11 @@ class Production extends EventEmitter
 
 
 
-	clone: () ->
-		return new Production @resources, @duration
+	clone: () -> new Production @resources, @duration
 
 
 
-	toString: () ->
-		return "#{@resources}/#{@duration.toString()}" # todo: remove toString; doesn't work by now
+	toString: () -> "#{@resources}/#{@duration.toString()}"
 
 
 
