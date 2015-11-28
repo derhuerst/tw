@@ -1,6 +1,4 @@
 .editorconfig
 .DS_Store
 
-gulpfile.coffee
-
 /node_modules
