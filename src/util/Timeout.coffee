@@ -1,7 +1,3 @@
-# todo: rewrite; use Duration events; make duration changable even if running
-
-
-
 {EventEmitter} =	require 'events'
 
 Duration =			require '../util/Duration'
@@ -14,7 +10,7 @@ class Timeout extends EventEmitter
 
 
 
-	# duration
+	# _duration
 	# _timeout
 	# _remaining
 	# _started
@@ -24,13 +20,20 @@ class Timeout extends EventEmitter
 
 
 	constructor: (duration) ->
-		@duration = duration or new Duration() # todo: make changeable
+		@_duration = duration or new Duration()
+		@_duration.on 'change', @_durationOnChange
 		@_timeout = null
 		@_remaining = @_started = 0
 
 
 
-	running: () -> !!@_timeout
+	duration: () -> @_duration
+
+	_durationOnChange: (delta) =>
+		hasBeenRunning = @running()
+		@pause() if hasBeenRunning
+		@_remaining += delta
+		@resume() if hasBeenRunning
 
 
 
@@ -43,7 +46,7 @@ class Timeout extends EventEmitter
 		return if @running()
 
 		@_started = Date.now()
-		@_remaining = @duration.milliseconds()
+		@_remaining = @_duration.milliseconds()
 		@_timeout = setTimeout @_callback, @_remaining
 
 		@emit 'start'
@@ -95,16 +98,19 @@ class Timeout extends EventEmitter
 
 	progress: () ->
 		return 0 if not @running()
-		return (@duration.milliseconds() - @_remaining + Date.now() - @_started) / @duration.milliseconds() # todo: correct?
+		return (@_duration.milliseconds() - @_remaining + Date.now() - @_started) / @_duration.milliseconds() # todo: correct?
 
+
+
+	running: () -> !!@_timeout
 
 	remaining: () ->
 		return 0 if not @running()
-		return @duration.clone().multiply 1 - @progress()
+		return @_duration.clone().multiply 1 - @progress()
 
 
 
-	toString: () -> "tmt #{@duration}"
+	toString: () -> "tmt #{@_duration}"
 
 
 
