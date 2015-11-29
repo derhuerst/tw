@@ -27,7 +27,8 @@ class NumericValue extends EventEmitter
 		value = value + 0 or 0
 		delta = value - @value
 		@value = value
-		@emit 'change', delta
+		oldValue = @value
+		@emit 'change', oldValue, @value
 		return this
 
 
@@ -35,7 +36,8 @@ class NumericValue extends EventEmitter
 	add: (summand) =>
 		delta = if summand and summand.isNumericValue then summand.value else summand
 		@value += delta
-		@emit 'change', delta
+		oldValue = @value
+		@emit 'change', oldValue, @value
 		return this
 
 
@@ -49,14 +51,16 @@ class NumericValue extends EventEmitter
 	multiply: (factor) ->
 		delta = @value
 		@value *= if factor and factor.isNumericValue then factor.value else factor
-		@emit 'change', @value - delta
+		oldValue = @value
+		@emit 'change', oldValue, @value
 		return this
 
 
 	round: () ->
 		delta = @value
+		oldValue = @value
 		@value = Math.round this
-		@emit 'change', @value - delta
+		@emit 'change', oldValue, @value
 		return this
 
 
