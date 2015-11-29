@@ -1,3 +1,5 @@
+config =			require 'config'
+
 GameError =			require '../util/GameError'
 
 Movement =			require '../core/Movement'
@@ -18,9 +20,12 @@ class Attack extends Movement
 	start: () ->
 		return if @running()
 
-		# todo: check if noble men. if, check if distance is > 50 fields
+		distance = @origin.position.distanceTo @target.position
+		if @units.nobleman > 0 and distance > 50
+			throw new GameError "A #{config.units.nobleman.title} cannot travel further than 50 fields."
 
-		# todo: check if origin inhabitans / 100 > units workers
+		if @units.workers > @origin.farm.workers / 100
+			throw new GameError "The number of workers of your army has to be a hundredth of your village's workers."
 
 		return super()
 

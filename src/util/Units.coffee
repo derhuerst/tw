@@ -133,6 +133,13 @@ class Units extends EventEmitter
 		return result
 
 
+	workers: () ->
+		result = 0
+		for type of config.units
+			result.add config.units[type].workers * @[type]
+		return result
+
+
 	duration: () ->
 		result = 0
 		for type of config.units
