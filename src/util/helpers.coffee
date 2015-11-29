@@ -2,13 +2,16 @@
 
 
 
+Array::has = (thing) -> @indexOf(thing) >= 0
+
+
 Array::add = Array::push
 
 
 Array::remove = (thing) ->
-	i = @indexOf thing
-	if i >= 0
-		@splice i, 1
+	return false unless @has thing
+	@splice @indexOf(thing), 1
+	return true
 
 
 

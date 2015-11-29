@@ -6,6 +6,26 @@ _ =				require '../../src/util/helpers'
 
 
 
+describe 'Array::has', ->
+
+	a = null
+
+	beforeEach ->
+		a = [ 'one', 'two' ]
+
+	it 'should be a function', ->
+		assert.strictEqual typeof a.has, 'function'
+
+	it 'should return `true` for an existing item', ->
+		assert.strictEqual a.has('two'), true
+
+	it 'should return `false` for a non-existing item', ->
+		assert.strictEqual a.has('three'), false
+
+
+
+
+
 describe 'Array::add', ->
 
 	a = null
