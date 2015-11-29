@@ -27,7 +27,7 @@ class World extends EventEmitter
 		options = options or {}
 
 		mapSize = options.mapSize or config.mapSize or 100
-		@map = (null for [0 ... mapSize]) for [0 ... mapSize]
+		@map = ((null for [0 ... mapSize]) for [0 ... mapSize])
 
 		@players = []
 		@villages = []
@@ -124,10 +124,12 @@ class World extends EventEmitter
 
 
 	villagePosition: () ->
-		pos = -> new Vector (random 0, @map.length - 1), (random 0, @map[x].length - 1)
-		result = pos()
-		result = pos() while @village result
-		return result
+		xMax = @map.length - 1
+		yMax = @map[0].length - 1
+		[x, y] = [ random(0, xMax), random 0, yMax ]
+		while @village result
+			[x, y] = [ random(0, xMax), random 0, yMax ]
+		return new Vector x, y
 
 
 
