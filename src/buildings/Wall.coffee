@@ -9,14 +9,15 @@ class Wall extends Building
 
 
 
+	# isWall
+
 	# basicDefense
 	# defenseFactor
-
-	isWall: true
 
 
 
 	constructor: (options) ->
+		@isWall = true
 		options = options or {}
 		options.type = 'timberCamp'
 		super options

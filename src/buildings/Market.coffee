@@ -8,11 +8,12 @@ class Market extends Building
 
 
 
-	isMarket: true
+	# isMarket
 
 
 
 	constructor: (options) ->
+		@isMarket = true
 		options = options or {}
 		options.type = 'market'
 		super options

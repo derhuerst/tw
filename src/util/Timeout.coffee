@@ -10,16 +10,18 @@ class Timeout extends EventEmitter
 
 
 
+	# isTimeout
+
 	# _duration
 	# _timeout
 	# _remaining
 	# _started
 
-	isTimeout: true
-
 
 
 	constructor: (duration) ->
+		@isTimeout = true
+
 		@_duration = duration or new Duration()
 		@_duration.on 'change', @_durationOnChange
 		@_timeout = null

@@ -13,7 +13,13 @@ class Attack extends Movement
 
 
 
-	isAttack: true
+	# isAttack
+
+
+
+	constructor: () ->
+		@isAttack = true
+		super arguments...
 
 
 

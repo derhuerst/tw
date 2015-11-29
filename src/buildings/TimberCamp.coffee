@@ -10,11 +10,12 @@ class TimberCamp extends Building
 
 
 
-	isTimberCamp: true
+	# isTimberCamp
 
 
 
 	constructor: (options) ->
+		@isTimberCamp = true
 		options = options or {}
 		options.type = 'timberCamp'
 		super options

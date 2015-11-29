@@ -14,16 +14,17 @@ class World extends EventEmitter
 
 
 
+	# isGame
+
 	# players
 	# villages
 
 	# map
 
-	isGame: true
-
 
 
 	constructor: (options) ->
+		@isGame = true
 		options = options or {}
 
 		mapSize = options.mapSize or config.mapSize or 100

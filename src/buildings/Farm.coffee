@@ -10,13 +10,14 @@ class Farm extends Building
 
 
 
-	# workers
+	# isFarm
 
-	isFarm: true
+	# workers
 
 
 
 	constructor: (options) ->
+		@isFarm = true
 		options = options or {}
 		options.type = 'farm'
 		super options

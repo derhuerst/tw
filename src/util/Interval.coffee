@@ -8,17 +8,19 @@ class Interval
 
 
 
+	# isInterval
+
 	# callback
 	# interval
 	# _interval
-
-	isInterval: true
 
 	noop: ()->
 
 
 
 	constructor: (callback, interval) ->
+		@isInterval = true
+
 		@callback = callback or @noop
 		@interval = new Duration interval or 1000
 		@interval.on 'change', @intervalOnChange

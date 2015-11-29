@@ -9,15 +9,17 @@ class Downgrade extends Timeout
 
 
 
+	# isDowngrade
+
 	# building
 
 	# config
 
-	isDowngrade: true
-
 
 
 	constructor: (building) ->
+		@isDowngrade = true
+
 		@building = building or null
 
 		@on 'start', @onStart

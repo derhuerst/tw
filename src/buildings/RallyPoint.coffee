@@ -10,13 +10,14 @@ class RallyPoint extends Building
 
 
 
-	# units
+	# isRallyPoint
 
-	isRallyPoint: true
+	# units
 
 
 
 	constructor: (options) ->
+		@isRallyPoint = true
 		options = options or {}
 		options.type = 'rallyPoint'
 		super options

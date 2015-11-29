@@ -9,14 +9,16 @@ class Recruitment extends Timeout
 
 
 
+	# isRecruitment
+
 	# building
 	# units
-
-	isRecruitment: true
 
 
 
 	constructor: (building, units) ->
+		@isRecruitment = true
+
 		@building = building or null
 		@units = units or new Units()
 

@@ -13,14 +13,16 @@ class Production extends EventEmitter
 
 
 
+	# isProduction
+
 	# resources
 	# duration
-
-	isProduction: true
 
 
 
 	constructor: (resources, duration) ->
+		@isProduction = true
+
 		@resources = resources or new Resources()
 		@duration = duration or new Duration '1h'
 

@@ -14,14 +14,15 @@ class Headquarter extends Building
 
 
 
+	# isHeadquarter
+
 	# constructions
 	# timeFactor
-
-	isHeadquarter: true
 
 
 
 	constructor: (options) ->
+		@isHeadquarter = true
 		options = options or {}
 		options.type = 'headquarter'
 		super options

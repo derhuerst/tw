@@ -13,15 +13,16 @@ class Smithy extends Building
 
 
 
+	# isSmithy
+
 	# reasearches
 	# reasearched
 	# timeFactor
 
-	isSmithy: true
-
 
 
 	constructor: (options) ->
+		@isSmithy = true
 		options = options or {}
 		options.type = 'smithy'
 		super options

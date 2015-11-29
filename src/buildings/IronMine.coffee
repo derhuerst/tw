@@ -10,11 +10,12 @@ class IronMine extends Building
 
 
 
-	isIronMine: true
+	# isIronMine
 
 
 
 	constructor: (options) ->
+		@isIronMine = true
 		options = options or {}
 		options.type = 'ironMine'
 		super options

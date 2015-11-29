@@ -12,13 +12,14 @@ class Warehouse extends Building
 
 
 
-	# stocks
+	# isWarehouse
 
-	isWarehouse: true
+	# stocks
 
 
 
 	constructor: (options) ->
+		@isWarehouse = true
 		options = options or {}
 		options.type = 'warehouse'
 		super options

@@ -12,14 +12,15 @@ class Barracks extends Building
 
 
 
+	# isBarracks
+
 	# recruitments
 	# timeFactor
-
-	isBarracks: true
 
 
 
 	constructor: (options) ->
+		isBarracks = true
 		options.type = 'barracks'
 		super options
 

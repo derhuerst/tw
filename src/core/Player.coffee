@@ -13,17 +13,18 @@ class Player extends EventEmitter
 
 
 
+	# isPlayer
+
 	# id
 	# name
 
 	# points
 	# villages
 
-	isPlayer: true
-
 
 
 	constructor: (options) ->
+		@isPlayer = true
 		options = options or {}
 
 		@id = options.id or shortid.generate()

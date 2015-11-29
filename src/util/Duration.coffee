@@ -8,7 +8,7 @@ class Duration extends NumericValue
 
 
 
-	isDuration: true
+	# isDuration
 
 	units:
 		d: 1000 * 60 * 60 * 24
@@ -21,6 +21,8 @@ class Duration extends NumericValue
 
 	constructor: (duration) ->
 		super()
+		@isDuration = true
+
 		if typeof duration is 'number' then @value = duration
 		else if typeof duration is 'string' then @value = @parse duration
 		else if duration and duration.isDuration @value = duration.clone()

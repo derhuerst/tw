@@ -9,15 +9,17 @@ class Upgrade extends Timeout
 
 
 
+	# isUpgrade
+
 	# building
 
 	# config
 
-	isUpgrade: true
-
 
 
 	constructor: (building) ->
+		@isUpgrade = true
+
 		@building = building or null
 
 		@on 'start', @onStart

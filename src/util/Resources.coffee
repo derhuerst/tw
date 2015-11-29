@@ -8,15 +8,17 @@ class Resources extends EventEmitter
 
 
 
+	# isResources
+
 	# wood
 	# clay
 	# iron
 
-	isResources: true
-
 
 
 	constructor: (values) ->
+		@isResources = true
+
 		values = values or {}
 
 		@wood = values.wood or 0

@@ -9,16 +9,17 @@ class Stocks extends Resources
 
 
 
+	# isStocks
+
 	# maxima
 
 	# production
 	# updated
 
-	isStocks: true
-
 
 
 	constructor: (options) ->
+		@isStocks = true
 		options = options or {}
 		super options
 

@@ -2,7 +2,12 @@ class GameError extends Error
 
 
 
-	isGameError: true
+	# isGameError
+
+
+
+	constructor: ->
+		@isGameError = true
 
 
 

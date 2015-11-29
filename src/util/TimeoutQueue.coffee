@@ -8,14 +8,15 @@ class TimeoutQueue extends EventEmitter
 
 
 
+	# isTimeoutQueue
+
 	# timeouts
 	# current
-
-	isTimeoutQueue: true
 
 
 
 	constructor: () ->
+		@isTimeoutQueue = true
 		super()
 
 		@timeouts = []

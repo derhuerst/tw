@@ -10,13 +10,14 @@ class Stash extends Building
 
 
 
-	# capacity
+	# isStash
 
-	isStash: true
+	# capacity
 
 
 
 	constructor: (options) ->
+		@isStash = true
 		options = options or {}
 		options.type = 'stash'
 		super options

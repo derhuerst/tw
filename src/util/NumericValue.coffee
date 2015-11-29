@@ -8,14 +8,16 @@ class NumericValue extends EventEmitter
 
 
 
+	# isNumericValue
+
 	# value
 	# abbreviation
-
-	isNumericValue: true
 
 
 
 	constructor: (value, abbreviation) ->
+		@isNumericValue = true
+
 		@value = value or 0
 		@abbreviation = abbreviation or ''
 

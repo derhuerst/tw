@@ -12,6 +12,8 @@ class Units extends EventEmitter
 
 
 
+	# isUnits
+
 	# spearFighter
 	# swordsman
 	# axeman
@@ -23,11 +25,11 @@ class Units extends EventEmitter
 	# paladin
 	# nobleman
 
-	isUnits: true
-
 
 
 	constructor: (units) ->
+		@isUnits = true
+
 		units = units or {}
 
 		for type of config.units

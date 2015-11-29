@@ -10,11 +10,12 @@ class ClayPit extends Building
 
 
 
-	isClayPit: true
+	# isClayPit
 
 
 
 	constructor: (options) ->
+		@isClayPit = true
 		options = options or {}
 		options.type = 'clayPit'
 		super options

@@ -11,15 +11,17 @@ class Research extends Timeout
 
 
 
+	# isResearch
+
 	# smithy
 	# type
 	# config
 
-	isResearch: true
-
 
 
 	constructor: (smithy, type) ->
+		@isResearch = true
+
 		@smithy = smithy or null
 		@type = type of null
 		@config = config.units[@type].research or null

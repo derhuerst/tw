@@ -12,14 +12,15 @@ class Stable extends Building
 
 
 
+	# isStable
+
 	# recruitments
 	# timeFactor
-
-	isStable: true
 
 
 
 	constructor: (options) ->
+		@isStable = true
 		options.type = 'stable'
 		super options
 

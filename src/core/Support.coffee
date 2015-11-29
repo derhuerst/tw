@@ -10,7 +10,13 @@ class Support extends Movement
 
 
 
-	isSupport: true
+	# isSupport
+
+
+
+	constructor: () ->
+		@isSupport = true
+		super arguments...
 
 
 

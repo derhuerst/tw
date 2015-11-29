@@ -11,13 +11,14 @@ class Academy extends Building
 
 
 
-	# recruitments
+	# isAcademy
 
-	isAcademy: true
+	# recruitments
 
 
 
 	constructor: (options) ->
+		@isAcademy = true
 		options = options or {}
 		options.type = 'academy'
 		super options

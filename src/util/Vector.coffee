@@ -2,14 +2,16 @@ class Vector
 
 
 
+	# isVector
+
 	# x
 	# y
-
-	isVector: true
 
 
 
 	constructor: (x, y) ->
+		@isVector = true
+
 		@x = x or 0
 		@y = y or 0
 

@@ -24,6 +24,8 @@ class Village extends EventEmitter
 
 
 
+	# isVillage
+
 	# id
 	# name
 	# position
@@ -47,11 +49,10 @@ class Village extends EventEmitter
 	# warehouse
 	# stash
 
-	isVillage: true
-
 
 
 	constructor: (options) ->
+		@isVillage = true
 		options = options or {}
 
 		@id = options.id or shortid.generate()

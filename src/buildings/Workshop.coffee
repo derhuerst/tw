@@ -8,14 +8,15 @@ class Workshop extends Building
 
 
 
+	# isWorkshop
+
 	# recruitments
 	# timeFactor
-
-	isWorkshop: true
 
 
 
 	constructor: (options) ->
+		@isWorkshop = true
 		options.type = 'barracks'
 		super options
 

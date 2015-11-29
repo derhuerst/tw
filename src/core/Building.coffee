@@ -15,6 +15,8 @@ class Building extends EventEmitter
 
 
 
+	# isBuilding
+
 	# id
 	# type				set by sub classes
 	# config
@@ -24,7 +26,11 @@ class Building extends EventEmitter
 
 	# village
 
-	isBuilding: true
+
+
+	constructor: () ->
+		@isBuilding = true
+		super arguments...
 
 
 

@@ -10,16 +10,18 @@ class Movement extends Timeout
 
 
 
+	# isMovement
+
 	# units
 	# origin
 	# target
 	# returning
 
-	isMovement: true
-
 
 
 	constructor: (origin, target, units) ->
+		@isMovement = true
+
 		@units = new Units units
 		@origin = origin or null
 		@target = target or null
