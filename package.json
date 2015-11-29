@@ -9,9 +9,16 @@
 	"repository": "git://github.com/derhuerst/tw.git",
 	"license": "MIT",
 	"dependencies": {
-		"coffee-script":		"^1.8.0"
+		"coffee-script":		"^1.10.0",
+		"config":				"^1.17.1",
+		"lodash":				"^3.10.1",
+		"shortid":				"^2.2.4"
+	},
+	"devDependencies": {
+		"notes":				"derhuerst/node-notes"
 	},
 	"scripts": {
-		"test":					"coffee test/index.coffee"
+		"test":					"coffee test/index.coffee",
+		"todo":					"notes"
 	}
 }
