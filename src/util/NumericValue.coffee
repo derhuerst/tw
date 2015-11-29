@@ -61,17 +61,22 @@ class NumericValue extends EventEmitter
 
 
 
-	watch: (points) =>
-		points.on 'change', @add
+	# todo: `watch`ing is confusing and unuseful when using `multiply` on the watched `NumericValue`.
+
+	_watchedOnChange: (before, after) =>
+		@add after - before
+
+	watch: (numericValue) ->
+		numericValue.on 'change', @_watchedOnChange
 		return this
 
-	unwatch: (points) =>
-		points.off 'change', @add
+	unwatch: (numericValue) ->
+		numericValue.removeListener 'change', @_watchedOnChange
 		return this
 
 
 
-	clone: () -> new NumericValue @value
+	clone: () -> new NumericValue @value, @abbreviation
 
 
 
