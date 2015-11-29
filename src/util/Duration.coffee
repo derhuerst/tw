@@ -20,34 +20,28 @@ class Duration extends NumericValue
 
 
 	constructor: (duration) ->
-		@value = 0
-		switch typeof duration
-			when 'number'
-				@value = duration
-			when 'string'
-				@value = @parse duration
-			else
-				if duration and duration.isDuration
-					@value = duration.clone()
-				else
-					@value = parseFloat duration
-		if isNaN @value
-			@value = 0
+		super()
+		if typeof duration is 'number' then @value = duration
+		else if typeof duration is 'string' then @value = @parse duration
+		else if duration and duration.isDuration @value = duration.clone()
+		else @value = parseFloat duration
+		if isNaN @value then @value = 0
 
 
 
-	milliseconds: () -> @value
-	seconds: () -> Math.floor @value / @units.s
-	minutes: () -> Math.floor @value / @units.m
-	hours: () -> Math.floor @value / @units.h
-	days: () -> Math.floor @value / @units.d
+	milliseconds: -> @value
+	seconds: -> Math.floor @value / @units.s
+	minutes: -> Math.floor @value / @units.m
+	hours: -> Math.floor @value / @units.h
+	days: -> Math.floor @value / @units.d
 
 
 
-	clone: () -> new Duration @value
+	clone: -> new Duration @value
 
 
 
+	# todo: use moment.duration here
 	parse: (string) ->
 		return 0 if string is '0' or string is '-0'
 
@@ -67,12 +61,10 @@ class Duration extends NumericValue
 		return sign * duration
 
 
-	toString: () ->
+	toString: ->
 		return '0' if @value is 0
 
-		string = ''
-		if @value < 0
-			string += '-'
+		string = if @value < 0 then '-' else ''
 		duration = Math.abs @value
 
 		for abbreviation, factor of @units
@@ -83,7 +75,7 @@ class Duration extends NumericValue
 
 		return string
 
-	valueOf: () -> @value
+	valueOf: -> @value
 
 
 
