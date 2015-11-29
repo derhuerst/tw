@@ -15,10 +15,12 @@
 		"shortid":				"^2.2.4"
 	},
 	"devDependencies": {
+		"mocha":				"^2.3.4",
 		"notes":				"derhuerst/node-notes"
 	},
 	"scripts": {
-		"test":					"coffee test/index.coffee",
-		"todo":					"notes"
+		"test":			"mocha --compilers coffee:coffee-script/register",
+		"test:watch":	"mocha -w --compilers coffee:coffee-script/register",
+		"todo":			"notes"
 	}
 }
