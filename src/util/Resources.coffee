@@ -20,63 +20,54 @@ class Resources extends EventEmitter
 		@isResources = true
 
 		values = values or {}
-
 		@wood = values.wood or 0
 		@clay = values.clay or 0
 		@iron = values.iron or 0
 
 
 
-	reset: (value) ->
-		@emit 'pre-change'
-		@wood = @clay = @iron = value + 0 or 0
-		@emit 'change'
+	_set: (wood, clay, iron) ->
+		before = @clone()
+
+		@wood = wood
+		@clay = clay
+		@iron = iron
+
+		@emit 'change', before, @clone()
 		return this
 
 
-	add: (summand) ->
-		@emit 'pre-change'
+	reset: (value = 0) ->
+		if value.isResources then return @_set value.wood, value.clay, value.iron
+		else return @_set value, value, value
+
+
+	add: (summand = 0) ->
+		return this if summand is 0
 		if summand.isResources
-			@wood += summand.wood
-			@clay += summand.clay
-			@iron += summand.iron
-		else
-			@wood += summand
-			@clay += summand
-			@iron += summand
-		@emit 'change'
-		return this
+			return @_set @wood + summand.wood, @clay + summand.clay, @iron + summand.iron
+		else return @_set @wood + summand, @clay + summand, @iron + summand
+
+	subtract: (subtrahend = 0) ->
+		if subtrahend.isResources then return @add subtrahend.clone().multiply -1
+		else return @add -subtrahend
 
 
-	subtract: (subtrahend) ->
-		if subtrahend.isResources
-			subtrahend.multiply -1
-		else
-			subtrahend *= -1
-		@add subtrahend
-		return this
-
-
-	multiply: (factor) ->
-		@emit 'pre-change'
+	multiply: (factor = 1) ->
+		return this if factor is 1
 		if factor.isResources
-			@wood *= factor.wood
-			@clay *= factor.clay
-			@iron *= factor.iron
-		else
-			@wood *= factor
-			@clay *= factor
-			@iron *= factor
-		@emit 'change'
-		return this
+			return @_set @wood * factor.wood, @clay * factor.clay, @iron * factor.iron
+		else return @_set @wood * factor, @clay * factor, @iron * factor
 
 
 	round: ->
-		@emit 'pre-change'
+		before = @clone()
+
 		@wood = Math.round @wood
 		@clay = Math.round @clay
 		@iron = Math.round @iron
-		@emit 'change'
+
+		@emit 'change', before, @clone()
 		return this
 
 
@@ -98,19 +89,14 @@ class Resources extends EventEmitter
 
 
 	moreThan: (resources) ->
-		return @wood >= resources.wood and @clay >= resources.clay and @iron >= resources.iron
+		return this unless resources and resources.isResources
+		return ( @wood >= resources.wood and
+		@clay >= resources.clay and
+		@iron >= resources.iron )
 
 
 
 	clone: -> new Resources this
-
-
-	subset: (types) ->
-		resources = {}
-		types = [types] if typeof types is 'string'
-		for type in types
-			resources[type] = @[type]
-		return new Resources resources
 
 
 
