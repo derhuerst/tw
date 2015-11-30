@@ -9,3 +9,5 @@ require './Duration'
 require './Timeout'
 require './Interval'
 require './TimeoutQueue'
+
+require './Resources'
