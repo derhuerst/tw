@@ -38,23 +38,23 @@ class Research extends Timeout
 
 
 
-	onStart: () ->
+	onStart: ->
 		@building.emit 'research.start', this
 
 
-	onStop: () ->
+	onStop: ->
 		smithy.village.warehouse.stocks.add @config.resources    # todo: multiply with 0.9?
 		@building.emit 'research.stop', this
 
 
-	onFinish: () ->
+	onFinish: ->
 		@reasearched[type] = true
 		@building.emit 'research.finish', this
 		@building.emit 'research', this
 
 
 
-	start: () ->
+	start: ->
 		return this if @running()
 
 		if @smithy.village.warehouse.stocks.update().moreThan @config.resources
@@ -67,7 +67,7 @@ class Research extends Timeout
 
 
 
-	toString: () -> "* (#{@config.units[@type].title}"
+	toString: -> "* (#{@config.units[@type].title}"
 
 
 

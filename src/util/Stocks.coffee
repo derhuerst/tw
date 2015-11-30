@@ -34,7 +34,7 @@ class Stocks extends Resources
 
 
 
-	limitToMaxima: () ->
+	limitToMaxima: ->
 		if @wood > @maxima.wood
 			@wood = @maxima.wood
 		else if @clay > @maxima.clay
@@ -43,23 +43,23 @@ class Stocks extends Resources
 			@iron = @maxima.iron
 
 
-	maximaOnChange: () =>
+	maximaOnChange: =>
 		@emit 'change'
 
 
 
-	update: () =>
+	update: =>
 		@add @production.resourcesDuring Date.now() - @updated
 		@updated = Date.now()
 		return this
 
 
 
-	clone: () -> new Stocks this
+	clone: -> new Stocks this
 
 
 
-	toString: () ->
+	toString: ->
 		@update()
 		return "#{Math.round @wood}/#{@maxima.wood}w|#{Math.round @clay}/#{@maxima.clay}c|#{Math.round @iron}/#{@maxima.iron}i <- #{@production}"
 

@@ -17,13 +17,13 @@ class Attack extends Movement
 
 
 
-	constructor: () ->
+	constructor: ->
 		@isAttack = true
 		super arguments...
 
 
 
-	start: () ->
+	start: ->
 		return if @running()
 
 		distance = @origin.position.distanceTo @target.position
@@ -37,7 +37,7 @@ class Attack extends Movement
 
 
 
-	onStart: () ->
+	onStart: ->
 		super()
 		origin.emit 'outgoing-attack', this
 		origin.emit 'outgoing-attack.start', this
@@ -45,13 +45,13 @@ class Attack extends Movement
 		origin.emit 'incoming-attack.start', this
 
 
-	onStop: () ->
+	onStop: ->
 		super()
 		origin.emit 'outgoing-attack.stop', this
 		origin.emit 'incoming-attack.stop', this
 
 
-	onFinish: () ->
+	onFinish: ->
 		super()
 		origin.emit 'outgoing-attack.finish', this
 		origin.emit 'incoming-attack.finish', this

@@ -30,7 +30,7 @@ class Upgrade extends Timeout
 
 
 
-	start: () ->
+	start: ->
 		return if @running()
 
 		if @building.level >= @building.config.maximumLevel
@@ -51,17 +51,17 @@ class Upgrade extends Timeout
 
 
 
-	onStart: () ->
+	onStart: ->
 		@building.emit 'upgrade.start', this
 
 
-	onStop: () ->
+	onStop: ->
 		@building.village.warehouse.stocks.add @config.resources
 		@building.farm.workers.add @config.workers
 		@building.emit 'upgrade.stop', this
 
 
-	onFinish: () ->
+	onFinish: ->
 		@building.level.add 1
 		@building.points.add @config.points
 		@building.emit 'upgrade.finish', this
@@ -69,7 +69,7 @@ class Upgrade extends Timeout
 
 
 
-	toString: () -> "(#{@building}) +1"
+	toString: -> "(#{@building}) +1"
 
 
 

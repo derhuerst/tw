@@ -34,13 +34,13 @@ class Speed extends EventEmitter
 
 
 
-	clone: () -> new Speed this
+	clone: -> new Speed this
 
 
 
-	valueOf: () -> 0 + @durationToTravel new Vector 1, 0
+	valueOf: -> 0 + @durationToTravel new Vector 1, 0
 
-	toString: () -> "#{@distance} / #{@duration}"
+	toString: -> "#{@distance} / #{@duration}"
 
 
 

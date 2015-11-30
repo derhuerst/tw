@@ -28,7 +28,7 @@ class Building extends EventEmitter
 
 
 
-	constructor: () ->
+	constructor: ->
 		@isBuilding = true
 		super arguments...
 
@@ -50,7 +50,7 @@ class Building extends EventEmitter
 
 
 
-	toString: () -> "#{@config.abbreviation}#{@level} ##{@id}"
+	toString: -> "#{@config.abbreviation}#{@level} ##{@id}"
 
 
 

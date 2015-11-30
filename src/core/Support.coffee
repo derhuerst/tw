@@ -14,13 +14,13 @@ class Support extends Movement
 
 
 
-	constructor: () ->
+	constructor: ->
 		@isSupport = true
 		super arguments...
 
 
 
-	start: () ->
+	start: ->
 		return if @running()
 
 		# todo?
@@ -29,7 +29,7 @@ class Support extends Movement
 
 
 
-	onStart: () ->
+	onStart: ->
 		super()
 		origin.emit 'outgoing-support', this
 		origin.emit 'outgoing-support.start', this
@@ -37,13 +37,13 @@ class Support extends Movement
 		target.emit 'incoming-support.start', this
 
 
-	onStop: () ->
+	onStop: ->
 		super()
 		origin.emit 'outgoing-support.stop', this
 		target.emit 'incoming-support.stop', this
 
 
-	onFinish: () ->
+	onFinish: ->
 		super()
 		origin.emit 'outgoing-support.finish', this
 		target.emit 'incoming-support.finish', this

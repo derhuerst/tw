@@ -40,7 +40,7 @@ class Farm extends Building
 
 
 
-	totalCapacity: () ->
+	totalCapacity: ->
 		result = 0
 		for level in [0 ... @level]
 			result += @config.levels[level].capacity

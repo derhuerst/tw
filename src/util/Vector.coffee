@@ -17,7 +17,7 @@ class Vector
 
 
 
-	reset: () ->
+	reset: ->
 		@x = 0
 		@y = 0
 		return this
@@ -53,7 +53,7 @@ class Vector
 		return this
 
 
-	round: () ->
+	round: ->
 		@x = Math.round @x
 		@y = Math.round @y
 		return this
@@ -68,13 +68,13 @@ class Vector
 
 
 
-	clone: () -> new Vector @x, @y
+	clone: -> new Vector @x, @y
 
 
 
-	valueOf: () -> Math.sqrt Math.pow(@x, 2) + Math.pow(@y, 2)
+	valueOf: -> Math.sqrt Math.pow(@x, 2) + Math.pow(@y, 2)
 
-	toString: () -> "#{@x}|#{@y}"
+	toString: -> "#{@x}|#{@y}"
 
 
 

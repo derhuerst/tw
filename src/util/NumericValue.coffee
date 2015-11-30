@@ -52,7 +52,7 @@ class NumericValue extends EventEmitter
 		return this
 
 
-	round: () ->
+	round: ->
 		oldValue = @value
 		@value = Math.round this
 		return this if @value is oldValue
@@ -76,13 +76,13 @@ class NumericValue extends EventEmitter
 
 
 
-	clone: () -> new NumericValue @value, @abbreviation
+	clone: -> new NumericValue @value, @abbreviation
 
 
 
-	valueOf: () -> @value
+	valueOf: -> @value
 
-	toString: () -> "#{@value}#{@abbreviation}"
+	toString: -> "#{@value}#{@abbreviation}"
 
 
 

@@ -39,7 +39,7 @@ class RallyPoint extends Building
 
 
 
-	allAvailableUnits: () ->
+	allAvailableUnits: ->
 		result = new Units @units.available
 		for village, units of @units.supporting
 			result.add units

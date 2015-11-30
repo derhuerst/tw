@@ -14,7 +14,7 @@ class Interval
 	# interval
 	# _interval
 
-	noop: ()->
+	noop: ->
 
 
 
@@ -33,27 +33,27 @@ class Interval
 
 
 
-	start: () ->
+	start: ->
 		@_interval = setInterval @_callback
 		return this
 
 
-	stop: () ->
+	stop: ->
 		clearInterval @_callback
 		@_callback = null
 		return this
 
 
 
-	_callback: () => @callback()
+	_callback: => @callback()
 
 
 
-	clone: () -> new Interval this.interval
+	clone: -> new Interval this.duration
 
 
 
-	toString: () -> "itv #{@interval}"
+	toString: -> "itv #{@duration}"
 
 
 

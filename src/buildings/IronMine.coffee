@@ -36,7 +36,7 @@ class IronMine extends Building
 
 
 
-	totalProduction: () ->
+	totalProduction: ->
 		result = new Production()
 		for level in [0 ... @level]
 			result.add @config.levels[level].production

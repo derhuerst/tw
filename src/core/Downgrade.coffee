@@ -30,7 +30,7 @@ class Downgrade extends Timeout
 
 
 
-	start: () ->
+	start: ->
 		return if @running()
 
 		if @building.level <= @building.config.minimumLevel
@@ -44,15 +44,15 @@ class Downgrade extends Timeout
 
 
 
-	onStart: () ->
+	onStart: ->
 		@building.emit 'downgrade.start', this
 
 
-	onStop: () ->
+	onStop: ->
 		@building.emit 'downgrade.stop', this
 
 
-	onFinish: () ->
+	onFinish: ->
 		@building.level.subtract 1
 		@building.village.points.subtract @config.points
 		@building.village.farm.workers.add @config.workers
@@ -61,7 +61,7 @@ class Downgrade extends Timeout
 
 
 
-	toString: () -> "(#{@building}) -1"
+	toString: -> "(#{@building}) -1"
 
 
 

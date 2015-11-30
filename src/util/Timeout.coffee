@@ -28,7 +28,7 @@ class Timeout extends EventEmitter
 
 
 
-	duration: () -> @_duration
+	duration: -> @_duration
 
 	_durationOnChange: (delta) =>
 		now = Date.now()

@@ -15,14 +15,14 @@ class TimeoutQueue extends EventEmitter
 
 
 
-	constructor: () ->
+	constructor: ->
 		@isTimeoutQueue = true
 		super()
 
 		@timeouts = []
 
 		_this = this
-		@timeoutOnFinish = () ->
+		@timeoutOnFinish = ->
 			_this.remove this
 			_this.emit 'progress', this
 			if _this.timeouts.length > 0
@@ -31,7 +31,7 @@ class TimeoutQueue extends EventEmitter
 
 
 
-	next: () =>
+	next: =>
 		timeout = @timeouts[0]
 		timeout.once 'finish', @timeoutOnFinish
 		timeout.once 'stop', @timeoutOnFinish

@@ -110,21 +110,21 @@ class World extends EventEmitter
 
 
 	# todo: this system sucks: it might happen that when a village already received an id but isn't yet added to @villages, we give another village that same id. then, upon adding the two villages, one of them doesn't get added. The same goes for playerId.
-	villageId: () ->
+	villageId: ->
 		id = shortid.generate()
 		while !!@villages[id]
 			id = shortid.generate()
 		return id
 
 	# todo: see todo for @villageId
-	playerId: () ->
+	playerId: ->
 		id = shortid.generate()
 		while !!@players[id]
 			id = shortid.generate()
 		return id
 
 
-	villagePosition: () ->
+	villagePosition: ->
 		xMax = @map.length - 1
 		yMax = @map[0].length - 1
 		[x, y] = [ random(0, xMax), random 0, yMax ]

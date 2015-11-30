@@ -35,7 +35,7 @@ class Movement extends Timeout
 
 
 
-	start: () ->
+	start: ->
 		return if @running()
 
 		if target is origin
@@ -51,7 +51,7 @@ class Movement extends Timeout
 
 
 
-	onStart: () ->
+	onStart: ->
 		# todo: improve event names?
 		origin.emit 'outgoing-movement', this
 		origin.emit 'outgoing-movement.start', this
@@ -59,21 +59,21 @@ class Movement extends Timeout
 		target.emit 'incoming-movement.start', this
 
 
-	onStop: () ->
+	onStop: ->
 		@returning = true
 		# todo: improve event names?
 		origin.emit 'outgoing-movement.stop', this
 		target.emit 'incoming-movement.stop', this
 
 
-	onFinish: () ->
+	onFinish: ->
 		# todo: improve event names?
 		origin.emit 'outgoing-movement.finish', this
 		target.emit 'incoming-movement.finish', this
 
 
 
-	toString: () -> "(#{@building}) +1"
+	toString: -> "(#{@building}) +1"
 
 
 

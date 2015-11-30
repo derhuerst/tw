@@ -71,7 +71,7 @@ class Resources extends EventEmitter
 		return this
 
 
-	round: () ->
+	round: ->
 		@emit 'pre-change'
 		@wood = Math.round @wood
 		@clay = Math.round @clay
@@ -81,20 +81,20 @@ class Resources extends EventEmitter
 
 
 
-	highest: () ->
+	highest: ->
 		result = 'wood'
 		result = 'clay' if @clay > @wood
 		result = 'iron' if @iron > @clay
 		return result
 
-	lowest: () ->
+	lowest: ->
 		result = 'wood'
 		result = 'clay' if @clay < @wood
 		result = 'iron' if @iron < @clay
 		return result
 
 
-	count: () -> @wood + @clay + @iron
+	count: -> @wood + @clay + @iron
 
 
 	moreThan: (resources) ->
@@ -102,7 +102,7 @@ class Resources extends EventEmitter
 
 
 
-	clone: () -> new Resources this
+	clone: -> new Resources this
 
 
 	subset: (types) ->
@@ -114,7 +114,7 @@ class Resources extends EventEmitter
 
 
 
-	toString: () -> "#{@wood}w|#{@clay}c|#{@iron}i"
+	toString: -> "#{@wood}w|#{@clay}c|#{@iron}i"
 
 
 

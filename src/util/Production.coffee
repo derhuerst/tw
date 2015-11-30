@@ -33,11 +33,11 @@ class Production extends EventEmitter
 
 
 
-	propertyOnChange: () =>
+	propertyOnChange: =>
 		@emit 'change'
 
 
-	propertyOnPreChange: () =>
+	propertyOnPreChange: =>
 		@emit 'pre-change'
 
 
@@ -65,11 +65,11 @@ class Production extends EventEmitter
 
 
 
-	clone: () -> new Production @resources, @duration
+	clone: -> new Production @resources, @duration
 
 
 
-	toString: () -> "#{@resources}/#{@duration.toString()}"
+	toString: -> "#{@resources}/#{@duration.toString()}"
 
 
 

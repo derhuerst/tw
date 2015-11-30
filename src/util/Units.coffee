@@ -65,7 +65,7 @@ class Units extends EventEmitter
 		return this
 
 
-	round: () ->
+	round: ->
 		for type of config.units
 			@[type] = Math.round @[type]
 		@emit 'change'
@@ -80,13 +80,13 @@ class Units extends EventEmitter
 
 
 
-	offense: () ->
+	offense: ->
 		result = 0
 		for type of config.units
 			result += config.units[type].offense * @[type]
 		return result
 
-	offenseScouts: () ->
+	offenseScouts: ->
 		result = 0
 		for type of config.units
 			if config.units[type].offenseScouts
@@ -94,33 +94,33 @@ class Units extends EventEmitter
 		return result
 
 
-	defenseGeneral: () ->
+	defenseGeneral: ->
 		result = 0
 		for type of config.units
 			result += config.units[type].defenseGeneral * @[type]
 		return result
 
-	defenseCavalry: () ->
+	defenseCavalry: ->
 		result = 0
 		for type of config.units
 			result += config.units[type].defenseCavalry * @[type]
 		return result
 
-	defenseArchers: () ->
+	defenseArchers: ->
 		result = 0
 		for type of config.units
 			result += config.units[type].defenseArchers * @[type]
 		return result
 
 
-	haul: () ->
+	haul: ->
 		result = 0
 		for type of config.units
 			result += config.units[type].haul * @[type]
 		return result
 
 
-	speed: () ->
+	speed: ->
 		result = 0
 		for type of config.units
 			if @[type] > 0 and config.units[type].speed > result
@@ -128,21 +128,21 @@ class Units extends EventEmitter
 		return result.clone()
 
 
-	resources: () ->
+	resources: ->
 		result = new Resources()
 		for type of config.units
 			result.add config.units[type].resources.clone().multiply @[type]
 		return result
 
 
-	workers: () ->
+	workers: ->
 		result = 0
 		for type of config.units
 			result.add config.units[type].workers * @[type]
 		return result
 
 
-	duration: () ->
+	duration: ->
 		result = 0
 		for type of config.units
 			result += config.units[type].duration * @[type]
@@ -158,7 +158,7 @@ class Units extends EventEmitter
 		return new Units units
 
 
-	infantry: () ->
+	infantry: ->
 		return @subset [
 			'spearFighter'
 			'swordsman'
@@ -166,7 +166,7 @@ class Units extends EventEmitter
 			'archer'
 		]
 
-	cavalry: () ->
+	cavalry: ->
 		return @subset [
 			'scout'
 			'lightCavalry'
@@ -174,7 +174,7 @@ class Units extends EventEmitter
 			'heavyCavalry'
 		]
 
-	siegeEngines: () ->
+	siegeEngines: ->
 		return @subset [
 			'ram'
 			'catapult'
@@ -182,11 +182,11 @@ class Units extends EventEmitter
 
 
 
-	clone: () -> new Units this
+	clone: -> new Units this
 
 
 
-	toString: () ->
+	toString: ->
 		result = []
 		for type of config.units
 			result.add @[type] + config.units[type].abbreviation

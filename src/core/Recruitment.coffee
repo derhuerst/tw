@@ -31,23 +31,23 @@ class Recruitment extends Timeout
 
 
 
-	onStart: () ->
+	onStart: ->
 		@building.emit 'recruitment.start', this
 
 
-	onStop: () ->
+	onStop: ->
 		building.village.warehouse.stocks.add @units.resources().multiply 0.9
 		@building.emit 'recruitment.stop', this
 
 
-	onFinish: () ->
+	onFinish: ->
 		@building.village.rallyPoint.units.add @units
 		@building.emit 'recruitment.finish', this
 		@building.emit 'recruitment', this
 
 
 
-	start: () ->
+	start: ->
 		if @running()
 			throw new GameError "#{this} is already running."
 
@@ -61,7 +61,7 @@ class Recruitment extends Timeout
 
 
 
-	toString: () -> "+ (#{@units})"
+	toString: -> "+ (#{@units})"
 
 
 
