@@ -178,6 +178,20 @@ describe 'Vector', ->
 
 
 
+	describe 'distanceTo', ->
+
+		b = null
+		d = null
+
+		beforeEach ->
+			b = new Vector 4.5, 6.5
+			d = a.distanceTo b
+
+		it 'should correctly calculate the distance', ->
+			assert.strictEqual d, 5
+
+
+
 	describe 'clone', ->
 
 		b = null

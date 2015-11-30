@@ -60,8 +60,11 @@ class Vector
 
 
 
-	distanceTo: (vector) -> vector.clone().subtract this
-		return new Vector 0, 0 unless vector and vector.isVector
+	vectorTo: (target) ->
+		return new Vector 0, 0 unless target and target.isVector
+		target.clone().subtract this
+
+	distanceTo: (target) -> @vectorTo(target).valueOf()
 
 
 
