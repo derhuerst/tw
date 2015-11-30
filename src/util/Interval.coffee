@@ -18,7 +18,7 @@ class Interval
 
 
 
-	constructor: (callback, interval) ->
+	constructor: (interval, callback) ->
 		@isInterval = true
 
 		@callback = callback or @noop
