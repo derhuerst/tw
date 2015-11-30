@@ -14,7 +14,6 @@ class Timeout extends EventEmitter
 
 	# _duration
 	# _timeout
-	# _remaining
 	# _started
 
 
@@ -24,18 +23,17 @@ class Timeout extends EventEmitter
 
 		@_duration = duration or new Duration()
 		@_duration.on 'change', @_durationOnChange
-		@_timeout = null
-		@_remaining = @_started = 0
+		@_timeout = @_started = null
 
 
 
 	duration: () -> @_duration
 
 	_durationOnChange: (delta) =>
-		hasBeenRunning = @running()
-		@pause() if hasBeenRunning
-		@_remaining += delta
-		@resume() if hasBeenRunning
+		now = Date.now()
+		return unless @running()
+		clearTimeout @_timeout
+		setTimeout @_callback, now - @_started
 
 
 
@@ -47,39 +45,22 @@ class Timeout extends EventEmitter
 	start: ->
 
 		@_started = Date.now()
-		@_remaining = @_duration.milliseconds()
-		@_timeout = setTimeout @_callback, @_remaining
+		remaining = @_duration.valueOf()
+		@_timeout = setTimeout @_callback, remaining
+		@_finished = false
 
 		@emit 'start'
 		return this
 
 
-	pause: () ->
-		return unless @running()
-
-		@_remaining -= Date.now() - @_started
-		clearTimeout @_callback
-
-		@emit 'pause'
-		return this
-
-
-	resume: () ->
-		return if @running()
-
-		@_started = Date.now()
-		@_timeout = setTimeout @_callback, @_remaining
-
-		@emit 'resume'
-		return this
 	stop: ->
 
 
 		return unless @running()
 
-		@_started = 0
-		@_remaining = 0
-		clearTimeout @_callback
+		clearTimeout @_timeout
+		@_timeout = null
+		@_started = null
 
 		@emit 'stop'
 		return this
@@ -88,9 +69,10 @@ class Timeout extends EventEmitter
 		return unless @running()
 	finish: ->
 
-		@_started = 0
-		@_remaining = 0
-		clearTimeout @_callback
+		clearTimeout @_timeout
+		@_timeout = null
+		@_started = null
+		@_finished = true
 
 		@emit 'finish'
 		return this
