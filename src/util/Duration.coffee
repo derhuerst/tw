@@ -1,6 +1,18 @@
+_Duration =			require 'duration-js'
+
 NumericValue =		require '../util/NumericValue'
 
 
+
+
+
+unitsToMethods =
+	ms:	'milliseconds'
+	s:	'seconds'
+	m:	'minutes'
+	h:	'hours'
+	d:	'days'
+	w:	'weeks'
 
 
 
@@ -8,40 +20,32 @@ class Duration extends NumericValue
 
 
 
+	units:
+		ms:	_Duration.millisecond
+		s:	_Duration.second
+		m:	_Duration.minute
+		h:	_Duration.hour
+		d:	_Duration.day
+		w:	_Duration.week
+
 	# isDuration
 
-	units:
-		d: 1000 * 60 * 60 * 24
-		h: 1000 * 60 * 60
-		m: 1000 * 60
-		s: 1000
-		ms: 1
+	# _duration
 
 
 
-	constructor: (duration) ->
-		super()
+	constructor: (duration = 0) ->
 		@isDuration = true
+		super()
 
-		if typeof duration is 'number' then @value = duration
-		else if typeof duration is 'string' then @value = @parse duration
-		else if duration and duration.isDuration @value = duration.clone()
-		else @value = parseFloat duration
-		if isNaN @value then @value = 0
-
-
-
-	milliseconds: -> @value
-	seconds: -> Math.floor @value / @units.s
-	minutes: -> Math.floor @value / @units.m
-	hours: -> Math.floor @value / @units.h
-	days: -> Math.floor @value / @units.d
+		@on 'change', @_valueOnChange
+		if duration.isDuration then duration = duration.valueOf()
+		@reset new _Duration(duration).valueOf()
 
 
 
-	clone: -> new Duration @value
-
-
+	_valueOnChange: ->
+		@_duration = new _Duration @value
 
 	# todo: use moment.duration here
 	parse: (string) ->
@@ -63,21 +67,14 @@ class Duration extends NumericValue
 		return sign * duration
 
 
-	toString: ->
-		return '0' if @value is 0
 
-		string = if @value < 0 then '-' else ''
-		duration = Math.abs @value
 
-		for abbreviation, factor of @units
-			part = Math.floor duration / factor
-			continue if part is 0
-			duration -= part * factor
-			string += part + abbreviation
 
-		return string
+	clone: -> new Duration @value
 
 	valueOf: -> @value
+
+	toString: -> @_duration.toString 1 # alternative format
 
 
 
