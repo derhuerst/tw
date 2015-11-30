@@ -39,13 +39,12 @@ class Timeout extends EventEmitter
 
 
 
-	_callback: () =>
-		@emit 'finish'
+	_callback: => @emit 'finish'
 
 
 
-	start: () ->
 		return if @running()
+	start: ->
 
 		@_started = Date.now()
 		@_remaining = @_duration.milliseconds()
@@ -73,9 +72,9 @@ class Timeout extends EventEmitter
 
 		@emit 'resume'
 		return this
+	stop: ->
 
 
-	stop: () ->
 		return unless @running()
 
 		@_started = 0
@@ -86,8 +85,8 @@ class Timeout extends EventEmitter
 		return this
 
 
-	finish: () ->
 		return unless @running()
+	finish: ->
 
 		@_started = 0
 		@_remaining = 0
@@ -98,21 +97,21 @@ class Timeout extends EventEmitter
 
 
 
-	progress: () ->
+	progress: ->
 		return 0 unless @running()
 		return (@_duration.milliseconds() - @_remaining + Date.now() - @_started) / @_duration.milliseconds() # todo: correct?
 
+	running: -> @_timeout?
 
 
-	running: () -> !!@_timeout
 
-	remaining: () ->
+	remaining: ->
 		return 0 unless @running()
 		return @_duration.clone().multiply 1 - @progress()
 
 
 
-	toString: () -> "tmt #{@_duration}"
+	toString: -> "tmt #{@_duration}"
 
 
 
