@@ -1,5 +1,7 @@
 {EventEmitter} =	require 'events'
 
+_ =					require './helpers'
+
 
 
 
@@ -10,8 +12,7 @@ class TimeoutQueue extends EventEmitter
 
 	# isTimeoutQueue
 
-	# timeouts
-	# current
+	# _timeouts
 
 
 
@@ -19,36 +20,50 @@ class TimeoutQueue extends EventEmitter
 		@isTimeoutQueue = true
 		super()
 
-		@timeouts = []
-
-		_this = this
-		@timeoutOnFinish = ->
-			_this.remove this
-			_this.emit 'progress', this
-			if _this.timeouts.length > 0
-				_this.next()
-			else _this.emit 'finish'
+		@_timeouts = []
 
 
 
-	next: =>
-		timeout = @timeouts[0]
-		timeout.once 'finish', @timeoutOnFinish
-		timeout.once 'stop', @timeoutOnFinish
+	_removeOldTimeout: =>
+		timeout = @_timeouts.shift()
+		timeout.removeListener 'finish', @_removeOldTimeout
+		timeout.removeListener 'stop', @_removeOldTimeout
+		@emit 'progress', timeout
+		@_next()
+
+	_next: ->
+		if @_timeouts.length is 0
+			@emit 'finish'
+			return this
+		timeout = @_timeouts[0]
+
+		timeout.once 'finish', @_removeOldTimeout
+		timeout.once 'stop', @_removeOldTimeout
 		timeout.start()
 
 
 
 	add: (timeout) ->
-		@timeouts.add timeout
+		return this unless timeout and timeout.isTimeout
+
+		@_timeouts.add timeout
+		if @_timeouts.length is 1 # was empty before
+			@_next()
+			@emit 'start'
+
 		@emit 'add', timeout
-		if @timeouts.length is 1
-			@next()
+		return this
 
 
 	remove: (timeout) ->
-		@timeouts.remove timeout
+		i = @_timeouts.indexOf timeout
+		return this if i is -1
+
+		if i is 0 then @_removeOldTimeout
+		else @_timeouts.remove timeout
+
 		@emit 'remove', timeout
+		return this
 
 
 
