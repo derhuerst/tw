@@ -24,7 +24,7 @@ describe 'NumericValue', ->
 
 
 
-	describe 'constructor', ->
+	describe 'NumericValue::constructor', ->
 
 		it 'should initialize `value` correctly', ->
 			a = new NumericValue 1, 'test'
@@ -44,7 +44,7 @@ describe 'NumericValue', ->
 
 
 
-	describe 'reset', ->
+	describe 'NumericValue::reset', ->
 
 		a = null
 		b = null
@@ -74,7 +74,7 @@ describe 'NumericValue', ->
 
 
 
-	describe 'add', ->
+	describe 'NumericValue::add', ->
 
 		a = null
 		b = null
@@ -125,7 +125,7 @@ describe 'NumericValue', ->
 
 
 
-	describe 'subtract', ->
+	describe 'NumericValue::subtract', ->
 
 		a = null
 		b = null
@@ -152,7 +152,7 @@ describe 'NumericValue', ->
 
 
 
-	describe 'multiply', ->
+	describe 'NumericValue::multiply', ->
 
 		a = null
 		b = null
@@ -205,7 +205,7 @@ describe 'NumericValue', ->
 
 
 
-	describe 'round', ->
+	describe 'NumericValue::round', ->
 
 		a = null
 
@@ -234,7 +234,7 @@ describe 'NumericValue', ->
 
 
 
-	describe 'watch', ->
+	describe 'NumericValue::watch', ->
 
 		a = null
 		b = null
@@ -265,7 +265,7 @@ describe 'NumericValue', ->
 
 
 
-	describe 'unwatch', ->
+	describe 'NumericValue::unwatch', ->
 
 		a = null
 		b = null
@@ -293,7 +293,7 @@ describe 'NumericValue', ->
 
 
 
-	describe 'clone', ->
+	describe 'NumericValue::clone', ->
 
 		a = null
 		b = null
@@ -314,7 +314,7 @@ describe 'NumericValue', ->
 
 
 
-	describe 'valueOf', ->
+	describe 'NumericValue::valueOf', ->
 
 		a = null
 
@@ -327,7 +327,7 @@ describe 'NumericValue', ->
 
 
 
-	describe 'toString', ->
+	describe 'NumericValue::toString', ->
 
 		a = null
 

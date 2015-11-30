@@ -22,7 +22,7 @@ describe 'Vector', ->
 
 
 
-	describe 'constructor', ->
+	describe 'Vector::constructor', ->
 
 		it 'should set `x` and `y` to the given values', ->
 			assert.strictEqual a.x, 1.5
@@ -35,7 +35,7 @@ describe 'Vector', ->
 
 
 
-	describe 'reset', ->
+	describe 'Vector::reset', ->
 
 		it 'should return the instance', ->
 			assert.strictEqual a.reset(), a
@@ -47,7 +47,7 @@ describe 'Vector', ->
 
 
 
-	describe 'add', ->
+	describe 'Vector::add', ->
 
 		it 'should return the instance', ->
 			assert.strictEqual a.add(2), a
@@ -79,7 +79,7 @@ describe 'Vector', ->
 
 
 
-	describe 'subtract', ->
+	describe 'Vector::subtract', ->
 
 		it 'should return the instance', ->
 			assert.strictEqual a.subtract(2), a
@@ -111,7 +111,7 @@ describe 'Vector', ->
 
 
 
-	describe 'multiply', ->
+	describe 'Vector::multiply', ->
 
 		it 'should return the instance', ->
 			assert.strictEqual a.multiply(2), a
@@ -143,7 +143,7 @@ describe 'Vector', ->
 
 
 
-	describe 'round', ->
+	describe 'Vector::round', ->
 
 		it 'should return the instance', ->
 			assert.strictEqual a.round(), a
@@ -155,7 +155,7 @@ describe 'Vector', ->
 
 
 
-	describe 'vectorTo', ->
+	describe 'Vector::vectorTo', ->
 
 		b = null
 		d = null
@@ -178,7 +178,7 @@ describe 'Vector', ->
 
 
 
-	describe 'distanceTo', ->
+	describe 'Vector::distanceTo', ->
 
 		b = null
 		d = null
@@ -192,7 +192,7 @@ describe 'Vector', ->
 
 
 
-	describe 'clone', ->
+	describe 'Vector::clone', ->
 
 		b = null
 		beforeEach -> b = a.clone()
@@ -206,7 +206,7 @@ describe 'Vector', ->
 
 
 
-	describe 'toString', ->
+	describe 'Vector::toString', ->
 
 		it 'should return a `String`', ->
 			assert.strictEqual typeof a.toString(), 'string'
