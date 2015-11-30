@@ -23,7 +23,7 @@ class Vector
 		return this
 
 
-	add: (summand) ->
+	add: (summand = 0) ->
 		if summand.isVector
 			@x += summand.x
 			@y += summand.y
@@ -33,7 +33,7 @@ class Vector
 		return this
 
 
-	subtract: (subtrahend) ->
+	subtract: (subtrahend = 0) ->
 		if subtrahend.isVector
 			@x -= subtrahend.x
 			@y -= subtrahend.y
@@ -43,7 +43,7 @@ class Vector
 		return this
 
 
-	multiply: (factor) ->
+	multiply: (factor = 1) ->
 		if factor.isVector
 			@x *= factor.x
 			@y *= factor.y
@@ -61,6 +61,7 @@ class Vector
 
 
 	distanceTo: (vector) -> vector.clone().subtract this
+		return new Vector 0, 0 unless vector and vector.isVector
 
 
 
@@ -68,7 +69,7 @@ class Vector
 
 
 
-	valueOf: () -> Math.sqrt Math.pow(2, @x) + Math.pow(2, @y)
+	valueOf: () -> Math.sqrt Math.pow(@x, 2) + Math.pow(@y, 2)
 
 	toString: () -> "#{@x}|#{@y}"
 
