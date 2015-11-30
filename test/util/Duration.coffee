@@ -71,6 +71,50 @@ describe 'Duration', ->
 
 
 
+	describe 'Vector::as', ->
+
+		it 'should return the `value` as milliseconds', ->
+			assert.strictEqual a.as('ms'), a.value
+
+		it 'should return the `value` as seconds', ->
+			assert.strictEqual a.as('s'), Math.floor a.value / a.units.s
+
+		it 'should return the `value` as minutes', ->
+			assert.strictEqual a.as('m'), Math.floor a.value / a.units.m
+
+		it 'should return the `value` as hours', ->
+			assert.strictEqual a.as('h'), Math.floor a.value / a.units.h
+
+		it 'should return the `value` as days', ->
+			assert.strictEqual a.as('d'), Math.floor a.value / a.units.d
+
+		it 'should return the `value` as weeks', ->
+			assert.strictEqual a.as('w'), Math.floor a.value / a.units.w
+
+
+
+	describe 'Vector::get', ->
+
+		it 'should return the `value`\'s milliseconds', ->
+			assert.strictEqual a.get('ms'), 6
+
+		it 'should return the `value`\'s seconds', ->
+			assert.strictEqual a.get('s'), 5
+
+		it 'should return the `value`\'s minutes', ->
+			assert.strictEqual a.get('m'), 4
+
+		it 'should return the `value`\'s hours', ->
+			assert.strictEqual a.get('h'), 3
+
+		it 'should return the `value`\'s days', ->
+			assert.strictEqual a.get('d'), 2
+
+		it 'should return the `value`\'s weeks', ->
+			assert.strictEqual a.get('w'), 1
+
+
+
 	describe 'clone', ->
 
 		b = null

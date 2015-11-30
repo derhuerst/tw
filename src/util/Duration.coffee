@@ -47,26 +47,21 @@ class Duration extends NumericValue
 	_valueOnChange: ->
 		@_duration = new _Duration @value
 
-	# todo: use moment.duration here
-	parse: (string) ->
-		return 0 if string is '0' or string is '-0'
-
-		duration = 0
-		regex = /(\-?[\d.]+)(ms|s|m|h|d)/g
-		sign = 1
-		if string.charAt(0) is '-'
-			sign = -1
-			string = string.slice 1
-
-		while match = regex.exec string
-			value = parseFloat match[1]
-			if isNaN value
-				throw new Error 'invalid duration'
-			duration += value * @units[match[2]]
-
-		return sign * duration
 
 
+	as: (digit) ->
+		return NaN unless @_duration[unitsToMethods[digit]]
+		return @_duration[unitsToMethods[digit]]()
+
+
+
+	get: (digit = 'ms') ->
+		return NaN unless @_duration[unitsToMethods[digit]]
+		rest = @_duration
+		for name in ['w', 'd', 'h', 'm', 's', 'ms']
+			method = unitsToMethods[name]
+			if name is digit then return rest[method] name
+			rest = new _Duration rest - rest[method](name) * @units[name]
 
 
 
