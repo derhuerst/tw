@@ -18,10 +18,11 @@ class Timeout extends EventEmitter
 
 
 
-	constructor: (duration) ->
+	constructor: (duration = 0) ->
 		@isTimeout = true
 
-		@_duration = duration or new Duration()
+		duration = new Duration duration unless duration.isDuration
+		@_duration = duration
 		@_duration.on 'change', @_durationOnChange
 		@_timeout = @_started = null
 
@@ -41,8 +42,8 @@ class Timeout extends EventEmitter
 
 
 
-		return if @running()
 	start: ->
+		return this if @running()
 
 		@_started = Date.now()
 		remaining = @_duration.valueOf()
@@ -54,9 +55,7 @@ class Timeout extends EventEmitter
 
 
 	stop: ->
-
-
-		return unless @running()
+		return this unless @running()
 
 		clearTimeout @_timeout
 		@_timeout = null
@@ -66,8 +65,8 @@ class Timeout extends EventEmitter
 		return this
 
 
-		return unless @running()
 	finish: ->
+		return this unless @running()
 
 		clearTimeout @_timeout
 		@_timeout = null
@@ -80,12 +79,12 @@ class Timeout extends EventEmitter
 
 
 	progress: ->
+		now = Date.now()
+		return 1 if @_finished
 		return 0 unless @running()
-		return (@_duration.milliseconds() - @_remaining + Date.now() - @_started) / @_duration.milliseconds() # todo: correct?
+		return (now - @_started) / @_duration # todo: correct?
 
 	running: -> @_timeout?
-
-
 
 	remaining: ->
 		return 0 unless @running()
