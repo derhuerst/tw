@@ -173,6 +173,31 @@ describe 'Timeout', ->
 
 
 
+	describe 'Timeout::clone', ->
+
+		a = null
+		b = null
+
+		beforeEach ->
+			a = new Timeout 2, 'test'
+			b = a.clone()
+
+		it 'should properly instanciate the clone', ->
+			assert.strictEqual b.isTimeout, true
+			assert b instanceof EventEmitter
+
+		it 'should return a `Timeout` with an equal duration', ->
+			assert.strictEqual a.valueOf(), b.valueOf()
+
+
+
+	describe 'Timeout::valueOf', ->
+
+		it 'should return the duration', ->
+			assert.strictEqual a.valueOf(), 100
+
+
+
 	describe 'Timeout::toString', ->
 
 		it 'should return a `String`', ->

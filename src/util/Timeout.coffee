@@ -92,7 +92,13 @@ class Timeout extends EventEmitter
 
 
 
+	clone: -> new Timeout @_duration
+
+
+
 	toString: -> "tmt #{@_duration}"
+
+	valueOf: -> @_duration.valueOf()
 
 
 
