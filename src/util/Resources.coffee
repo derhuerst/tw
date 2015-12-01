@@ -88,6 +88,12 @@ class Resources extends EventEmitter
 	count: -> @wood + @clay + @iron
 
 
+	equalTo: (resources) ->
+		return false unless resources and resources.isResources
+		for unit in [ 'wood', 'clay', 'iron' ]
+			return false unless @[unit] is resources[unit]
+		return true
+
 	moreThan: (resources) ->
 		return this unless resources and resources.isResources
 		return ( @wood >= resources.wood and

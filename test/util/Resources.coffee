@@ -225,6 +225,23 @@ describe 'Resources', ->
 			b = new Resources { wood: a.wood, clay: a.clay - 1, iron: a.iron }
 			assert.strictEqual a.moreThan(b), true
 
+	describe 'Resources::equalTo', ->
+
+		it 'should return `true` for `Resources` with every property being equal', ->
+			b = new Resources
+				wood: a.wood
+				clay: a.clay
+				iron: a.iron
+			assert.strictEqual a.equalTo(b), true
+
+		it 'should return `true` for `Resources` with every property being equal', ->
+			b = new Resources { wood: a.wood, clay: a.clay, iron: a.iron }
+			assert.strictEqual a.equalTo(b), true
+
+		it 'should return `false` for `Resources` with any property being unequal', ->
+			b = new Resources { wood: a.wood, clay: a.clay - 1, iron: a.iron }
+			assert.strictEqual a.equalTo(b), false
+
 
 
 	describe 'Resources::clone', ->
