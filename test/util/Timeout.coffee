@@ -2,8 +2,8 @@ assert =			require 'assert'
 sinon =				require 'sinon'
 {EventEmitter} =	require 'events'
 
-Duration =		require '../../src/util/Duration'
-Timeout =		require '../../src/util/Timeout'
+Duration =			require '../../src/util/Duration'
+Timeout =			require '../../src/util/Timeout'
 
 
 
@@ -13,9 +13,15 @@ describe 'Timeout', ->
 
 	a = null
 	spy = sinon.spy()
+	clock = null
 
-	beforeEach -> a = new Timeout 100
-	afterEach -> spy.reset()
+	before -> clock = sinon.useFakeTimers()
+	after -> clock.restore()
+
+	beforeEach ->a = new Timeout 100
+	afterEach ->
+		a.stop()
+		spy.reset()
 
 	it '`isTimeout`', ->
 		assert.strictEqual a.isTimeout, true
@@ -114,14 +120,10 @@ describe 'Timeout', ->
 			a.start(); a.finish()
 			assert.strictEqual a.progress(), 1
 
-		it 'should return ~ `.33` after a third of the given `Duration`', (done) ->
-			checkIfRoughlyHalf = ->
-				p = a.progress()
-				assert .315 < p < .345
-				done()
-
-			setTimeout checkIfRoughlyHalf, a.duration() / 3
+		it 'should return ~ `.33` after a third of the given `Duration`', ->
 			a.start()
+			clock.tick 500 / 3 + 5
+			assert .315 < a.progress() < .345
 
 
 
@@ -136,39 +138,26 @@ describe 'Timeout', ->
 			a.start(); a.finish()
 			assert.strictEqual a.remaining(), 0
 
-		it 'should return ~ the remaining duration', (done) ->
+		it 'should return ~ the remaining duration', ->
 			expected = a.duration() * 2 / 3
-			checkIfRoughlyHalf = ->
-				precision = a.remaining() / expected
-				assert .95 < precision < 1.05
-				done()
-
-			setTimeout checkIfRoughlyHalf, a.duration() / 3
 			a.start()
+			clock.tick 500 / 3 + 5
+			assert .95 < (a.remaining() / expected) < 1.05
 
 
 
-	it 'should emit `finish` exactly once after the given `Duration`', (done) ->
+	it 'should emit `finish` exactly once after the given `Duration`', ->
 		a.on 'finish', spy
-		checkIfCalledOnce = ->
-			assert spy.calledOnce
-			done()
-
 		a.start()
-		setTimeout checkIfCalledOnce, 110
+		clock.tick 105
+		assert spy.calledOnce
 
-
-
-	it 'should emit `finish` only once & immediatly when called `finish()`', (done) ->
+	it 'should emit `finish` only once & immediatly when called `finish()`', ->
 		a.on 'finish', spy
-		checkIfCalledOnce = ->
-			assert spy.calledOnce
-			done()
-
 		a.start()
-		setTimeout checkIfCalledOnce, 400
-
+		assert.strictEqual spy.callCount, 0
 		a.finish()
+		clock.tick 105
 		assert spy.calledOnce
 
 

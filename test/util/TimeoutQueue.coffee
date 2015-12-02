@@ -15,6 +15,10 @@ describe 'TimeoutQueue', ->
 	t1 = null
 	t2 = null
 	spy = sinon.spy()
+	clock = null
+
+	before -> clock = sinon.useFakeTimers()
+	after -> clock.restore()
 
 	beforeEach ->
 		a = new TimeoutQueue()
@@ -73,58 +77,50 @@ describe 'TimeoutQueue', ->
 
 
 
-	it 'should start each `Timeout` extactly once', (done) ->
+	it 'should start each `Timeout` extactly once', ->
 		sinon.spy t1, 'start'
 		sinon.spy t2, 'start'
-		checkT2CalledOnce = ->
-			assert t2.start.calledOnce
-			done()
 
 		a.add t1
 		a.add t2
 		assert t1.start.calledOnce
-		setTimeout checkT2CalledOnce, 60
+		clock.tick 60
+		assert t2.start.calledOnce
 
 
 
-	it 'should emit `start` if the list was empty', (done) ->
+	it 'should emit `start` if the list was empty', ->
 		a.on 'start', spy
-		checkCalledOnce = ->
-			assert spy.calledOnce
-			done()
 
 		a.add t1
 		a.add t2
-		setTimeout checkCalledOnce, 60
+		assert spy.calledOnce
+		clock.tick 60
+		assert spy.calledOnce
 
 
 
-	it 'should emit `finish` if the list will be empty', (done) ->
+	it 'should emit `finish` if the list will be empty', ->
 		a.on 'finish', spy
-		checkCalledOnce = ->
-			assert spy.calledOnce
-			done()
 
 		a.add t1
 		a.add t2
-		setTimeout (-> assert.strictEqual spy.callCount, 0), 60
-		setTimeout checkCalledOnce, 160
+		clock.tick 90
+		assert.strictEqual spy.callCount, 0
+		clock.tick 60
+		assert spy.calledOnce
 
 
 
-	it 'should emit `progress` for each `Timeout` extactly once', (done) ->
+	it 'should emit `progress` for each `Timeout` extactly once', ->
 		a.on 'progress', spy
-		checkT1CalledOnce = ->
-			assert spy.calledOnce
-			assert spy.calledWithExactly t1
-			spy.reset()
-		checkT2CalledOnce = ->
-			assert spy.calledOnce
-			assert spy.calledWithExactly t2
-			spy.reset()
-			done()
 
 		a.add t1
 		a.add t2
-		setTimeout checkT1CalledOnce, 60
-		setTimeout checkT2CalledOnce, 160
+		clock.tick 60
+		assert spy.calledOnce
+		assert spy.calledWithExactly t1
+		spy.reset()
+		clock.tick 110
+		assert spy.calledOnce
+		assert spy.calledWithExactly t2

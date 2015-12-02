@@ -12,6 +12,10 @@ describe 'Interval', ->
 
 	spy = sinon.spy()
 	a = null
+	clock = null
+
+	before -> clock = sinon.useFakeTimers()
+	after -> clock.restore()
 
 	beforeEach -> a = new Interval 100, spy
 	afterEach ->
@@ -65,26 +69,19 @@ describe 'Interval', ->
 
 
 
-	it 'should have called `callback` exactly twice after twice the `duration`', (done) ->
-		checkIfCalledTwice = ->
-			assert spy.calledTwice
-			done()
-
+	it 'should have called `callback` exactly twice after twice the `duration`', ->
 		a.start()
-		setTimeout checkIfCalledTwice, 220
+		clock.tick 220
+		assert spy.calledTwice
 
 
 
-	it 'should have not called `callback` called `stop()`', (done) ->
-		checkIfCalledOnce = ->
-			assert spy.calledOnce
-			done()
-		stop = ->
-			a.stop()
-
+	it 'should have not called `callback` called `stop()`', ->
 		a.start()
-		setTimeout stop, 110
-		setTimeout checkIfCalledOnce, 220
+		clock.tick 110
+		a.stop()
+		clock.tick 110
+		assert spy.calledOnce
 
 
 
