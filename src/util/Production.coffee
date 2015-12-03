@@ -49,7 +49,7 @@ class Production extends EventEmitter
 
 
 
-	resourcesDuring: (duration, log) -> @resources.clone().multiply duration / @duration
+	resourcesDuring: (duration = 0) -> @resources.clone().multiply duration / @duration
 
 
 	durationToGet: (resources) ->

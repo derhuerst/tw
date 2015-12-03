@@ -111,14 +111,16 @@ describe 'Production', ->
 
 
 
-	describe 'Production::resourcesDuring', ->
+	describe.only 'Production::resourcesDuring', ->
 
 		b = null
 		c = null
+		d = null
 
 		beforeEach ->
 			b = a.resourcesDuring new Duration '2m'
 			c = a.resourcesDuring new Duration '30s'
+			d = a.resourcesDuring 3 * 60 * 1000
 
 		it '`isResources`', ->
 			assert.strictEqual b.isResources, true
@@ -131,6 +133,9 @@ describe 'Production', ->
 			assert.strictEqual c.wood, 50
 			assert.strictEqual c.clay, 100
 			assert.strictEqual c.iron, 150
+			assert.strictEqual d.wood, 300
+			assert.strictEqual d.clay, 600
+			assert.strictEqual d.iron, 900
 
 
 
