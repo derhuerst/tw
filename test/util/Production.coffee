@@ -33,6 +33,7 @@ describe 'Production', ->
 	describe 'Production::constructor', ->
 
 		it 'should initialize `resources` correctly', ->
+			assert.notEqual a.resources, r1
 			assert.strictEqual a.resources.wood, 100
 			assert.strictEqual a.resources.clay, 200
 			assert.strictEqual a.resources.iron, 300
@@ -42,6 +43,7 @@ describe 'Production', ->
 			assert.throws (-> new Production 'foo'), ReferenceError
 
 		it 'should initialize `duration` correctly', ->
+			assert.notEqual a.duration, d1
 			assert.strictEqual a.duration.as('m'), 1
 
 			b = new Production r1 # testing the default value
@@ -115,7 +117,7 @@ describe 'Production', ->
 
 
 
-	describe.only 'Production::resourcesDuring', ->
+	describe 'Production::resourcesDuring', ->
 
 		b = null
 		c = null

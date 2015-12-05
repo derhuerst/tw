@@ -27,8 +27,8 @@ class Production extends EventEmitter
 		@resources = resources.clone()
 		@resources.on 'change', @_propertyOnChange
 
-		if duration and duration.isDuration
-			@duration = duration
+		if duration and duration.isDuration then @duration = duration.clone()
+		else if typeof duration is 'number' then @duration = new Duration duration
 		else @duration = new Duration '1h'
 		@duration.on 'change', @_propertyOnChange
 
