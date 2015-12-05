@@ -5,7 +5,7 @@ Production =		require '../util/Production'
 
 
 
-class Stocks extends Resources
+class Stocks
 
 
 
@@ -14,54 +14,56 @@ class Stocks extends Resources
 	# maxima
 
 	# production
-	# updated
+
+	# _resources
+	# _updated
 
 
 
 	constructor: (options) ->
 		@isStocks = true
 		options = options or {}
-		super options
 
-		@maxima = new Resources options.maxima
-		@maxima.on 'change', @maximaOnChange
+		if options.maxima and options.maxima.isResources
+			@maxima = options.maxima
+		else @maxima = new Resources options.maxima
+		@maxima.on 'change', @_maximaOnChange
 
-		@production = options.production or new Production()
-		@production.on 'pre-change', @update
-		@updated = Date.now()
+		if options.production and options.production.isProduction
+			@production = options.production
+		else @production = new Production new Resources()
+		@production.on 'change', @_update
 
-		@on 'change', @limitToMaxima
-
-
-
-	limitToMaxima: ->
-		if @wood > @maxima.wood
-			@wood = @maxima.wood
-		else if @clay > @maxima.clay
-			@clay = @maxima.clay
-		else if @iron > @maxima.iron
-			@iron = @maxima.iron
-
-
-	maximaOnChange: =>
-		@emit 'change'
+		@_resources = new Resources()
+		@_updated = Date.now()
 
 
 
-	update: =>
-		@add @production.resourcesDuring Date.now() - @updated
-		@updated = Date.now()
-		return this
+	_maximaOnChange: () =>
+		if @_resources.wood > @maxima.wood then @_resources.wood = @maxima.wood
+		if @_resources.clay > @maxima.clay then @_resources.clay = @maxima.clay
+		if @_resources.iron > @maxima.iron then @_resources.iron = @maxima.iron
+
+	_update: (production = @production) =>
+		now = Date.now()
+		@_resources.add production.resourcesDuring now - @_updated
+		@_updated = now
+		@_maximaOnChange()
 
 
 
-	clone: -> new Stocks this
+	resources: -> @_update(); @_resources
 
 
 
 	toString: ->
-		@update()
-		return "#{Math.round @wood}/#{@maxima.wood}w|#{Math.round @clay}/#{@maxima.clay}c|#{Math.round @iron}/#{@maxima.iron}i <- #{@production}"
+		resources = @resources()
+		return [
+			Math.round(resources.wood), '/', Math.round(@maxima.wood), 'w|'
+			Math.round(resources.clay), '/', Math.round(@maxima.clay), 'c|'
+			Math.round(resources.iron), '/', Math.round(@maxima.iron), 'i|'
+			'<-', @production
+		].join ''
 
 
 
