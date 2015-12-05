@@ -11,6 +11,13 @@ Production =		require '../../src/util/Production'
 
 
 
+equalResources = (a, b) ->
+	assert.strictEqual a.wood, b.wood
+	assert.strictEqual a.clay, b.clay
+	assert.strictEqual a.iron, b.iron
+
+
+
 describe 'Production', ->
 
 	d1 = null
@@ -183,17 +190,29 @@ describe 'Production', ->
 
 
 
-	it 'should emit `change` if its `resources` emit `change`', ->
+	it 'should correctly emit `change` if its `resources` emit `change`', ->
 		spy = sinon.spy()
 		a.on 'change', spy
 		a.resources.multiply 2
-		assert spy.calledOnce
 
-	it 'should emit `change` if its `duration` emits `change`', ->
+		assert spy.calledOnce
+		[before, after] = spy.firstCall.args
+		equalResources before.resources, r1
+		equalResources after.resources, a.resources
+		assert.strictEqual before.duration.valueOf(), d1.valueOf()
+		assert.strictEqual after.duration.valueOf(), a.duration.valueOf()
+
+	it 'should correctly emit `change` if its `duration` emits `change`', ->
 		spy = sinon.spy()
 		a.on 'change', spy
 		a.duration.multiply 2
+
 		assert spy.calledOnce
+		[before, after] = spy.firstCall.args
+		equalResources before.resources, r1
+		equalResources after.resources, a.resources
+		assert.strictEqual before.duration.valueOf(), d1.valueOf()
+		assert.strictEqual after.duration.valueOf(), a.duration.valueOf()
 
 
 

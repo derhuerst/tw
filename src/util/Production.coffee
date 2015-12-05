@@ -25,16 +25,22 @@ class Production extends EventEmitter
 		unless resources and resources.isResources
 			throw new ReferenceError 'Missing `resources` argument.'
 		@resources = resources.clone()
-		@resources.on 'change', @_propertyOnChange
+		@resources.on 'change', @_resourcesOnChange
 
 		if duration and duration.isDuration then @duration = duration.clone()
 		else if typeof duration is 'number' then @duration = new Duration duration
 		else @duration = new Duration '1h'
-		@duration.on 'change', @_propertyOnChange
+		@duration.on 'change', @_durationOnChange
 
 
 
-	_propertyOnChange: => @emit 'change'
+	_resourcesOnChange: (before) =>
+		productionBefore = new Production before, @duration
+		@emit 'change', productionBefore, this
+
+	_durationOnChange: (before) =>
+		productionBefore = new Production @resources, before
+		@emit 'change', productionBefore, this
 
 
 
