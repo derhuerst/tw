@@ -22,7 +22,8 @@ class Production extends EventEmitter
 	constructor: (resources, duration) ->
 		@isProduction = true
 
-		throw new Error 'Missing `resources` argument.' unless resources.isResources
+		unless resources and resources.isResources
+			throw new ReferenceError 'Missing `resources` argument.'
 		@resources = resources.clone()
 		@resources.on 'change', @_propertyOnChange
 

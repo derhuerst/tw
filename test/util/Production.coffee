@@ -37,6 +37,10 @@ describe 'Production', ->
 			assert.strictEqual a.resources.clay, 200
 			assert.strictEqual a.resources.iron, 300
 
+		it 'should throw `ReferenceError` is no `Resources` are given', ->
+			assert.throws (-> new Production()), ReferenceError
+			assert.throws (-> new Production 'foo'), ReferenceError
+
 		it 'should initialize `duration` correctly', ->
 			assert.strictEqual a.duration.as('m'), 1
 
