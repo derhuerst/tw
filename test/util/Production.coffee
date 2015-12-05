@@ -180,12 +180,12 @@ describe 'Production', ->
 			assert.strictEqual b.isProduction, true
 			assert b instanceof EventEmitter
 
-		it 'should return a `Production` with equal `resources`', ->
-			b = a.clone()
+		it 'should return a `Production` with equal, but distinct `resources`', ->
 			assert.notEqual a.resources, b.resources
+			equalResources a.resources, b.resources
 
-		it 'should return a `Production` with equal `duration`', ->
-			assert a.duration
+		it 'should return a `Production` with equal, but distinct `duration`', ->
+			assert.notEqual a.duration, b.duration
 			assert.strictEqual a.duration.valueOf(), b.duration.valueOf()
 
 
