@@ -1,13 +1,11 @@
 {EventEmitter} =	require 'events'
-config =			require 'config'
 shortid =			require 'shortid'
 
+config =			require '../../config'
 helpers =			require '../util/helpers'
 GameError =			require '../util/GameError'
-
 Vector =			require '../util/Vector'
 NumericValue =		require '../util/NumericValue'
-
 Headquarter =		require '../buildings/Headquarter'
 RallyPoint =		require '../buildings/RallyPoint'
 Farm =				require '../buildings/Farm'

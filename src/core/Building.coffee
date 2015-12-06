@@ -1,9 +1,8 @@
 {EventEmitter} =	require 'events'
-config =			require 'config'
 shortid =			require 'shortid'
 
+config =			require '../../config'
 helpers =			require '../util/helpers'
-
 GameError =			require '../util/GameError'
 NumericValue =		require '../util/NumericValue'
 

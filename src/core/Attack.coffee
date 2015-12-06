@@ -1,7 +1,5 @@
-config =			require 'config'
-
+config =			require '../../config/units'
 GameError =			require '../util/GameError'
-
 Movement =			require '../core/Movement'
 Fight =				require '../core/Fight'
 
@@ -28,7 +26,7 @@ class Attack extends Movement
 
 		distance = @origin.position.distanceTo @target.position
 		if @units.nobleman > 0 and distance > 50
-			throw new GameError "A #{config.units.nobleman.title} cannot travel further than 50 fields."
+			throw new GameError "A #{config.nobleman.title} cannot travel further than 50 fields."
 
 		if @units.workers > @origin.farm.workers / 100
 			throw new GameError "The number of workers of your army has to be a hundredth of your village's workers."

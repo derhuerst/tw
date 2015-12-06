@@ -1,6 +1,6 @@
 {EventEmitter} =	require 'events'
-config =			require 'config'
 
+config =			require '../../config/units'
 Resources =			require '../util/Resources'
 Duration =			require '../util/Duration'
 

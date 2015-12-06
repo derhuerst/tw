@@ -1,5 +1,4 @@
-config =			require 'config'
-
+config =			require '../config/units'
 Timeout =			require '../util/Timeout'
 GameError =			require '../util/GameError'
 
@@ -24,10 +23,10 @@ class Research extends Timeout
 
 		@smithy = smithy or null
 		@type = type of null
-		@config = config.units[@type].research or null
+		@config = config[@type].research or null
 
 		if @smithy.researched[@type]
-			throw new GameError "#{config.units[@type].title} is already researched."
+			throw new GameError "#{config[@type].title} is already researched."
 
 		super @config.duration.clone().multiply @smithy.timeFactor
 		# todo: compute duration during `start()`
