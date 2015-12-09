@@ -13,16 +13,15 @@ module.exports =
 	abbreviation: 'acd'
 	initialLevel: 0
 	minimalLevel: 0
-	levels: [
-
-		# level 1
-		{
-			resources: new Resources
-				wood: 15000
-				clay: 25000
-				iron: 10000
-			workers: 80
-			points: 512
-			duration: new Duration '1s' #todo
-		}
-	]
+	maximalLevel: 1
+	points: (lvl) -> Math.round 512 * 1.1997721137783 ^ (lvl - 1)
+	workers: (lvl) -> Math.round 80 * 1.17 ^ (lvl - 1)
+	costs:
+		wood: (lvl) -> Math.round 15000 * 2 ^ (lvl - 1)
+		clay: (lvl) -> Math.round 25000 * 2 ^ (lvl - 1)
+		iron: (lvl) -> Math.round 10000 * 2 ^ (lvl - 1)
+		time: (lvl) -> # todo
+	requirements:
+		headquarter: 20
+		smithy: 20
+		market: 10

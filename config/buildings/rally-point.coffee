@@ -12,17 +12,13 @@ module.exports =
 	title: 'rally point'
 	abbreviation: 'rlp'
 	initialLevel: 1
-	minimalLevel: 1
-	levels: [
-
-		# level 1
-		{
-			resources: new Resources
-				wood: 10
-				clay: 40
-				iron: 30
-			workers: 0
-			points: 24
-			duration: new Duration '1s' #todo
-		}
-	]
+	minimalLevel: 0
+	maximalLevel: 1
+	points: (lvl) -> 0
+	workers: (lvl) -> 0
+	costs:
+		wood: (lvl) -> Math.round 10 * 1.26 ^ (lvl - 1)
+		clay: (lvl) -> Math.round 40 * 1.275 ^ (lvl - 1)
+		iron: (lvl) -> Math.round 30 * 1.26 ^ (lvl - 1)
+		time: (lvl) -> # todo
+	requirements: {}
