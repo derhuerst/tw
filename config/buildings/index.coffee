@@ -10,6 +10,7 @@ module.exports =
 	smithy:			require './smithy'
 
 	rallyPoint:		require './rally-point'
+	statue:			require './statue'
 	market:			require './market'
 
 	timberCamp:		require './timber-camp'

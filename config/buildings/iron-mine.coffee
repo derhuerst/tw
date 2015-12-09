@@ -21,7 +21,7 @@ module.exports =
 		wood: (lvl) -> Math.round 75 * 1.252 ^ (lvl - 1)
 		clay: (lvl) -> Math.round 65 * 1.275 ^ (lvl - 1)
 		iron: (lvl) -> Math.round 70 * 1.24 ^ (lvl - 1)
-		time: (lvl) -> # todo
+		time: (lvl) -> Math.round 1080 * 1.2 ^ (lvl - 1)
 	requirements: {}
 	production: (lvl) ->
 		return 5 unless lvl > 0

@@ -20,7 +20,7 @@ module.exports =
 		wood: (lvl) -> Math.round 220 * 1.26 ^ (lvl - 1)
 		clay: (lvl) -> Math.round 180 * 1.275 ^ (lvl - 1)
 		iron: (lvl) -> Math.round 240 * 1.26 ^ (lvl - 1)
-		time: (lvl) -> # todo
+		time: (lvl) -> Math.round 6000 * 1.2 ^ (lvl - 1)
 	requirements:
 		headquarter: 5
 		barracks: 1

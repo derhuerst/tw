@@ -20,7 +20,7 @@ module.exports =
 		wood: (lvl) -> Math.round 200 * 1.26 ^ (lvl - 1)
 		clay: (lvl) -> Math.round 170 * 1.28 ^ (lvl - 1)
 		iron: (lvl) -> Math.round 90 * 1.26 ^ (lvl - 1)
-		time: (lvl) -> # todo
+		time: (lvl) -> Math.round 1800 * 1.2 ^ (lvl - 1)
 	requirements:
 		headquarter: 3
 	levels: [ # todo

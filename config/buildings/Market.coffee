@@ -1,6 +1,4 @@
-Resources =			require '../../src/util/Resources'
 Duration =			require '../../src/util/Duration'
-Units =				require '../../src/util/Units'
 
 
 
@@ -21,8 +19,9 @@ module.exports =
 		wood: (lvl) -> Math.round 100 * 1.26 ^ (lvl - 1)
 		clay: (lvl) -> Math.round 100 * 1.275 ^ (lvl - 1)
 		iron: (lvl) -> Math.round 100 * 1.26 ^ (lvl - 1)
-		time: (lvl) -> # todo
+		time: (lvl) -> Math.round 2700 * 1.2 ^ (lvl - 1)
 	requirements:
 		main: 3
 		warehouse: 2
+	tradesTimeToRevoke: new Duration '5m'
 	merchants: (lvl) -> if lvl > 10 then 10 + Math.pow (lvl - 10), 2 else 10

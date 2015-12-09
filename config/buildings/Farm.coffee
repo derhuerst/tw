@@ -20,6 +20,6 @@ module.exports =
 		wood: (lvl) -> Math.round 45 * 1.3 ^ (lvl - 1)
 		clay: (lvl) -> Math.round 40 * 1.32 ^ (lvl - 1)
 		iron: (lvl) -> Math.round 30 * 1.29 ^ (lvl - 1)
-		time: (lvl) -> # todo
+		time: (lvl) -> Math.round 1200 * 1.2 ^ (lvl - 1)
 	requirements: {}
 	workers: (lvl) -> Math.round 240 * 1.1721022975335 ^ (lvl - 1)
