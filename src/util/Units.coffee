@@ -27,172 +27,132 @@ class Units extends EventEmitter
 
 
 
-	constructor: (units) ->
+	constructor: (units = {}) ->
 		@isUnits = true
 
-		units = units or {}
-
-		for type of config.units
+		for type of config
 			@[type] = units[type] or 0
 
 
 
-	reset: (units) ->
-		for type of config.units
-			@[type] *= units[type]
-		@emit 'change'
+	_set: (units) ->
+		before = @clone()
+		return this unless typeof units is 'function'
+		for type of config
+			@[type] = units type, @[type]
+		@emit 'change', before, this
 		return this
+
+
+
+	reset: (units = 0) ->
+		if units.isUnits then return @_set (type) -> units[type]
+		else if typeof units is 'number' then return @_set -> units
+		else return this
 
 
 	add: (units) ->
-		for type of config.units
-			@[type] += units[type]
-		@emit 'change'
-		return this
+		return this unless units?
+		if units.isUnits
+			return @_set (type, amount) -> amount + units[type]
+		else if typeof units is 'number'
+			return @_set (_, amount) -> amount + units
+		else return this
 
 
 	subtract: (units) ->
-		for type of config.units
-			@[type] -= units[type]
-		@emit 'change'
-		return this
+		return this unless units?
+		if units.isUnits
+			return @_set (type, amount) -> amount - units[type]
+		else if typeof units is 'number'
+			return @_set (_, amount) -> amount - units
+		else return this
 
 
 	multiply: (factor) ->
-		for type of config.units
-			@[type] *= factor
-		@emit 'change'
-		return this
+		return this unless typeof factor is 'number'
+		return @_set (_, amount) -> amount * factor
 
 
-	round: ->
-		for type of config.units
-			@[type] = Math.round @[type]
-		@emit 'change'
-		return this
+	round: -> @_set (_, amount) -> Math.round amount
 
 
+
+	count: ->
+		result = 0
+		result += @[type] for type, traits of config
+		return result
 
 	moreThan: (units) ->
-		for type of config.units
+		for type of config
 			return false if @[type] < units[type]
 		return true
 
 
 
-	offense: ->
+	_trait: (trait) ->
 		result = 0
-		for type of config.units
-			result += config.units[type].offense * @[type]
+		for type, traits of config
+			result += traits[trait] * @[type]
 		return result
 
-	offenseScouts: ->
-		result = 0
-		for type of config.units
-			if config.units[type].offenseScouts
-				result += config.units[type].offenseScouts * @[type]
-		return result
+	offense: -> @_trait 'offense'
+	offenseScouts: -> @_trait 'offenseScouts'
+	defenseGeneral: -> @_trait 'defenseGeneral'
+	defenseCavalry: -> @_trait 'defenseCavalry'
+	defenseArchers: -> @_trait 'defenseArchers'
+	haul: -> @_trait 'haul'
 
-
-	defenseGeneral: ->
-		result = 0
-		for type of config.units
-			result += config.units[type].defenseGeneral * @[type]
-		return result
-
-	defenseCavalry: ->
-		result = 0
-		for type of config.units
-			result += config.units[type].defenseCavalry * @[type]
-		return result
-
-	defenseArchers: ->
-		result = 0
-		for type of config.units
-			result += config.units[type].defenseArchers * @[type]
-		return result
-
-
-	haul: ->
-		result = 0
-		for type of config.units
-			result += config.units[type].haul * @[type]
-		return result
-
-
-	speed: ->
-		result = 0
-		for type of config.units
-			if @[type] > 0 and config.units[type].speed > result
-				result = config.units[type].speed
-		return result.clone()
 
 
 	resources: ->
 		result = new Resources()
-		for type of config.units
-			result.add config.units[type].resources.clone().multiply @[type]
+		for type, traits of config
+			result.add traits.costs.resources.clone().multiply @[type]
 		return result
 
+	duration: -> # todo: rename to `time`?
+		result = 0
+		for type, traits of config
+			result += traits.costs.time * @[type]
+		return new Duration result
 
 	workers: ->
 		result = 0
-		for type of config.units
-			result.add config.units[type].workers * @[type]
+		for type, traits of config
+			result += traits.costs.workers * @[type]
 		return result
 
 
-	duration: ->
+
+	speed: ->
 		result = 0
-		for type of config.units
-			result += config.units[type].duration * @[type]
-		return new Duration result
+		for type, traits of config
+			if @[type] > 0 and traits.speed < result
+				result = traits.speed
+		return result.clone()
 
 
 
 	subset: (types) ->
-		units = {}
 		types = [types] if typeof types is 'string'
+		units = {}
 		for type in types
 			units[type] = @[type]
 		return new Units units
 
-
-	infantry: ->
-		return @subset [
-			'spearFighter'
-			'swordsman'
-			'axeman'
-			'archer'
-		]
-
-	cavalry: ->
-		return @subset [
-			'scout'
-			'lightCavalry'
-			'mountedArcher'
-			'heavyCavalry'
-		]
-
-	siegeEngines: ->
-		return @subset [
-			'ram'
-			'catapult'
-		]
+	infantry: -> @subset ['spearFighter', 'swordsman', 'axeman', 'archer']
+	cavalry: -> @subset ['scout', 'lightCavalry', 'mountedArcher', 'heavyCavalry']
+	siege: -> @subset ['ram', 'catapult']
+	special: -> @subset ['paladin', 'nobleman']
 
 
 
 	clone: -> new Units this
 
-
-
 	toString: ->
-		result = []
-		for type of config.units
-			result.add @[type] + config.units[type].abbreviation
-		for i in [result.length - 1 .. 0]
-			if result[i] is 0
-				result.pop()
+		result = for type, traits of config
+			@[type] + traits.abbreviation unless @[type] is 0
 		return result.join '|'
 
 

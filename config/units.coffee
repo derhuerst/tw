@@ -45,7 +45,7 @@ module.exports =
 		haul: 				15
 		costs:
 			resources:		new Resources {wood: 30, clay: 30, iron: 70}
-			duration:		new Duration '25m'
+			time:			new Duration '25m'
 			workers:		1
 		minimumLevel:		0
 		maximumLevel:		1
@@ -70,7 +70,7 @@ module.exports =
 		haul: 				10
 		costs:
 			resources:		new Resources {wood: 60, clay: 30, iron: 40}
-			duration:		new Duration '22m'
+			time:			new Duration '22m'
 			workers:		1
 		minimumLevel:		0
 		maximumLevel:		1
@@ -95,7 +95,7 @@ module.exports =
 		haul: 				10
 		costs:
 			resources:		new Resources {wood: 100, clay: 30, iron: 60}
-			duration:		new Duration '30m'
+			time:			new Duration '30m'
 			workers:		1
 		minimumLevel:		0
 		maximumLevel:		1
@@ -122,7 +122,7 @@ module.exports =
 		haul:				0
 		costs:
 			resources:		new Resources {wood: 50, clay: 50, iron: 20}
-			duration:		new Duration '15m'
+			time:			new Duration '15m'
 			workers:		2
 		minimumLevel:		0
 		maximumLevel:		1
@@ -147,7 +147,7 @@ module.exports =
 		haul: 				80
 		costs:
 			resources:		new Resources {wood: 125, clay: 100, iron: 250}
-			duration:		new Duration '30m'
+			time:			new Duration '30m'
 			workers:		4
 		minimumLevel:		0
 		maximumLevel:		1
@@ -172,7 +172,7 @@ module.exports =
 		haul: 				50
 		costs:
 			resources:		new Resources {wood: 2250, clay: 100, iron: 150}
-			duration:		new Duration '45m'
+			time:			new Duration '45m'
 			workers:		5
 		minimumLevel:		0
 		maximumLevel:		1
@@ -197,7 +197,7 @@ module.exports =
 		haul: 				50
 		costs:
 			resources:		new Resources {wood: 200, clay: 150, iron: 600}
-			duration:		new Duration '1h'
+			time:			new Duration '1h'
 			workers:		6
 		minimumLevel:		0
 		maximumLevel:		1
@@ -223,7 +223,7 @@ module.exports =
 		haul:				0
 		costs:
 			resources:		new Resources {wood: 300, clay: 200, iron: 200}
-			duration:		new Duration '1h20m'
+			time:			new Duration '1h20m'
 			workers:		5
 		minimumLevel:		0
 		maximumLevel:		1
@@ -248,7 +248,7 @@ module.exports =
 		haul:				0
 		costs:
 			resources:		new Resources {wood: 320, clay: 400, iron: 100}
-			duration:		new Duration '2h'
+			time:			new Duration '2h'
 			workers:		8
 		minimumLevel:		0
 		maximumLevel:		1
@@ -274,7 +274,7 @@ module.exports =
 		haul: 				100
 		costs:
 			resources:		new Resources {wood: 20, clay: 20, iron: 40}
-			duration:		new Duration '6d' # todo: correct?
+			time:			new Duration '6d' # todo: correct?
 			workers:		100
 		minimumLevel:		1
 		maximumLevel:		1
@@ -295,7 +295,7 @@ module.exports =
 		haul:				0
 		costs:
 			resources:		new Resources {wood: 40000, clay: 50000, iron: 50000}
-			duration:		new Duration '5d' # todo: correct?
+			time:			new Duration '5d' # todo: correct?
 			workers:		100
 		minimumLevel:		1
 		maximumLevel:		1
