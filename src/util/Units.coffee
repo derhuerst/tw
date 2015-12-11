@@ -3,6 +3,7 @@
 config =			require '../../config/units'
 Resources =			require '../util/Resources'
 Duration =			require '../util/Duration'
+Speed =				require '../util/Speed'
 
 
 
@@ -126,7 +127,7 @@ class Units extends EventEmitter
 
 
 	speed: ->
-		result = 0
+		result = new Speed new Duration '1s'
 		for type, traits of config
 			if @[type] > 0 and traits.speed < result
 				result = traits.speed

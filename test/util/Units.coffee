@@ -402,7 +402,13 @@ describe 'Units', ->
 
 
 
-	describe.skip 'Units::speed', -> # todo
+	describe 'Units::speed', ->
+
+		it 'should not the speed of the slowest unit', ->
+			expected = config.nobleman.speed # slowest of a is nobleman
+			assert.strictEqual a.speed().valueOf(), expected.valueOf()
+			expected = config.catapult.speed # slowest of b is catapult
+			assert.strictEqual b.speed().valueOf(), expected.valueOf()
 
 
 

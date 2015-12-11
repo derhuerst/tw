@@ -20,8 +20,10 @@ class Speed extends EventEmitter
 
 
 	constructor: (duration, distance) ->
-		@duration = duration or new Duration '1m'
-		@distance = distance or new Vector 1, 0
+		if duration and duration.isDuration then @duration = duration
+		else @duration = new Duration '1m'
+		if distance and distance.isVector then @distance = distance
+		else @distance = new Vector 1, 0
 
 
 
@@ -34,11 +36,11 @@ class Speed extends EventEmitter
 
 
 
-	clone: -> new Speed this
+	clone: -> new Speed @duration, @distance
 
 
 
-	valueOf: -> 0 + @durationToTravel new Vector 1, 0
+	valueOf: -> 0 + @distanceDuring new Duration '5m'
 
 	toString: -> "#{@distance} / #{@duration}"
 
