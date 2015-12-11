@@ -1,8 +1,6 @@
 module.exports =
 
 	helpers:		require './helpers'
-
-	helpers:		require './helpers'
 	GameError:		require './GameError'
 
 	NumericValue:	require './NumericValue'

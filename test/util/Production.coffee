@@ -26,7 +26,7 @@ describe 'Production', ->
 
 	beforeEach ->
 		d1 = new Duration '1m'
-		r1 = new Resources { wood: 100, clay: 200, iron: 300 }
+		r1 = new Resources {wood: 100, clay: 200, iron: 300}
 		a = new Production r1, d1
 
 	it '`isProduction`', ->
@@ -65,7 +65,7 @@ describe 'Production', ->
 		spy = sinon.spy()
 
 		beforeEach ->
-			r2 = new Resources { wood: 300, clay: 200, iron: 100 }
+			r2 = new Resources {wood: 300, clay: 200, iron: 100}
 			b = new Production r2, d1
 
 		afterEach -> spy.reset()
@@ -98,7 +98,7 @@ describe 'Production', ->
 		spy = sinon.spy()
 
 		beforeEach ->
-			r2 = new Resources { wood: 300, clay: 200, iron: 100 }
+			r2 = new Resources {wood: 300, clay: 200, iron: 100}
 			b = new Production r2, d1
 
 		afterEach -> spy.reset()
@@ -159,7 +159,7 @@ describe 'Production', ->
 
 		beforeEach ->
 			b = a.durationToGet r1.clone().multiply 2
-			c = a.durationToGet r1.clone().multiply 1/2
+			c = a.durationToGet r1.clone().multiply 1 / 2
 
 		it '`isDuration`', ->
 			assert.strictEqual b.isDuration, true
@@ -221,4 +221,3 @@ describe 'Production', ->
 		it 'should return a `String`', ->
 			assert.strictEqual typeof a.toString(), 'string'
 			assert.strictEqual typeof ('' + a), 'string'
-
