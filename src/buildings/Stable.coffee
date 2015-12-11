@@ -33,8 +33,8 @@ class Stable extends Building
 
 
 	onConstructionFinish: (construction) =>
-			@timeFactor.reset construction.config.timeFactor or 1
-			# todo: speed up / slow down queued research tasks?
+		@timeFactor.reset construction.config.timeFactor or 1
+		# todo: speed up / slow down queued research tasks?
 
 
 

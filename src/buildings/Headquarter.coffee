@@ -36,8 +36,8 @@ class Headquarter extends Building
 
 
 	onConstructionFinish: (construction) =>
-			@timeFactor.reset construction.config.timeFactor or 1
-			# todo: speed up / slow down queued construction tasks?
+		@timeFactor.reset construction.config.timeFactor or 1
+		# todo: speed up / slow down queued construction tasks?
 
 
 

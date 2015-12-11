@@ -29,8 +29,8 @@ class Workshop extends Building
 
 
 	onConstructionFinish: (construction) =>
-			@timeFactor.reset construction.config.timeFactor or 1
-			# todo: speed up / slow down queued recruitment tasks?
+		@timeFactor.reset construction.config.timeFactor or 1
+		# todo: speed up / slow down queued recruitment tasks?
 
 
 

@@ -20,4 +20,4 @@ module.exports =
 		iron: (lvl) -> Math.round 70 * 1.26 ^ (lvl - 1)
 		time: (lvl) -> Math.round 900 * 1.2 ^ (lvl - 1)
 	requirements: {}
-	timeFactor = (lvl) -> .952381 ^ lvl
+	timeFactor: (lvl) -> .952381 ^ lvl

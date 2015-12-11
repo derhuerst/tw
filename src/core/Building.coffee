@@ -27,14 +27,10 @@ class Building extends EventEmitter
 
 
 
-	constructor: ->
-		@isBuilding = true
-		super arguments...
-
-
-
 	constructor: (options) ->
+		@isBuilding = true
 		options = options or {}
+		super()
 
 		@id = options.id or shortid.generate()
 		@type = options.type or null
