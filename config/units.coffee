@@ -1,6 +1,5 @@
 Resources =			require '../src/util/Resources'
 Duration =			require '../src/util/Duration'
-Speed =				require '../src/util/Speed'
 
 
 
@@ -17,7 +16,7 @@ module.exports =
 		defenseGeneral:		15
 		defenseCavalry:		45
 		defenseArchers:		20
-		speed:				new Speed new Duration '18m'
+		speed:				new Duration '18m'
 		haul: 				25
 		costs:
 			resources:		new Resources {wood: 50, clay: 30, iron: 10}
@@ -41,7 +40,7 @@ module.exports =
 		defenseGeneral:		50
 		defenseCavalry:		15
 		defenseArchers:		40
-		speed:				new Speed new Duration '22m'
+		speed:				new Duration '22m'
 		haul: 				15
 		costs:
 			resources:		new Resources {wood: 30, clay: 30, iron: 70}
@@ -66,7 +65,7 @@ module.exports =
 		defenseGeneral:		10
 		defenseCavalry:		5
 		defenseArchers:		10
-		speed:				new Speed new Duration '18m'
+		speed:				new Duration '18m'
 		haul: 				10
 		costs:
 			resources:		new Resources {wood: 60, clay: 30, iron: 40}
@@ -91,7 +90,7 @@ module.exports =
 		defenseGeneral:		50
 		defenseCavalry:		40
 		defenseArchers:		5
-		speed:				new Speed new Duration '18m'
+		speed:				new Duration '18m'
 		haul: 				10
 		costs:
 			resources:		new Resources {wood: 100, clay: 30, iron: 60}
@@ -118,7 +117,7 @@ module.exports =
 		defenseGeneral:		2
 		defenseCavalry:		1
 		defenseArchers:		2
-		speed:				new Speed new Duration '9m'
+		speed:				new Duration '9m'
 		haul:				0
 		costs:
 			resources:		new Resources {wood: 50, clay: 50, iron: 20}
@@ -143,7 +142,7 @@ module.exports =
 		defenseGeneral:		30
 		defenseCavalry:		40
 		defenseArchers:		30
-		speed:				new Speed new Duration '10m'
+		speed:				new Duration '10m'
 		haul: 				80
 		costs:
 			resources:		new Resources {wood: 125, clay: 100, iron: 250}
@@ -168,7 +167,7 @@ module.exports =
 		defenseGeneral:		40
 		defenseCavalry:		30
 		defenseArchers:		50
-		speed:				new Speed new Duration '10m'
+		speed:				new Duration '10m'
 		haul: 				50
 		costs:
 			resources:		new Resources {wood: 2250, clay: 100, iron: 150}
@@ -193,7 +192,7 @@ module.exports =
 		defenseGeneral:		200
 		defenseCavalry:		80
 		defenseArchers:		180
-		speed:				new Speed new Duration '11m'
+		speed:				new Duration '11m'
 		haul: 				50
 		costs:
 			resources:		new Resources {wood: 200, clay: 150, iron: 600}
@@ -219,7 +218,7 @@ module.exports =
 		defenseGeneral:		20
 		defenseCavalry:		50
 		defenseArchers:		20
-		speed:				new Speed new Duration '30m'
+		speed:				new Duration '30m'
 		haul:				0
 		costs:
 			resources:		new Resources {wood: 300, clay: 200, iron: 200}
@@ -244,7 +243,7 @@ module.exports =
 		defenseGeneral:		100
 		defenseCavalry:		50
 		defenseArchers:		100
-		speed:				new Speed new Duration '30m'
+		speed:				new Duration '30m'
 		haul:				0
 		costs:
 			resources:		new Resources {wood: 320, clay: 400, iron: 100}
@@ -270,7 +269,7 @@ module.exports =
 		defenseGeneral:		250
 		defenseCavalry:		400
 		defenseArchers:		150
-		speed:				new Speed new Duration '10m'
+		speed:				new Duration '10m'
 		haul: 				100
 		costs:
 			resources:		new Resources {wood: 20, clay: 20, iron: 40}
@@ -291,7 +290,7 @@ module.exports =
 		defenseGeneral:		100
 		defenseCavalry:		50
 		defenseArchers:		100
-		speed:				new Speed new Duration '35m'
+		speed:				new Duration '35m'
 		haul:				0
 		costs:
 			resources:		new Resources {wood: 40000, clay: 50000, iron: 50000}
