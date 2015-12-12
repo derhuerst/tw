@@ -18,7 +18,7 @@ equalResources = (a, b) ->
 
 
 
-describe.only 'Stocks', ->
+describe 'Stocks', ->
 
 	m = null
 	p = null

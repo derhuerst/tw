@@ -217,13 +217,13 @@ describe 'Resources', ->
 
 	describe 'Resources::moreThan', ->
 
-		it 'should return `false` for `Resources` with every property being greater or equal', ->
-			b = new Resources { wood: a.wood + 1, clay: a.clay, iron: a.iron + 1 }
-			assert.strictEqual a.moreThan(b), false
-
-		it 'should return `true` for `Resources` with any property being lower', ->
+		it 'should return `true` for `Resources` with every property being greater or equal', ->
 			b = new Resources { wood: a.wood, clay: a.clay - 1, iron: a.iron }
 			assert.strictEqual a.moreThan(b), true
+
+		it 'should return `false` for `Resources` with any property being lower', ->
+			b = new Resources { wood: a.wood + 1, clay: a.clay, iron: a.iron + 1 }
+			assert.strictEqual a.moreThan(b), false
 
 	describe 'Resources::equalTo', ->
 
