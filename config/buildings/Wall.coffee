@@ -24,4 +24,4 @@ module.exports =
 	requirements:
 		barracks: 1
 	defenseFactor: (lvl) -> 1.03704 ^ lvl
-	# todo: basicDefense
+	basicDefense: (lvl) -> 20 + 50 * lvl

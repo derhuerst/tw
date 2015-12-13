@@ -15,10 +15,6 @@ module.exports =
 	minimalLevel: 0
 	maximalLevel: 30
 	points: (lvl) -> Math.round 6 * 1.2000041287667 ^ (lvl - 1)
-	costs:
-		wood: (lvl) -> Math.round 60 * 1.265 ^ (lvl - 1)
-		clay: (lvl) -> Math.round 50 * 1.27 ^ (lvl - 1)
-		iron: (lvl) -> Math.round 40 * 1.245 ^ (lvl - 1)
-		time: (lvl) -> Math.round 1020 * 1.2 ^ (lvl - 1)
+	# todo: costs
 	requirements: {}
-	workers: (lvl) -> Math.round 1000 * 1.2294934136946 ^ (lvl - 1)
+	# todo: capacity

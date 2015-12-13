@@ -12,7 +12,7 @@ module.exports =
 
 	title: 'iron mine'
 	abbreviation: 'irm'
-	initialLevel: 1
+	initialLevel: 0
 	minimalLevel: 0
 	maximalLevel: 30
 	points: (lvl) -> Math.round 6 * 1.2000041287667 ^ (lvl - 1)
