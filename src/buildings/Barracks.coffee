@@ -25,7 +25,7 @@ class Barracks extends Building
 		super options
 
 		@recruitments = new TimeoutQueue()
-		@timeFactor = new NumericValue options.timeFactor or @config.levels[@level].timeFactor or 1
+		@timeFactor = new NumericValue @config.timeFactor @level
 
 		@on 'upgrade.finish', @onConstructionFinish
 		@on 'downgrade.finish', @onConstructionFinish
@@ -33,7 +33,7 @@ class Barracks extends Building
 
 
 	onConstructionFinish: (construction) =>
-		@timeFactor.reset construction.config.timeFactor or 1
+		@timeFactor.reset @config.timeFactor @level
 		# todo: speed up / slow down queued recruitment tasks?
 
 

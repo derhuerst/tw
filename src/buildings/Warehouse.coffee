@@ -23,28 +23,14 @@ class Warehouse extends Building
 		super options
 
 		@stocks = new Stocks options.stocks or config.initialStocks
+		@_updateMaxima()
 
-		@on 'upgrade.finish', @onUpgradeFinish
-		@on 'downgrade.finish', @onDowngradeFinish
-
-		@stocks.maxima.add @totalCapacity()
-
-
-
-	onUpgradeFinish: (upgrade) =>
-		@stocks.maxima.add upgrade.config.capacity
-
-
-	onDowngradeFinish: (downgrade) =>
-		@stocks.maxima.subtract downgrade.config.capacity
+		@on 'upgrade.finish', @_updateMaxima
+		@on 'downgrade.finish', @_updateMaxima
 
 
 
-	totalCapacity: ->
-		result = 0
-		for level in [0 ... @level]
-			result += @config.levels[level].capacity
-		return result
+	_updateMaxima: => @stocks.maxima.reset @config.capacity @level
 
 
 

@@ -22,29 +22,15 @@ class Farm extends Building
 		options.type = 'farm'
 		super options
 
-		@workers = new NumericValue options.workers or @config.initialWorkers or 0
+		@workers = new NumericValue()
+		@_updateWorkers()
 
-		@on 'upgrade.finish', @onUpgradeFinish
-		@on 'downgrade.finish', @onDowngradeFinish
-
-		@workers.add @totalCapacity()
-
-
-
-	onUpgradeFinish: (upgrade) =>
-		@workers.add upgrade.config.capacity
-
-
-	onDowngradeFinish: (downgrade) =>
-		@workers.subtract downgrade.config.capacity
+		@on 'upgrade.finish', @_updateWorkers
+		@on 'downgrade.finish', @_updateWorkers
 
 
 
-	totalCapacity: ->
-		result = 0
-		for level in [0 ... @level]
-			result += @config.levels[level].capacity
-		return result
+	_updateWorkers: => @workers.reset @config.workers @level
 
 
 

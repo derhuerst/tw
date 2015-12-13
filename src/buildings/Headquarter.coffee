@@ -28,7 +28,7 @@ class Headquarter extends Building
 		super options
 
 		@constructions = new TimeoutQueue()
-		@timeFactor = new NumericValue options.timeFactor or @config.levels[@level].timeFactor or 1
+		@timeFactor = new NumericValue @config.timeFactor @level
 
 		@on 'upgrade.finish', @onConstructionFinish
 		@on 'downgrade.finish', @onConstructionFinish
@@ -36,7 +36,7 @@ class Headquarter extends Building
 
 
 	onConstructionFinish: (construction) =>
-		@timeFactor.reset construction.config.timeFactor or 1
+		@timeFactor.reset @config.timeFactor @level
 		# todo: speed up / slow down queued construction tasks?
 
 

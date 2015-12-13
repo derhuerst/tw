@@ -20,27 +20,18 @@ class TimberCamp extends Building
 		options.type = 'timberCamp'
 		super options
 
-		@on 'upgrade.finish', @onUpgradeFinish
-		@on 'downgrade.finish', @onDowngradeFinish
-
-		@village.warehouse.stocks.production.add @totalProduction()
-
-
-
-	onUpgradeFinish: (upgrade) =>
-		@village.warehouse.stocks.production.add upgrade.config.production
-
-
-	onDowngradeFinish: (downgrade) =>
-		@village.warehouse.stocks.production.subtract downgrade.config.production
+		@on 'upgrade.finish', @_updateVillageProduction
+		@on 'downgrade.finish', @_updateVillageProduction
+		@_updateVillageProduction()
 
 
 
-	totalProduction: ->
-		result = new Production()
-		for level in [0 ... @level]
-			result.add @config.levels[level].production
-		return result
+	_updateVillageProduction: =>
+		# todo: add a helper method to `Resources`
+		@village.warehouse.stocks.production.reset new Resources
+			wood: @config.production @level
+			clay: @village.warehouse.stocks.production.clay
+			iron: @village.warehouse.stocks.production.iron
 
 
 

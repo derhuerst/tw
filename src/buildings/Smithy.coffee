@@ -31,7 +31,7 @@ class Smithy extends Building
 		@reasearched = {}
 		for type of config.units
 			@reasearched[type] = !!config.units[type].researched
-		@timeFactor = new NumericValue options.timeFactor or @config.levels[@level].timeFactor or 1
+		@timeFactor = new NumericValue @config.timeFactor @level
 
 		@on 'upgrade.finish', @onConstructionFinish
 		@on 'downgrade.finish', @onConstructionFinish
@@ -39,7 +39,7 @@ class Smithy extends Building
 
 
 	onConstructionFinish: (construction) =>
-		@timeFactor.reset construction.config.timeFactor or 1
+		@timeFactor.reset @config.timeFactor @level
 		# todo: speed up / slow down queued research tasks?
 
 

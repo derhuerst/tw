@@ -22,8 +22,8 @@ class Wall extends Building
 		options.type = 'timberCamp'
 		super options
 
-		@basicDefense = new NumericValue options.basicDefense or @config.levels[@level].basicDefense or 0
-		@defenseFactor = new NumericValue options.defenseFactor or @config.levels[@level].defenseFactor or 1
+		@basicDefense = new NumericValue @config.basicDefense @level
+		@defenseFactor = new NumericValue @config.defenseFactor @level
 
 		# todo
 
