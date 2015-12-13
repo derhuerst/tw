@@ -129,6 +129,13 @@ describe 'World', ->
 				w.addPlayer p
 			assert.throws addTwice, GameError
 
+		it 'should call `addVillage` for each of the player\'s villages', ->
+			addVillage = sinon.spy w.addVillage
+			w.addVillage = addVillage
+			w.addPlayer p
+			assert addVillage.calledOnce
+			assert addVillage.calledWithExactly v
+
 
 
 	describe 'World::getPlayer', ->
@@ -163,6 +170,13 @@ describe 'World', ->
 				w.deletePlayer p
 				w.deletePlayer p
 			assert.throws deleteTwice, GameError
+
+		it 'should call `deleteVillage` for each of the player\'s villages', ->
+			deleteVillage = sinon.spy w.deleteVillage
+			w.deleteVillage = deleteVillage
+			w.deletePlayer p
+			assert deleteVillage.calledOnce
+			assert deleteVillage.calledWithExactly v
 
 
 
