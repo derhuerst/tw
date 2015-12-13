@@ -84,7 +84,7 @@ class World extends EventEmitter
 
 		@_players[player.id] = player
 
-		@addVillage village for village in player.villages
+		@addVillage village for village in player.villages()
 		player.on 'add-village', @addVillage
 
 		@emit 'add-player', player
@@ -98,7 +98,7 @@ class World extends EventEmitter
 
 		@_players[player.id] = null
 
-		@deleteVillage village for village in player.villages
+		@deleteVillage village for village in player.villages()
 		player.removeListener 'add-village', @addVillage
 
 		@emit 'delete-player', player

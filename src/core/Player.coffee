@@ -2,8 +2,8 @@
 shortid =			require 'shortid'
 
 helpers =			require '../util/helpers'
-
 NumericValue =		require '../util/NumericValue'
+GameError =			require '../util/GameError'
 
 
 
@@ -19,46 +19,55 @@ class Player extends EventEmitter
 	# name
 
 	# points
-	# villages
+	# _villages
 
 
 
 	constructor: (options) ->
 		@isPlayer = true
 		options = options or {}
+		super()
 
 		@id = options.id or shortid.generate()
 		@name = options.name or @id
 
 		@points = new NumericValue (options.points or 0), 'p'
-		@villages = []
-		for village in options.villages or []
-			@add village
+		@_villages = []
+		if options.villages
+			@addVillage village for village in options.villages
 
 
 
-	add: (village) ->
-		if @villages[village.id]
-			throw new GameError "#{village} does already belong to this player."
+	addVillage: (village) ->
+		return this unless village and village.isVillage
 
-		@villages.add village
-		@villages[village.id] = village
+		if @_villages[village.id]
+			throw new GameError 'The village has already been added.'
+
+		@_villages.push village
+		@_villages[village.id] = village
 		@points.add village.points
 		@points.watch village.points
 
-		@emit 'villages.add', village
+		@emit 'add-village', village
+		return this
 
+	getVillage: (id) -> @_villages[id] or null
+	villages: -> @_villages
 
-	remove: (village) ->
-		unless @villages[village.id]
-			throw new GameError "#{village} does not belong to this player."
+	deleteVillage: (village) ->
+		return this unless village and village.isVillage
 
-		@villages[village.id] = null
-		@villages.remove village
+		unless @_villages[village.id]
+			throw new GameError 'The village does not belong to this player.'
+
+		@_villages[village.id] = null
+		@_villages.remove village
 		@points.subtract village.points
 		@points.unwatch village.points
 
-		@emit 'villages.remove', village
+		@emit 'delete-village', village
+		return this
 
 
 
