@@ -1,1 +1,2 @@
+require './Player'
 require './World'
