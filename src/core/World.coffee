@@ -2,9 +2,12 @@
 shortid =			require 'shortid'
 random =			require 'lodash/number/random'
 
+config =			require '../../config'
 helpers =			require '../util/helpers'
 GameError =			require '../util/GameError'
 Vector =			require '../util/Vector'
+Village =			require '../core/Village'
+Player =			require '../core/Player'
 
 
 
@@ -16,121 +19,114 @@ class World extends EventEmitter
 
 	# isGame
 
-	# players
-	# villages
+	# _players
 
-	# map
-
-
-
-	constructor: (options) ->
-		@isGame = true
-		options = options or {}
-
-		mapSize = options.mapSize or config.mapSize or 100
-		@map = ((null for [0 ... mapSize]) for [0 ... mapSize])
-
-		@players = []
-		@villages = []
-		for player in options.players or []
-			@add player
+	# _villages
+	# _map
 
 
 
-	village: (x, y) ->
-		return @map[x][y] if y?
-		return @map[x.x][x.y] if x.isVector
-		return @villages[x]    # id
+	constructor: (options = {}) ->
+		@isWorld = true
+		super()
+
+		@_players = {}
+
+		@_villages = []
+		if options.mapSize then mapSize = options.mapSize
+		else mapSize = config.map.size or 1000
+		@_map = size: mapSize
 
 
 
-	add: (player) ->
-		return unless player
+	addVillage: (village) =>
+		return this unless village and village.isVillage
 
-		if @players[player.id]
-			throw new GameError "#{player} does already take part in this game."
+		if @_villages[village.id]
+			throw new GameError 'The village has already been added.'
+		if @_map["#{village.position.x}-#{village.position.y}"]
+			throw new GameError 'The location is occupied by another village.'
 
-		@players.add player
-		@players[player.id] = player
+		@_villages.push village
+		@_villages[village.id] = village
+		@_map["#{village.position.x}-#{village.position.y}"] = village
 
-		for village in player.villages
-			@addVillage village
-		_this = this
-		player.on 'add', (village) ->
-			_this.addVillage village
-		# todo: List class; use List.watch
+		@emit 'add-village', village
+		return this
 
-		@emit 'players.add', player
+	getVillage: (x, y) ->
+		return @_villages[x] or null if typeof x is 'string'
+		return @_map["#{x.x}-#{x.y}"] or null if x and x.isVector
+		return @_map["#{x}-#{y}"] or null
 
+	deleteVillage: (village) ->
+		return this unless village and village.isVillage
 
-	remove: (player) ->
-		return unless player
+		unless @_villages[village.id]
+			throw new GameError 'The village does not exist.'
 
-		player = if player.isPlayer then player else @players[player.id]
-		unless player
-			throw new GameError "#{player} doesn't take part in this game."
+		@_villages.remove village
+		@_villages[village.id] = null
+		@_map["#{village.position.x}-#{village.position.y}"] = null
 
-		@players.remove player
-		@players[player.id] = null
-
-		for village in player.villages
-			@removeVillage village
-		_this
-		@player.on 'remove', (village) ->
-			_this.removeVillage village
-		# todo: List class; use List.watch
-
-		@emit 'players.remove', player
+		@emit 'delete-village', village
+		return this
 
 
 
-	addVillage: (village) ->
-		return if @village village.id
+	getPlayer: (id) -> @_players[id] or null
 
-		existing = @village village.position
-		if existing and existing isnt village
-			throw new GameError "Location for #{village} is already occupied by #{existing}."
+	addPlayer: (player) ->
+		return this unless player and player.isPlayer
 
-		@villages.add village
-		@villages[village.id] = village
-		@map[village.position.x][village.position.y] = village
+		if @_players[player.id]
+			throw new GameError "#{player} already is in this world."
 
-		@emit 'villages.add', village
+		@_players[player.id] = player
+
+		@addVillage village for village in player.villages
+		player.on 'add-village', @addVillage
+
+		@emit 'add-player', player
+		return this
+
+	deletePlayer: (player) ->
+		return this unless player and player.isPlayer
+
+		unless @_players[player.id]
+			throw new GameError "#{player} does not exist in the world."
+
+		@_players[player.id] = null
+
+		@deleteVillage village for village in player.villages
+		player.removeListener 'add-village', @addVillage
+
+		@emit 'delete-player', player
+		return this
 
 
-	removeVillage: (village) ->
-		return unless @village village.id
 
-		@villages.remove village
-		@villages[village.id] = null
-		@map[village.x][village.y] = null
-
-		@emit 'villages.remove', village
-
-
-
-	# todo: this system sucks: it might happen that when a village already received an id but isn't yet added to @villages, we give another village that same id. then, upon adding the two villages, one of them doesn't get added. The same goes for playerId.
-	villageId: ->
+	createVillage: (direction) ->
+		# random id
 		id = shortid.generate()
-		while !!@villages[id]
-			id = shortid.generate()
-		return id
+		id = shortid.generate() while @_villages[id]
 
-	# todo: see todo for @villageId
-	playerId: ->
+		angle = Math.PI / 2 * switch direction
+			when 'north-west' then	Math.random() - 2
+			when 'south-west' then	Math.random() - 1
+			when 'south-east' then	Math.random() + 0
+			when 'north-east' then	Math.random() + 1
+			else					Math.random() * 4
+		r = Math.sqrt config.map.spread * @_villages.length / Math.PI
+		x = Math.round @_map.size / 2 + r * Math.sin angle
+		y = Math.round @_map.size / 2 + r * Math.cos angle
+
+		return new Village {id, position: new Vector x, y}
+
+	createPlayer: ->
 		id = shortid.generate()
-		while !!@players[id]
-			id = shortid.generate()
-		return id
-
-
-	villagePosition: ->
-		xMax = @map.length - 1
-		yMax = @map[0].length - 1
-		[x, y] = [ random(0, xMax), random 0, yMax ]
-		while @village result
-			[x, y] = [ random(0, xMax), random 0, yMax ]
-		return new Vector x, y
+		id = shortid.generate() while @_players[id]
+		return new Player {id}
 
 
 

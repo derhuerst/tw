@@ -9,7 +9,9 @@ module.exports =
 
 
 
-	mapSize: 1000
+	map:
+		size: 1000
+		spread: 10
 
 	initialStocks: new Stocks # todo?
 		wood: 1000
