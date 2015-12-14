@@ -16,6 +16,10 @@ equalResources = (a, b) ->
 	assert.strictEqual a.clay, b.clay
 	assert.strictEqual a.iron, b.iron
 
+equalProduction = (a, b) ->
+	equalResources a.resources, b.resources
+	assert.strictEqual 0 + a.duration, 0 + b.duration
+
 
 
 describe 'Stocks', ->
@@ -40,11 +44,13 @@ describe 'Stocks', ->
 
 	describe 'Stocks::constructor', ->
 
-		it 'should set `maxima` to the given `Resources`', ->
-			assert.strictEqual s.maxima, m
+		it 'should set `maxima` to a clone of the given `Resources`', ->
+			assert.notEqual s.maxima, m
+			equalResources s.maxima, m
 
-		it 'should set `production` to the given `Production`', ->
-			assert.strictEqual s.production, p
+		it 'should set `production` to a clone of the given `Production`', ->
+			assert.notEqual s.production, p
+			equalProduction s.production, p
 
 
 

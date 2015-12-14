@@ -25,12 +25,12 @@ class Stocks
 		options = options or {}
 
 		if options.maxima and options.maxima.isResources
-			@maxima = options.maxima
+			@maxima = options.maxima.clone()
 		else @maxima = new Resources options.maxima
 		@maxima.on 'change', @_maximaOnChange
 
 		if options.production and options.production.isProduction
-			@production = options.production
+			@production = options.production.clone()
 		else @production = new Production new Resources()
 		@production.on 'change', @_update
 
