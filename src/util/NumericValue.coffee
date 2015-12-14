@@ -18,7 +18,8 @@ class NumericValue extends EventEmitter
 	constructor: (value, abbreviation) ->
 		@isNumericValue = true
 
-		@value = value or 0
+		if value and value.isNumericValue then @value = value.valueOf()
+		else @value = value or 0
 		@abbreviation = abbreviation or ''
 
 

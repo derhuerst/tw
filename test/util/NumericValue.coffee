@@ -25,19 +25,26 @@ describe 'NumericValue', ->
 
 	describe 'NumericValue::constructor', ->
 
-		it 'should initialize `value` correctly', ->
+		it 'should set `value` to the given `Number`', ->
 			a = new NumericValue 1, 'test'
 			assert.strictEqual a.value, 1
 
-			# testing the default value
+		it 'should set `value` to a `NumericValue` equal to the given one', ->
+			a = new NumericValue 1, 'a'
+			b = new NumericValue a, 'b'
+			assert.notEqual b, a
+			assert.notStrictEqual b.value, a
+			assert.strictEqual a.value, b.value
+
+		it 'should set a fallback `value`', ->
 			b = new NumericValue()
 			assert.strictEqual b.value, 0
 
-		it 'should initialize `abbreviation` correctly', ->
+		it 'should set `abbreviation` to the given one', ->
 			a = new NumericValue 0, 'test'
 			assert.strictEqual a.abbreviation, 'test'
 
-			# testing the default value
+		it 'should set a fallback `abbreviation`', ->
 			b = new NumericValue()
 			assert.strictEqual b.abbreviation, ''
 
