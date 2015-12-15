@@ -6,15 +6,53 @@ helpers =			require '../util/helpers'
 GameError =			require '../util/GameError'
 Vector =			require '../util/Vector'
 NumericValue =		require '../util/NumericValue'
+
 Headquarter =		require '../buildings/Headquarter'
+Wall =				require '../buildings/Wall'
+
+Barracks =			require '../buildings/Barracks'
+Workshop =			require '../buildings/Workshop'
+Stable =			require '../buildings/Stable'
+Academy =			require '../buildings/Academy'
+Smithy =			require '../buildings/Smithy'
+
 RallyPoint =		require '../buildings/RallyPoint'
-Farm =				require '../buildings/Farm'
-Warehouse =			require '../buildings/Warehouse'
+Statue =			require '../buildings/Statue'
+Market =			require '../buildings/Market'
+
 TimberCamp =		require '../buildings/TimberCamp'
 ClayPit =			require '../buildings/ClayPit'
 IronMine =			require '../buildings/IronMine'
+Farm =				require '../buildings/Farm'
+
+Warehouse =			require '../buildings/Warehouse'
+Stash =				require '../buildings/Stash'
 
 
+
+
+
+buildings =
+	headquarter:	Headquarter
+	wall:			Wall
+
+	barracks:		Barracks
+	workshop:		Workshop
+	stable:			Stable
+	academy:		Academy
+	smithy:			Smithy
+
+	rallyPoint:		RallyPoint
+	statue:			Statue
+	market:			Market
+
+	timberCamp:		TimberCamp
+	clayPit:		ClayPit
+	ironMine:		IronMine
+	farm:			Farm
+
+	warehouse:		Warehouse
+	stash:			Stash
 
 
 
@@ -37,8 +75,9 @@ class Village extends EventEmitter
 	# workshop
 	# stable
 	# academy
-	# workshop
+	# smithy
 	# rallyPoint
+	# statue
 	# market
 	# timberCamp
 	# clayPit
@@ -57,75 +96,53 @@ class Village extends EventEmitter
 		@name = options.name or @id
 		@position = options.position or new Vector()
 
-		@points = new NumericValue (options.points or config.initialPoints or 0), 'p'
-		@loyalty = new NumericValue (options.loyalty or config.initialLoyalty or 100), 'l'
+		options.loyalty ?= config.initialLoyalty or 1
+		@loyalty = new NumericValue options.loyalty, 'l'
 
-		@add options.warehouse or new Warehouse
-			village: this
-		@add options.farm or new Farm
-			village: this
-		@add options.headquarter or new Headquarter
-			village: this
-		@add options.rallyPoint or new RallyPoint
-			village: this
-		@add options.timberCamp or new TimberCamp
-			village: this
-		@add options.clayPit or new ClayPit
-			village: this
-		@add options.ironMine or new IronMine
-			village: this
+		for type, traits of config.buildings
+			given = options[type]
+			if given?.isBuilding and given.type is type
+				@addBuilding given
+			else if traits.initialLevel > 0
+				@addBuilding new buildings[type] village: this
 
 
 
-	add: (building) ->
-		return unless building
+	addBuilding: (building) ->
+		return this unless building and building.isBuilding
 
 		if @[building.type]
-			throw new GameError "A #{building.config.title} does already exist in this village."
+			throw new GameError "There already is a #{building.config.title} in the village."
 
 		@[building.type] = building
+		building.village = this
 
-		building.on 'upgrade', @buildingOnConstruction
-		building.on 'downgrade', @buildingOnConstruction
+		building.on 'upgrade', @_buildingOnConstruction
+		building.on 'downgrade', @_buildingOnConstruction
 
-		@points.watch building.points
-		@points.add building.points
+		@emit 'add-building', building
+		return this
 
-		@emit 'buildings.add', building
+	deleteBuilding: (building) ->
+		return this unless building and building.isBuilding
 
-
-	remove: (building) ->
-		return unless building
-
-		building = if building.isBuilding then @[building.type] else @[building]
-		unless building
-			throw new GameError "There is no #{building.config.title} in this village."
+		unless @[building.type] is building
+			throw new GameError "This #{building.config.title} is not part of this village."
 
 		@[building.type] = null
+		building.village = null
 
-		building.off 'upgrade', @buildingOnConstruction
-		building.off 'downgrade', @buildingOnConstruction
+		building.removeListener 'upgrade', @_buildingOnConstruction
+		building.removeListener 'downgrade', @_buildingOnConstruction
 
-		@points.unwatch building.points
-		@points.subtract building.points
-
-		@emit 'buildings.remove', building
-
-
-
-	buildingOnConstruction: (construction) ->
-		@emit "buildings.#{construction.mode}", construction
+		@emit 'delete-building', building
+		return this
 
 
 
-	anticipatedLevel: (building) =>
-		result = building.level
-		for construction in @headquarter.constructions.timeouts
-			if construction.mode is 'upgrade'
-				result++
-			else if construction.mode is 'downgrade'
-				result--
-		return result
+	_buildingOnConstruction: (construction) =>
+		@emit "#{construction.mode}-building", construction
+		# todo: recompute points
 
 
 
