@@ -1,7 +1,7 @@
 {EventEmitter} =	require 'events'
 shortid =			require 'shortid'
 
-config =			require '../../config'
+config =			require '../../config/buildings'
 helpers =			require '../util/helpers'
 GameError =			require '../util/GameError'
 NumericValue =		require '../util/NumericValue'
@@ -19,9 +19,7 @@ class Building extends EventEmitter
 	# id
 	# type				set by sub classes
 	# config
-
 	# level
-	# points
 
 	# village
 
@@ -34,14 +32,17 @@ class Building extends EventEmitter
 
 		@id = options.id or shortid.generate()
 		@type = options.type or null
-		@config = config.buildings[@type] or null
+		@config = config[@type] or null
+		# todo: throw error if no config
 
 		@level = new NumericValue options.level or @config.initialLevel or 0
-		@points = new NumericValue options.points or 0
-		for level in [0 ... @level]
-			@points.add @config.levels[level].points
+		@emit 'upgrade'
 
 		@village = options.village or null
+
+
+
+	points: -> @config.points @level
 
 
 
