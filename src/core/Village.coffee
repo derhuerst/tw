@@ -96,6 +96,8 @@ class Village extends EventEmitter
 		@name = options.name or @id
 		@position = options.position or new Vector()
 
+		@points = new NumericValue()
+		@_recomputePoints()
 		options.loyalty ?= config.initialLoyalty or 1
 		@loyalty = new NumericValue options.loyalty, 'l'
 
@@ -119,6 +121,7 @@ class Village extends EventEmitter
 
 		building.on 'upgrade', @_buildingOnConstruction
 		building.on 'downgrade', @_buildingOnConstruction
+		@_recomputePoints()
 
 		@emit 'add-building', building
 		return this
@@ -134,15 +137,22 @@ class Village extends EventEmitter
 
 		building.removeListener 'upgrade', @_buildingOnConstruction
 		building.removeListener 'downgrade', @_buildingOnConstruction
+		@_recomputePoints()
 
 		@emit 'delete-building', building
 		return this
 
 
 
+	_recomputePoints: () ->
+		result = 0
+		for type, traits of config.buildings
+			result += @[type]?.points() or 0
+		@points.reset result
+
 	_buildingOnConstruction: (construction) =>
 		@emit "#{construction.mode}-building", construction
-		# todo: recompute points
+		@_recomputePoints()
 
 
 

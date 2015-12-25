@@ -113,7 +113,26 @@ describe 'Village', ->
 
 
 
-	it 'should consistently add, get and delete a `Village`', ->
+	it 'should adjust `points` when a `Building` has been added', ->
+		before = 0 + v.points
+		v.addBuilding b
+		assert.notStrictEqual 0 + v.points, before
+
+	it 'should adjust `points` when a `Building` has been removed', ->
+		v.addBuilding b
+		before = 0 + v.points
+		v.deleteBuilding b
+		assert.notStrictEqual 0 + v.points, before
+
+	it.skip 'should adjust `points` when a `Building` has been upgraded', ->
+		# todo
+
+	it.skip 'should adjust `points` when a `Building` has been downgraded', ->
+		# todo
+
+
+
+	it 'should consistently add, get and delete a `Building`', ->
 		v.addBuilding b
 		assert.strictEqual v.statue, b
 		v.deleteBuilding b
