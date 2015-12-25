@@ -18,8 +18,6 @@ Resources =			require '../util/Resources'
 
 # attacking						attackingDead
 # defending						defendingDead
-# wallBasicDefense				attackingSurvived
-# wallDefenseFactor				defendingSurvived
 # catapultsTargetLevel	->		wallNewLevel
 # morale						catapultsTargetNewLevel
 # nightBonus					haul
@@ -40,8 +38,6 @@ fight = (options) ->
 	# output
 	attackingDead =				new Units()
 	defendingDead =				new Units()
-	attackingSurvived =			new Units()
-	defendingSurvived =			new Units()
 	wallNewLevel =				0
 	catapultsTargetNewLevel =	0
 	haul =						new Resources()
@@ -56,7 +52,7 @@ fight = (options) ->
 	# todo: rams?
 
 	# normal fight
-	x = attacking.infantry().offense() * defending.defenseInfantry()
+	x = attacking.infantry().offense() * defending.defenseGeneral()
 	x += attacking.cavalry().offense() * defending.defenseCavalry()
 	x *= wallDefenseFactor
 	x += wallBasicDefense
@@ -80,6 +76,8 @@ fight = (options) ->
 	# todo: rams?
 
 	# todo: catapults
+
+	return {attackingDead, defendingDead, wallNewLevel, catapultsTargetNewLevel, haul}
 
 
 
