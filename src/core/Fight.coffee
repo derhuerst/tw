@@ -23,22 +23,22 @@ Resources =			require '../util/Resources'
 # nightBonus					haul
 # luck
 fight = (props = {}) ->
-	# input
-	attacking =				props.attacking or new Units()
-	defending =				props.defending or new Units()
-	wallBasicDefense =		props.wallBasicDefense or 0
-	wallDefenseFactor =		props.wallDefenseFactor or 1
-	catapultsTargetLevel =	props.catapultsTargetLevel or 0
-	morale =				props.morale or 1
-	nightBonus =			props.nightBonus or true
-	luck =					props.luck or 0
+	# default values
+	props.attacking ?=				new Units()
+	props.defending ?=				new Units()
+	props.wallBasicDefense ?=		0
+	props.wallDefenseFactor ?=		1
+	props.catapultsTargetLevel ?=	0
+	props.morale ?=					1
+	props.nightBonus ?=				true
+	props.luck ?=					0
 
 	# output
-	attackingDead =				new Units()
-	defendingDead =				new Units()
-	wallNewLevel =				0
-	catapultsTargetNewLevel =	0
-	haul =						new Resources()
+	attackingDead =					new Units()
+	defendingDead =					new Units()
+	wallNewLevel =					0
+	catapultsTargetNewLevel =		0
+	haul =							new Resources()
 
 
 	# todo: complete & refactor
@@ -50,26 +50,26 @@ fight = (props = {}) ->
 	# todo: rams?
 
 	# normal fight
-	x = attacking.infantry().offense() * defending.defenseGeneral()
-	x += attacking.cavalry().offense() * defending.defenseCavalry()
-	x *= wallDefenseFactor
-	x += wallBasicDefense
-	x = Math.pow(attacking.offense(), 2) / x + luck / 100
+	x = props.attacking.infantry().offense() * props.defending.defenseGeneral()
+	x += props.attacking.cavalry().offense() * props.defending.defenseCavalry()
+	x *= props.wallDefenseFactor
+	x += props.wallBasicDefense
+	x = Math.pow(props.attacking.offense(), 2) / x + props.luck / 100
 	if x < 1
-		attackingDead.add attacking
-		defendingDead.add defending.clone().multiply(Math.pow x, 1.5).round()
+		attackingDead.add props.attacking
+		defendingDead.add props.defending.clone().multiply(Math.pow x, 1.5).round()
 	else
-		attackingDead.add attacking.clone().multiply(Math.pow x, -1.5).round()
-		defendingDead.add defending
+		attackingDead.add props.attacking.clone().multiply(Math.pow x, -1.5).round()
+		defendingDead.add props.defending
 
 
 	# scout fight
-	xScouts = attacking.subset('scout').offenseScouts()
-	xScouts /= defending.subset('scout').defenseCavalry()
+	xScouts = props.attacking.subset('scout').offenseScouts()
+	xScouts /= props.defending.subset('scout').defenseCavalry()
 	if xScouts < 1
-		attackingDead.scout = attacking.scout
+		attackingDead.scout = props.attacking.scout
 	else
-		attackingDead.scout = Math.round attacking.scout * Math.pow x, -1.5
+		attackingDead.scout = Math.round props.attacking.scout * Math.pow x, -1.5
 
 	# todo: rams?
 
