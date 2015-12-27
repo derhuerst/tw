@@ -5,6 +5,16 @@ Stocks =			require '../src/util/Stocks'
 
 
 
+beginOfDay = (timestamp) ->
+	beginOfDay = new Date timestamp
+	beginOfDay.setHours 0
+	beginOfDay.setMinutes 0
+	beginOfDay.setSeconds 0
+	beginOfDay.setMilliseconds 0
+	return beginOfDay
+
+
+
 module.exports =
 
 
@@ -20,8 +30,11 @@ module.exports =
 
 	nightBonus:
 		factor: 2
-		from: '22:00'
-		to: '08:00'
+		active: (timestamp) ->
+			delta = timestamp - beginOfDay timestamp
+			return false if delta <= new Duration '8h'
+			return false if delta >= new Duration '22h'
+			return true
 
 	beginnerProtection: new Duration '5d'
 

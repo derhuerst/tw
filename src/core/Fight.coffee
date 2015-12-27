@@ -9,6 +9,7 @@ todo: make Fight compute a typical fight:
 - haul
 - nobleman
 ###
+config =			require '../../config'
 helpers =			require '../util/helpers'
 Units =				require '../util/Units'
 Resources =			require '../util/Resources'
@@ -16,11 +17,11 @@ Resources =			require '../util/Resources'
 
 
 
-# attacking						attackingDead
-# defending						defendingDead
-# catapultsTargetLevel	->		wallNewLevel
-# morale						catapultsTargetNewLevel
-# nightBonus					haul
+# attacking							attackingDead
+# defending							defendingDead
+# catapultsTargetLevel	->			wallNewLevel
+# morale							catapultsTargetNewLevel
+# nightBonus						haul
 # luck
 fight = (props = {}) ->
 	# default values
@@ -30,7 +31,7 @@ fight = (props = {}) ->
 	props.wallDefenseFactor ?=		1
 	props.catapultsTargetLevel ?=	0
 	props.morale ?=					1
-	props.nightBonus ?=				true
+	props.nightBonus ?=				config.nightBonus.active Date.now()
 	props.luck ?=					0
 
 	# output
