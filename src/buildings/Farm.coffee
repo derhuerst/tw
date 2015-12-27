@@ -16,11 +16,10 @@ class Farm extends Building
 
 
 
-	constructor: (options) ->
+	constructor: (props = {}) ->
 		@isFarm = true
-		options = options or {}
-		options.type = 'farm'
-		super options
+		props.type = 'farm'
+		super props
 
 		@workers = new NumericValue()
 		@_updateWorkers()

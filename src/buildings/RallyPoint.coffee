@@ -16,16 +16,15 @@ class RallyPoint extends Building
 
 
 
-	constructor: (options) ->
+	constructor: (props) ->
 		@isRallyPoint = true
-		options = options or {}
-		options.type = 'rallyPoint'
-		super options
+		props.type = 'rallyPoint'
+		super props
 
-		options.units = options.units or {}
+		props.units = props.units or {}
 		@units =
-			available:	new Units options.units.available
-			away:		new Units options.units.away
+			available:	new Units props.units.available
+			away:		new Units props.units.away
 			supporting:	{}
 
 

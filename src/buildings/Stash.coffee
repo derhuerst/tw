@@ -16,11 +16,10 @@ class Stash extends Building
 
 
 
-	constructor: (options) ->
+	constructor: (props = {}) ->
 		@isStash = true
-		options = options or {}
-		options.type = 'stash'
-		super options
+		props.type = 'stash'
+		super props
 
 		@capacity = new NumericValue()
 		@_updateCapacity()

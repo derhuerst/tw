@@ -26,14 +26,14 @@ class World extends EventEmitter
 
 
 
-	constructor: (options = {}) ->
+	constructor: (props = {}) ->
 		@isWorld = true
 		super()
 
 		@_players = {}
 
 		@_villages = []
-		if options.mapSize then mapSize = options.mapSize
+		if props.mapSize then mapSize = props.mapSize
 		else mapSize = config.map.size or 1000
 		@_map = size: mapSize
 

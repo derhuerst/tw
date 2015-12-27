@@ -88,21 +88,20 @@ class Village extends EventEmitter
 
 
 
-	constructor: (options) ->
+	constructor: (props = {}) ->
 		@isVillage = true
-		options = options or {}
 
-		@id = options.id or shortid.generate()
-		@name = options.name or @id
-		@position = options.position or new Vector()
+		@id = props.id or shortid.generate()
+		@name = props.name or @id
+		@position = props.position or new Vector()
 
 		@points = new NumericValue()
 		@_recomputePoints()
-		options.loyalty ?= config.initialLoyalty or 1
-		@loyalty = new NumericValue options.loyalty, 'l'
+		props.loyalty ?= config.initialLoyalty or 1
+		@loyalty = new NumericValue props.loyalty, 'l'
 
 		for type, traits of config.buildings
-			given = options[type]
+			given = props[type]
 			if given?.isBuilding and given.type is type
 				@addBuilding given
 			else if traits.initialLevel > 0

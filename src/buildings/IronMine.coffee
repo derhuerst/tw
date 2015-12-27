@@ -14,11 +14,10 @@ class IronMine extends Building
 
 
 
-	constructor: (options) ->
+	constructor: (props = {}) ->
 		@isIronMine = true
-		options = options or {}
-		options.type = 'ironMine'
-		super options
+		props.type = 'ironMine'
+		super props
 
 		@on 'upgrade.finish', @_updateVillageProduction
 		@on 'downgrade.finish', @_updateVillageProduction

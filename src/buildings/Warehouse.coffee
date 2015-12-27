@@ -16,13 +16,12 @@ class Warehouse extends Building
 
 
 
-	constructor: (options) ->
+	constructor: (props = {}) ->
 		@isWarehouse = true
-		options = options or {}
-		options.type = 'warehouse'
-		super options
+		props.type = 'warehouse'
+		super props
 
-		@stocks = new Stocks options.stocks or config.initialStocks
+		@stocks = new Stocks props.stocks or config.initialStocks
 		@_updateMaxima()
 
 		@on 'upgrade.finish', @_updateMaxima

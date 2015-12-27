@@ -14,11 +14,10 @@ class TimberCamp extends Building
 
 
 
-	constructor: (options) ->
+	constructor: (props = {}) ->
 		@isTimberCamp = true
-		options = options or {}
-		options.type = 'timberCamp'
-		super options
+		props.type = 'timberCamp'
+		super props
 
 		@on 'upgrade.finish', @_updateVillageProduction
 		@on 'downgrade.finish', @_updateVillageProduction

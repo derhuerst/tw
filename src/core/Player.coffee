@@ -23,18 +23,17 @@ class Player extends EventEmitter
 
 
 
-	constructor: (options) ->
+	constructor: (props = {}) ->
 		@isPlayer = true
-		options = options or {}
 		super()
 
-		@id = options.id or shortid.generate()
-		@name = options.name or @id
+		@id = props.id or shortid.generate()
+		@name = props.name or @id
 
-		@points = new NumericValue (options.points or 0), 'p'
+		@points = new NumericValue (props.points or 0), 'p'
 		@_villages = []
-		if options.villages
-			@addVillage village for village in options.villages
+		if props.villages
+			@addVillage village for village in props.villages
 
 
 

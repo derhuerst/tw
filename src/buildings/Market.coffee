@@ -12,11 +12,10 @@ class Market extends Building
 
 
 
-	constructor: (options) ->
+	constructor: (props = {}) ->
 		@isMarket = true
-		options = options or {}
-		options.type = 'market'
-		super options
+		props.type = 'market'
+		super props
 
 		# todo
 

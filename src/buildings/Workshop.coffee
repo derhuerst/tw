@@ -15,10 +15,10 @@ class Workshop extends Building
 
 
 
-	constructor: (options) ->
+	constructor: (props = {}) ->
 		@isWorkshop = true
-		options.type = 'barracks'
-		super options
+		props.type = 'barracks'
+		super props
 
 		@recruitments = new TimeoutQueue()
 		@timeFactor = new NumericValue @config.timeFactor @level

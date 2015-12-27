@@ -21,11 +21,10 @@ class Headquarter extends Building
 
 
 
-	constructor: (options) ->
+	constructor: (props = {}) ->
 		@isHeadquarter = true
-		options = options or {}
-		options.type = 'headquarter'
-		super options
+		props.type = 'headquarter'
+		super props
 
 		@constructions = new TimeoutQueue()
 		@timeFactor = new NumericValue @config.timeFactor @level

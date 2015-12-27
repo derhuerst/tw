@@ -16,11 +16,10 @@ class Wall extends Building
 
 
 
-	constructor: (options) ->
+	constructor: (props = {}) ->
 		@isWall = true
-		options = options or {}
-		options.type = 'timberCamp'
-		super options
+		props.type = 'timberCamp'
+		super props
 
 		@basicDefense = new NumericValue @config.basicDefense @level
 		@defenseFactor = new NumericValue @config.defenseFactor @level

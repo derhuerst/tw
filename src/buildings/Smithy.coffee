@@ -21,11 +21,10 @@ class Smithy extends Building
 
 
 
-	constructor: (options) ->
+	constructor: (props) ->
 		@isSmithy = true
-		options = options or {}
-		options.type = 'smithy'
-		super options
+		props.type = 'smithy'
+		super props
 
 		@reasearches = new TimeoutQueue()
 		@reasearched = {}

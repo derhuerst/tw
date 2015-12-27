@@ -14,11 +14,10 @@ class ClayPit extends Building
 
 
 
-	constructor: (options) ->
+	constructor: (props = {}) ->
 		@isClayPit = true
-		options = options or {}
-		options.type = 'clayPit'
-		super options
+		props.type = 'clayPit'
+		super props
 
 		@on 'upgrade.finish', @_updateVillageProduction
 		@on 'downgrade.finish', @_updateVillageProduction

@@ -17,11 +17,10 @@ class Academy extends Building
 
 
 
-	constructor: (options) ->
+	constructor: (props = {}) ->
 		@isAcademy = true
-		options = options or {}
-		options.type = 'academy'
-		super options
+		props.type = 'academy'
+		super props
 
 		@recruitments = new TimeoutQueue()
 

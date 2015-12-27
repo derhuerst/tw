@@ -25,20 +25,19 @@ class Building extends EventEmitter
 
 
 
-	constructor: (options) ->
+	constructor: (props = {}) ->
 		@isBuilding = true
-		options = options or {}
 		super()
 
-		@id = options.id or shortid.generate()
-		@type = options.type or null
+		@id = props.id or shortid.generate()
+		@type = props.type or null
 		@config = config[@type] or null
 		# todo: throw error if no config
 
-		@level = new NumericValue options.level or @config.initialLevel or 0
+		@level = new NumericValue props.level or @config.initialLevel or 0
 		@emit 'upgrade'
 
-		@village = options.village or null
+		@village = props.village or null
 
 
 

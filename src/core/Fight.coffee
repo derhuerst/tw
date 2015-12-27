@@ -22,18 +22,16 @@ Resources =			require '../util/Resources'
 # morale						catapultsTargetNewLevel
 # nightBonus					haul
 # luck
-fight = (options) ->
-	options = options or {}
-
+fight = (props = {}) ->
 	# input
-	attacking =				options.attacking or new Units()
-	defending =				options.defending or new Units()
-	wallBasicDefense =		options.wallBasicDefense or 0
-	wallDefenseFactor =		options.wallDefenseFactor or 1
-	catapultsTargetLevel =	options.catapultsTargetLevel or 0
-	morale =				options.morale or 1
-	nightBonus =			options.nightBonus or true
-	luck =					options.luck or 0
+	attacking =				props.attacking or new Units()
+	defending =				props.defending or new Units()
+	wallBasicDefense =		props.wallBasicDefense or 0
+	wallDefenseFactor =		props.wallDefenseFactor or 1
+	catapultsTargetLevel =	props.catapultsTargetLevel or 0
+	morale =				props.morale or 1
+	nightBonus =			props.nightBonus or true
+	luck =					props.luck or 0
 
 	# output
 	attackingDead =				new Units()

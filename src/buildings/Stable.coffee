@@ -19,10 +19,10 @@ class Stable extends Building
 
 
 
-	constructor: (options) ->
+	constructor: (props = {}) ->
 		@isStable = true
-		options.type = 'stable'
-		super options
+		props.type = 'stable'
+		super props
 
 		@recruitments = new TimeoutQueue()
 		@timeFactor = new NumericValue @config.timeFactor @level
