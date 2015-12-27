@@ -18,7 +18,7 @@ describe 'Timeout', ->
 	before -> clock = sinon.useFakeTimers()
 	after -> clock.restore()
 
-	beforeEach ->a = new Timeout 100
+	beforeEach -> a = new Timeout 100
 	afterEach ->
 		a.stop()
 		spy.reset()
@@ -42,7 +42,7 @@ describe 'Timeout', ->
 
 
 
-	describe 'Duration::start', ->
+	describe 'Timeout::start', ->
 
 		it 'should return the instance', ->
 			assert.strictEqual a.start(), a # call with the timeout not running
@@ -56,7 +56,7 @@ describe 'Timeout', ->
 
 
 
-	describe 'Duration::stop', ->
+	describe 'Timeout::stop', ->
 
 		it 'should return the instance', ->
 			assert.strictEqual a.stop(), a # call with the timeout not running
@@ -72,7 +72,7 @@ describe 'Timeout', ->
 
 
 
-	describe 'Duration::finish', ->
+	describe 'Timeout::finish', ->
 
 		it 'should return the instance', ->
 			assert.strictEqual a.finish(), a # call with the timeout not running
@@ -88,7 +88,7 @@ describe 'Timeout', ->
 
 
 
-	describe 'Duration::running', ->
+	describe 'Timeout::running', ->
 
 		beforeEach -> a.start()
 
@@ -103,9 +103,14 @@ describe 'Timeout', ->
 			a.start(); a.finish()
 			assert.strictEqual a.running(), false
 
+		it 'should return `false` after the given `Duration`', ->
+			a.start()
+			clock.tick 105
+			assert.strictEqual a.running(), false
 
 
-	describe 'Duration::progress', ->
+
+	describe 'Timeout::progress', ->
 
 		beforeEach -> a = new Timeout 500
 
@@ -127,7 +132,7 @@ describe 'Timeout', ->
 
 
 
-	describe 'Duration::remaining', ->
+	describe 'Timeout::remaining', ->
 
 		beforeEach -> a = new Timeout 500
 

@@ -38,7 +38,11 @@ class Timeout extends EventEmitter
 
 
 
-	_callback: => @emit 'finish'
+	_callback: =>
+		@_timeout = null
+		@_started = null
+		@_finished = true
+		@emit 'finish'
 
 
 
