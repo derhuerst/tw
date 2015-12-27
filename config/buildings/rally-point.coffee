@@ -22,3 +22,4 @@ module.exports =
 		iron: (lvl) -> Math.round 30 * 1.26 ^ (lvl - 1)
 		time: (lvl) -> Math.round 10860 * 1.2 ^ (lvl - 1)
 	requirements: {}
+	movementsTimeToRevoke: new Duration '5m'

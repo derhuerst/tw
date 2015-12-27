@@ -1,6 +1,7 @@
 assert =			require 'assert'
 sinon =				require 'sinon'
 
+config =			require '../../config/buildings/rally-point'
 Vector =			require '../../src/util/Vector'
 Village =			require '../../src/core/Village'
 Units =				require '../../src/util/Units'
@@ -118,6 +119,8 @@ describe 'Movement', ->
 			spy = sinon.spy()
 			clock = sinon.useFakeTimers()
 
+		afterEach -> clock.restore()
+
 		assertSpyCalledOnceWithM = ->
 			assert spy.calledOnce
 			assert spy.calledWithExactly m
@@ -200,7 +203,7 @@ describe 'Movement', ->
 
 
 
-		describe 'when arrvied returning', ->
+		describe 'when arrived, after returned', ->
 
 			expectedDuration = null
 			beforeEach -> expectedDuration = 5 + 2 * m.units.speed() * d
@@ -216,6 +219,90 @@ describe 'Movement', ->
 				m.start()
 				clock.tick expectedDuration
 				assertSpyCalledOnceWithM()
+
+
+
+		describe 'when stopped', ->
+
+			it 'should emit `outgoing-movement.stop` on `origin`', ->
+				origin.on 'outgoing-movement.stop', spy
+				m.start()
+				clock.tick 100
+				m.stop()
+				assertSpyCalledOnceWithM()
+
+			it 'should emit `incoming-movement.stop` on `target`', ->
+				target.on 'incoming-movement.stop', spy
+				m.start()
+				clock.tick 100
+				m.stop()
+				assertSpyCalledOnceWithM()
+
+			it 'should emit `incoming-movement` on `origin`', ->
+				origin.on 'incoming-movement', spy
+				m.start()
+				clock.tick 100
+				m.stop()
+				clock.tick 5
+				assertSpyCalledOnceWithM()
+
+			it 'should emit `incoming-movement.start` on `origin`', ->
+				origin.on 'incoming-movement.start', spy
+				m.start()
+				clock.tick 100
+				m.stop()
+				clock.tick 5
+				assertSpyCalledOnceWithM()
+
+
+
+		describe 'when arrived after stopped', ->
+
+			it 'should emit `incoming-movement.finish` on `origin`', ->
+				origin.on 'incoming-movement.finish', spy
+				m.start()
+				clock.tick 100
+				m.stop()
+				clock.tick 100
+				assertSpyCalledOnceWithM()
+
+
+
+	describe 'Movement::stop', ->
+
+		clock = null
+		expectedDuration = null
+
+		beforeEach ->
+			clock = sinon.useFakeTimers()
+			expectedDuration = 5 + m.units.speed() * d
+
+		afterEach -> clock.restore()
+
+		it 'should throw a `GameError` if `config.movementsTimeToRevoke` is over', ->
+			stop = -> m.stop()
+			m.start()
+			clock.tick 5 + config.movementsTimeToRevoke
+			assert.throws stop, GameError
+
+		it 'should throw a `GameError` if `returning`', ->
+			stop = -> m.stop()
+			m.start()
+			clock.tick expectedDuration
+			assert.throws stop, GameError
+
+		it 'should correctly set the time to return', ->
+			m.start()
+			clock.tick 100
+			m.stop()
+			assert.strictEqual m.remaining().valueOf(), 100
+
+		it 'should set `returning` and `stopped` to `true`', ->
+			m.start()
+			clock.tick 100
+			m.stop()
+			assert.strictEqual m.returning, true
+			assert.strictEqual m.stopped, true
 
 
 

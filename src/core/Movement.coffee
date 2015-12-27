@@ -32,9 +32,12 @@ class Movement extends Timeout
 		if not units or units.isUnits isnt true
 			throw new ReferenceError "Missing `units` argument."
 		@units = units
+
 		@returning = false
+		@stopped = false
 
 		@on 'start', @_onStart
+		@on 'stop', @_onStop
 		@on 'finish', @_onFinish
 
 
@@ -54,25 +57,46 @@ class Movement extends Timeout
 
 		return super()
 
+	stop: ->
+		passed = @duration() - @remaining()
+
+		if @returning
+			throw new GameError "The units are already on their way home."
+		if passed > @origin.rallyPoint.config.movementsTimeToRevoke
+			throw new GameError "You can only call units back for #{@origin.rallyPoint.config.movementsTimeToRevoke}."
+
+		super()
+		@returning = true
+		@stopped = true
+		@duration().reset passed
+		Timeout.prototype.start.call this # todo: this is ugly.
 
 
 
 	_onStart: =>
 		# todo: improve event names?
+		#console.log '_onStart', '@returning', @returning, '@stopped', @stopped
 		if @returning then [to, from] = [@origin, @target]
 		else [from, to] = [@origin, @target]
-		from.emit 'outgoing-movement', this
-		from.emit 'outgoing-movement.start', this
+		if not @stopped
+			from.emit 'outgoing-movement', this
+			from.emit 'outgoing-movement.start', this
 		to.emit 'incoming-movement', this
 		to.emit 'incoming-movement.start', this
 
+	_onStop: =>
+		# todo: improve event names?
+		#console.log '_onStop', '@returning', @returning, '@stopped', @stopped
+		@origin.emit 'outgoing-movement.stop', this
+		@target.emit 'incoming-movement.stop', this
 
 	_onFinish: =>
 		# todo: improve event names?
+		#console.log '_onFinish', '@returning', @returning, '@stopped', @stopped
 		if @returning then [to, from] = [@origin, @target]
 		else [from, to] = [@origin, @target]
+		if not @stopped then from.emit 'outgoing-movement.finish', this
 		to.emit 'incoming-movement.finish', this
-		from.emit 'outgoing-movement.finish', this
 
 		if not @returning
 			@returning = true
