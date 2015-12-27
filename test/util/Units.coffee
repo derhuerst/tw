@@ -18,9 +18,9 @@ correctChangeEvent = (spy, before, after) ->
 	equalUnits args[1], after
 
 equalUnits = (a, b) ->
-	assert.strictEqual a.wood, b.wood
-	assert.strictEqual a.clay, b.clay
-	assert.strictEqual a.iron, b.iron
+	for type in ['spearFighter','swordsman','axeman','archer','scout','lightCavalry','mountedArcher','heavyCavalry','ram','catapult','paladin','nobleman']
+		assert.strictEqual a[type], b[type]
+	return true
 
 units =
 	spearFighter: 12, swordsman: 11, axeman: 10, archer: 9 # infantry
