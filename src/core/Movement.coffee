@@ -21,59 +21,71 @@ class Movement extends Timeout
 
 	constructor: (origin, target, units) ->
 		@isMovement = true
+		super()
 
-		@units = new Units units
+		if not origin or origin.isVillage isnt true
+			throw new ReferenceError "Missing `origin` argument."
 		@origin = origin or null
+		if not origin or origin.isVillage isnt true
+			throw new ReferenceError "Missing `target` argument."
 		@target = target or null
+		if not units or units.isUnits isnt true
+			throw new ReferenceError "Missing `units` argument."
+		@units = units
 		@returning = false
 
-		@on 'start', @onStart
-		@on 'stop', @onStop
-		@on 'finish', @onFinish
-
-		super()
+		@on 'start', @_onStart
+		@on 'finish', @_onFinish
 
 
 
 	start: ->
 		return if @running()
 
-		if target is origin
+		if @target is @origin
 			throw new GameError "The target is the origin."
 
-		if origin.rallyPoint.units.available.moreThan @units
+		unless @origin.rallyPoint.units.available.moreThan @units
 			throw new GameError "Not enough units."
-		origin.rallyPoint.units.available.subtract @units
-		origin.rallyPoint.units.away.add @units # todo: improve this?
+		@origin.rallyPoint.units.available.subtract @units
+		@origin.rallyPoint.units.away.add @units # todo: improve this?
 
-		@duration.reset @units.speed().durationToTravel @origin.position.distanceTo @target.position
+		@duration().reset @units.speed().multiply(@origin.position.distanceTo @target.position).valueOf()
+
 		return super()
 
 
 
-	onStart: ->
+
+	_onStart: =>
 		# todo: improve event names?
-		origin.emit 'outgoing-movement', this
-		origin.emit 'outgoing-movement.start', this
-		target.emit 'incoming-movement', this
-		target.emit 'incoming-movement.start', this
+		if @returning then [to, from] = [@origin, @target]
+		else [from, to] = [@origin, @target]
+		from.emit 'outgoing-movement', this
+		from.emit 'outgoing-movement.start', this
+		to.emit 'incoming-movement', this
+		to.emit 'incoming-movement.start', this
 
 
-	onStop: ->
-		@returning = true
+	_onFinish: =>
 		# todo: improve event names?
-		origin.emit 'outgoing-movement.stop', this
-		target.emit 'incoming-movement.stop', this
+		if @returning then [to, from] = [@origin, @target]
+		else [from, to] = [@origin, @target]
+		to.emit 'incoming-movement.finish', this
+		from.emit 'outgoing-movement.finish', this
+
+		if not @returning
+			@returning = true
+			Timeout.prototype.start.call this # todo: this is ugly.
 
 
-	onFinish: ->
-		# todo: improve event names?
-		origin.emit 'outgoing-movement.finish', this
-		target.emit 'incoming-movement.finish', this
 
-
-
-	toString: -> "(#{@building}) +1"
+	toString: -> [
+		"(#{@units})"
+		@origin.toString()
+		if @returning then '<-' else '->'
+		@target.toString()
+	].join ' '
 
 
 
