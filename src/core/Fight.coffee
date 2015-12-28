@@ -17,13 +17,41 @@ Resources =			require '../util/Resources'
 
 
 
+
+haul = (stored, capacity) ->
+	v = [stored.wood, stored.clay, stored.iron]
+	isnt0 = (x) -> x isnt 0
+
+	# balance the values
+	while capacity isnt 0 and v.some isnt0
+		part = capacity / v.filter(isnt0).length
+		capacity = 0
+		v = v
+			.map (x) -> if x isnt 0 then x - part else x
+			.map (x) ->
+				return x if x > 0
+				capacity -= x
+				return 0
+
+	# round them, keeping the sum
+	d = 0
+	v = v.map (x) ->
+		rounded = if d >= 0 then Math.floor(x) else Math.ceil(x)
+		d += rounded - x
+		return rounded
+
+	v = new Resources wood: v[0], clay: v[1], iron: v[2]
+	return stored.clone().subtract v
+
+
+
 # attacking							attackingDead
 # defending							defendingDead
 # catapultsTargetLevel	->			wallNewLevel
 # morale							catapultsTargetNewLevel
 # nightBonus						haul
 # luck
-fight = (props = {}) ->
+simulate = (props = {}) ->
 	# default values
 	props.attacking ?=				new Units()
 	props.defending ?=				new Units()
@@ -82,4 +110,4 @@ fight = (props = {}) ->
 
 
 
-module.exports = fight
+module.exports = {haul, simulate}
