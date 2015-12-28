@@ -12,26 +12,26 @@ class Movement extends Timeout
 
 	# isMovement
 
-	# units
 	# origin
 	# target
+	# units
+
 	# returning
+	# stopped
 
 
 
-	constructor: (origin, target, units) ->
+	constructor: (props = {}) ->
 		@isMovement = true
 		super()
 
-		if not origin or origin.isVillage isnt true
-			throw new ReferenceError "Missing `origin` argument."
-		@origin = origin or null
-		if not origin or origin.isVillage isnt true
-			throw new ReferenceError "Missing `target` argument."
-		@target = target or null
-		if not units or units.isUnits isnt true
-			throw new ReferenceError "Missing `units` argument."
-		@units = units
+		if props.origin and props.origin.isVillage is true then @origin = props.origin
+		else throw new ReferenceError "Missing `origin` argument."
+		if props.target and props.target.isVillage is true then @target = props.target
+		else throw new ReferenceError "Missing `target` argument."
+
+		if props.units and props.units.isUnits is true then @units = props.units
+		else throw new ReferenceError "Missing `units` argument."
 
 		@returning = false
 		@stopped = false
