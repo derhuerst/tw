@@ -1,4 +1,4 @@
-config =			require '../config/units'
+config =			require '../../config/units'
 Timeout =			require '../util/Timeout'
 GameError =			require '../util/GameError'
 

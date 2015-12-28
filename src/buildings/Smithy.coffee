@@ -1,3 +1,5 @@
+config =			require '../../config'
+
 TimeoutQueue =		require '../util/TimeoutQueue'
 NumericValue =		require '../util/NumericValue'
 GameError =			require '../util/GameError'

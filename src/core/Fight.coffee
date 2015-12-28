@@ -67,7 +67,7 @@ simulate = (props = {}) ->
 	defendingDead =					new Units()
 	wallNewLevel =					0
 	catapultsTargetNewLevel =		0
-	haul =							new Resources()
+	haul =							0
 
 
 	# todo: complete & refactor

@@ -6,12 +6,12 @@ Stocks =			require '../src/util/Stocks'
 
 
 beginOfDay = (timestamp) ->
-	beginOfDay = new Date timestamp
-	beginOfDay.setHours 0
-	beginOfDay.setMinutes 0
-	beginOfDay.setSeconds 0
-	beginOfDay.setMilliseconds 0
-	return beginOfDay
+	date = new Date timestamp
+	date.setHours 0
+	date.setMinutes 0
+	date.setSeconds 0
+	date.setMilliseconds 0
+	return date
 
 
 

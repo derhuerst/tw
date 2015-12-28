@@ -1,4 +1,5 @@
 NumericValue =		require '../util/NumericValue'
+Resources =			require '../util/Resources'
 
 Building =			require '../core/Building'
 

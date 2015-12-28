@@ -25,7 +25,7 @@ class RallyPoint extends Building
 		@units =
 			available:	new Units props.units.available
 			away:		new Units props.units.away
-			supporting:	{}
+			supporting:	{} # map by village id
 
 
 
@@ -39,10 +39,10 @@ class RallyPoint extends Building
 
 
 	allAvailableUnits: ->
-		result = new Units @units.available
+		result = @units.available.clone()
 		for village, units of @units.supporting
 			result.add units
-		retunr result
+		return result
 
 
 
