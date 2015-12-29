@@ -91,9 +91,6 @@ describe 'fight', ->
 			it 'should return `catapultsTargetNewLevel` as `Number`', ->
 				assert.strictEqual typeof results.catapultsTargetNewLevel, 'number'
 
-			it 'should return `haul` as `Number`', ->
-				assert.strictEqual typeof results.haul, 'number'
-
 		it.skip 'should compute scouts independently', ->
 			# todo
 

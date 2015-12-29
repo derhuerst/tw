@@ -49,7 +49,7 @@ haul = (stored, capacity) ->
 # defending							defendingDead
 # catapultsTargetLevel	->			wallNewLevel
 # morale							catapultsTargetNewLevel
-# nightBonus						haul
+# nightBonus
 # luck
 simulate = (props = {}) ->
 	# default values
@@ -67,7 +67,6 @@ simulate = (props = {}) ->
 	defendingDead =					new Units()
 	wallNewLevel =					0
 	catapultsTargetNewLevel =		0
-	haul =							0
 
 
 	# todo: complete & refactor
@@ -104,7 +103,7 @@ simulate = (props = {}) ->
 
 	# todo: catapults
 
-	return {attackingDead, defendingDead, wallNewLevel, catapultsTargetNewLevel, haul}
+	return {attackingDead, defendingDead, wallNewLevel, catapultsTargetNewLevel}
 
 
 
