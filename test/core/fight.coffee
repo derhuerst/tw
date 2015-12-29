@@ -20,7 +20,7 @@ describe 'fight', ->
 
 
 
-	describe.only 'haul', ->
+	describe 'haul', ->
 
 		stored = null
 		capacity = null
@@ -105,3 +105,74 @@ describe 'fight', ->
 
 		it.skip 'should incorporate the night bonus', ->
 			# todo
+
+
+
+	describe 'fight', ->
+
+		origin = null
+		target = null
+		units = null
+		haul = null
+		props = null
+
+		beforeEach ->
+			origin = new Village()
+			target = new Village()
+			units = new Units axeman: 1, scout: 1
+			haul = new Resources()
+			props = {origin, target, type: 'attack', units, haul}
+
+		it 'shoud subtract from the attack\'s `units`', ->
+			spy = sinon.spy units, 'subtract'
+			fight.fight props
+			assert spy.calledOnce
+			assert spy.firstCall.args[0].isUnits
+
+		it 'shoud subtract from `origin.rallyPoint.units.away`', ->
+			spy = sinon.spy origin.rallyPoint.units.away, 'subtract'
+			fight.fight props
+			assert spy.calledOnce
+			assert spy.firstCall.args[0].isUnits
+
+		it.skip 'shoud subtract from `target.rallyPoint.units.available`', ->
+			# todo
+
+		it.skip 'shoud subtract from `target.rallyPoint.units.supporting`', ->
+			# todo
+
+		it.skip 'shoud remove the wall if destroyed by rams', ->
+			onDeleteBuilding = sinon.spy()
+			target.on 'delete-building', onDeleteBuilding
+			wall = target.wall
+			props.units.ram = 1000
+			fight.fight props
+			assert onDeleteBuilding.calledOnce
+			assert onDeleteBuilding.calledWithExactly wall
+
+		it.skip 'shoud reduce the level of the wall if attacked by rams', ->
+			wallLevelOnChange = sinon.spy()
+			target.addBuilding new Wall level: 10
+			target.wall.level.on 'change', wallLevelOnChange
+			props.units.ram = 1
+			fight.fight props
+			assert wallLevelOnChange.calledOnce
+
+		it.skip 'shoud remove the building destroyed by catapults', ->
+			onDeleteBuilding = sinon.spy()
+			target.on 'delete-building', onDeleteBuilding
+			wall = target.wall
+			props.catapultsTarget = 'wall'
+			props.units.catapults = 100
+			fight.fight props
+			assert onDeleteBuilding.calledOnce
+			assert onDeleteBuilding.calledWithExactly wall
+
+		it.skip 'shoud reduce the level of the building attacked by catapults', ->
+			wallLevelOnChange = sinon.spy()
+			target.addBuilding new Wall level: 10
+			target.wall.level.on 'change', wallLevelOnChange
+			props.catapultsTarget = 'wall'
+			props.units.catapults = 10
+			fight.fight props
+			assert wallLevelOnChange.calledOnce

@@ -107,6 +107,47 @@ simulate = (props = {}) ->
 
 
 
+fight = (props) ->
+	catapultsTarget = if props.target[props.catapultsTarget]?.isBuilding
+		props.target[props.catapultsTarget]
+	else null
+	wall = if props.target.wall?.isBuilding then props.target.wall else null
+
+	results = simulate
+		attacking:				props.units
+		defending:				props.target.rallyPoint.allAvailableUnits()
+		wallBasicDefense:		0 + wall?.basicDefense or 0
+		wallDefenseFactor:		0 + wall?.defenseFactor or 1
+		catapultsTargetLevel:	0 + catapultsTarget?.level or 0
+		# todo: morale
+
+	# results.attackingDead
+	props.units.subtract results.attackingDead
+	props.origin.rallyPoint.units.away.subtract results.attackingDead
+
+	# results.defendingDead
+	# todo: props.target.rallyPoint.units.available
+	# todo: props.target.rallyPoint.units.supporting
+
+	# results.wallNewLevel
+	if wall?.isBuilding
+		if results.wallNewLevel is 0 then props.target.deleteBuilding wall
+		else wall.level.reset results.wallNewLevel
+		# todo: what about minimal levels?
+
+	if catapultsTarget?.isBuilding
+		if results.catapultsTargetNewLevel is 0
+			props.target.deleteBuilding catapultsTarget
+		else catapultsTarget.level.reset results.catapultsTargetNewLevel
+		# todo: what about minimal levels?
+
+	# results.haul
+	hauled = haul props.target.warehouse.stocks.resources(), props.units.haul()
+	props.target.warehouse.stocks.resources().subtract hauled
+	props.haul.add hauled
 
 
-module.exports = {haul, simulate}
+
+
+
+module.exports = {haul, simulate, fight}
