@@ -4,15 +4,9 @@ sinon =				require 'sinon'
 fight =				require '../../src/core/fight'
 Units =				require '../../src/util/Units'
 Resources =			require '../../src/util/Resources'
+{equalResources} =	require '../helpers'
 
 
-
-
-
-equalResources = (a, b) ->
-	assert.strictEqual a.wood, b.wood
-	assert.strictEqual a.clay, b.clay
-	assert.strictEqual a.iron, b.iron
 
 
 
@@ -40,7 +34,7 @@ describe 'fight', ->
 
 			fight.haul stored, capacity
 			assert.strictEqual onChange.callCount, 0
-			equalResources stored, before
+			assert equalResources stored, before
 
 		it 'should not change the given haul capacity', ->
 			before = capacity

@@ -6,19 +6,10 @@ Duration =			require '../../src/util/Duration'
 Production =		require '../../src/util/Production'
 
 Stocks =			require '../../src/util/Stocks'
+{equalResources} =	require '../helpers'
+{equalProduction} =	require '../helpers'
 
 
-
-
-
-equalResources = (a, b) ->
-	assert.strictEqual a.wood, b.wood
-	assert.strictEqual a.clay, b.clay
-	assert.strictEqual a.iron, b.iron
-
-equalProduction = (a, b) ->
-	equalResources a.resources, b.resources
-	assert.strictEqual 0 + a.duration, 0 + b.duration
 
 
 
@@ -46,11 +37,11 @@ describe 'Stocks', ->
 
 		it 'should set `maxima` to a clone of the given `Resources`', ->
 			assert.notEqual s.maxima, m
-			equalResources s.maxima, m
+			assert equalResources s.maxima, m
 
 		it 'should set `production` to a clone of the given `Production`', ->
 			assert.notEqual s.production, p
-			equalProduction s.production, p
+			assert equalProduction s.production, p
 
 
 
@@ -65,23 +56,23 @@ describe 'Stocks', ->
 	it 'should limit its `resources` to `maxima`', ->
 		clock.tick (new Duration '4m5s').valueOf()
 		r = s.resources()
-		equalResources r, s.maxima
+		assert equalResources r, s.maxima
 		s.maxima.subtract 100
-		equalResources r, s.maxima
+		assert equalResources r, s.maxima
 
 
 
 	it 'should update its `resources` according to its `production`', ->
 		clock.tick (new Duration '30s').valueOf()
-		equalResources s.resources(), new Resources {wood: 25, clay: 50, iron: 75}
+		assert equalResources s.resources(), new Resources {wood: 25, clay: 50, iron: 75}
 		clock.tick (new Duration '1m').valueOf()
-		equalResources s.resources(), new Resources {wood: 75, clay: 150, iron: 200}
+		assert equalResources s.resources(), new Resources {wood: 75, clay: 150, iron: 200}
 
 	it 'should handle its `production` being 0', ->
 		clock.tick (new Duration '30s').valueOf()
 		s.production.resources.reset 0
 		clock.tick (new Duration '2m').valueOf()
-		equalResources s.resources(), new Resources {wood: 25, clay: 50, iron: 75}
+		assert equalResources s.resources(), new Resources {wood: 25, clay: 50, iron: 75}
 
 
 
@@ -89,7 +80,7 @@ describe 'Stocks', ->
 		clock.tick (new Duration '30s').valueOf()
 		s.production.resources.add new Resources {wood: 150, clay: 100, iron: 50}
 		clock.tick (new Duration '30s').valueOf()
-		equalResources s.resources(), new Resources
+		assert equalResources s.resources(), new Resources
 			wood: 25 + 100
 			clay: 50 + 100
 			iron: 75 + 100

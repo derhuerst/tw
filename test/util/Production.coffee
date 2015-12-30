@@ -6,15 +6,9 @@ Resources =			require '../../src/util/Resources'
 Duration =			require '../../src/util/Duration'
 
 Production =		require '../../src/util/Production'
+{equalResources} =	require '../helpers'
 
 
-
-
-
-equalResources = (a, b) ->
-	assert.strictEqual a.wood, b.wood
-	assert.strictEqual a.clay, b.clay
-	assert.strictEqual a.iron, b.iron
 
 
 
@@ -182,7 +176,7 @@ describe 'Production', ->
 
 		it 'should return a `Production` with equal, but distinct `resources`', ->
 			assert.notEqual a.resources, b.resources
-			equalResources a.resources, b.resources
+			assert equalResources a.resources, b.resources
 
 		it 'should return a `Production` with equal, but distinct `duration`', ->
 			assert.notEqual a.duration, b.duration
@@ -197,8 +191,8 @@ describe 'Production', ->
 
 		assert spy.calledOnce
 		[before, after] = spy.firstCall.args
-		equalResources before.resources, r1
-		equalResources after.resources, a.resources
+		assert equalResources before.resources, r1
+		assert equalResources after.resources, a.resources
 		assert.strictEqual before.duration.valueOf(), d1.valueOf()
 		assert.strictEqual after.duration.valueOf(), a.duration.valueOf()
 
@@ -209,8 +203,8 @@ describe 'Production', ->
 
 		assert spy.calledOnce
 		[before, after] = spy.firstCall.args
-		equalResources before.resources, r1
-		equalResources after.resources, a.resources
+		assert equalResources before.resources, r1
+		assert equalResources after.resources, a.resources
 		assert.strictEqual before.duration.valueOf(), d1.valueOf()
 		assert.strictEqual after.duration.valueOf(), a.duration.valueOf()
 

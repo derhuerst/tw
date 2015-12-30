@@ -2,6 +2,7 @@ assert =			require 'assert'
 sinon =				require 'sinon'
 
 Resources =			require '../../src/util/Resources'
+{equalResources} =	require '../helpers'
 
 
 
@@ -10,13 +11,8 @@ Resources =			require '../../src/util/Resources'
 correctChangeEvent = (spy, before, after) ->
 	assert spy.calledOnce
 	args = spy.firstCall.args
-	equalResources args[0], before
-	equalResources args[1], after
-
-equalResources = (a, b) ->
-	assert.strictEqual a.wood, b.wood
-	assert.strictEqual a.clay, b.clay
-	assert.strictEqual a.iron, b.iron
+	assert equalResources args[0], before
+	assert equalResources args[1], after
 
 
 
@@ -72,7 +68,7 @@ describe 'Resources', ->
 			assert.strictEqual a.clay, c
 			assert.strictEqual a.iron, c
 			a.reset b
-			equalResources a, b
+			assert equalResources a, b
 
 		it 'should use `0` as the default value', ->
 			a.reset()
@@ -98,7 +94,7 @@ describe 'Resources', ->
 
 		it 'should do nothing when called without a summand', ->
 			a.add()
-			equalResources a, old
+			assert equalResources a, old
 
 		it 'should correctly add a `Number` to `wood`, `clay` and `iron`', ->
 			a.add c
@@ -138,7 +134,7 @@ describe 'Resources', ->
 		it 'should call `add` correctly when given `Resources`', ->
 			a.subtract b
 			assert a.add.calledOnce
-			equalResources a.add.firstCall.args[0],
+			assert equalResources a.add.firstCall.args[0],
 				wood: -b.wood
 				clay: -b.clay
 				iron: -b.iron
@@ -153,7 +149,7 @@ describe 'Resources', ->
 
 		it 'should do nothing when called without a summand', ->
 			a.multiply()
-			equalResources a, old
+			assert equalResources a, old
 
 		it 'should correctly multiply a `Number` with `wood`, `clay` and `iron`', ->
 			a.multiply c
