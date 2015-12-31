@@ -5,3 +5,4 @@ require './World'
 
 require './fight'
 require './Movement'
+require './Attack'
