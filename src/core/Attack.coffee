@@ -15,7 +15,8 @@ noblemanDistance = ->
 
 enoughWorkers = ->
 	if @units.workers() < @origin.points / 100
-		throw new GameError "The number of workers of your army has to be a hundredth of your village's workers."
+		throw new GameError "The number of workers of your army \
+		has to be a hundredth of your village's workers."
 
 notAnAlly = ->
 	# todo
@@ -39,7 +40,7 @@ class Attack extends Movement
 		@haul = new Resources()
 		if @units.catapult > 0
 			unless props.catapultsTarget
-				throw new GameError "Catapults target not specified."
+				throw new GameError 'Catapults target not specified.'
 			@catapultsTarget = props.catapultsTarget
 		else @catapultsTarget = null
 

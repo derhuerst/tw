@@ -62,7 +62,8 @@ class NumericValue extends EventEmitter
 
 
 
-	# todo: `watch`ing is confusing and unuseful when using `multiply` on the watched `NumericValue`.
+	# todo: `watch`ing is confusing and unuseful when using `multiply`
+	# on the watched `NumericValue`.
 
 	_watchedOnChange: (before, after) =>
 		@add after - before

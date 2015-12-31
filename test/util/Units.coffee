@@ -4,8 +4,8 @@ sinon =				require 'sinon'
 config =			require '../../config/units'
 Duration =			require '../../src/util/Duration'
 Resources =			require '../../src/util/Resources'
-
 Units =				require '../../src/util/Units'
+{equalUnits} =		require '../helpers'
 
 
 
@@ -14,13 +14,8 @@ Units =				require '../../src/util/Units'
 correctChangeEvent = (spy, before, after) ->
 	assert spy.calledOnce
 	args = spy.firstCall.args
-	equalUnits args[0], before
-	equalUnits args[1], after
-
-equalUnits = (a, b) ->
-	for type in ['spearFighter','swordsman','axeman','archer','scout','lightCavalry','mountedArcher','heavyCavalry','ram','catapult','paladin','nobleman']
-		assert.strictEqual a[type], b[type]
-	return true
+	assert equalUnits args[0], before
+	assert equalUnits args[1], after
 
 units =
 	spearFighter: 12, swordsman: 11, axeman: 10, archer: 9 # infantry

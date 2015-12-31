@@ -26,12 +26,12 @@ describe 'Resources', ->
 	c = null
 
 	beforeEach ->
-		a = new Resources { wood: 100, clay: 200, iron: 300 }
-		old = new Resources { wood: a.wood, clay: a.clay, iron: a.iron }
+		a = new Resources {wood: 100, clay: 200, iron: 300}
+		old = new Resources {wood: a.wood, clay: a.clay, iron: a.iron}
 		spy = sinon.spy()
 		a.on 'change', spy
 
-		b = new Resources { wood: 300, clay: 200, iron: 100 }
+		b = new Resources {wood: 300, clay: 200, iron: 100}
 		c = 10
 
 	afterEach -> spy.reset()
@@ -214,11 +214,11 @@ describe 'Resources', ->
 	describe 'Resources::moreThan', ->
 
 		it 'should return `true` for `Resources` with every property being greater or equal', ->
-			b = new Resources { wood: a.wood, clay: a.clay - 1, iron: a.iron }
+			b = new Resources {wood: a.wood, clay: a.clay - 1, iron: a.iron}
 			assert.strictEqual a.moreThan(b), true
 
 		it 'should return `false` for `Resources` with any property being lower', ->
-			b = new Resources { wood: a.wood + 1, clay: a.clay, iron: a.iron + 1 }
+			b = new Resources {wood: a.wood + 1, clay: a.clay, iron: a.iron + 1}
 			assert.strictEqual a.moreThan(b), false
 
 	describe 'Resources::equalTo', ->
@@ -231,11 +231,11 @@ describe 'Resources', ->
 			assert.strictEqual a.equalTo(b), true
 
 		it 'should return `true` for `Resources` with every property being equal', ->
-			b = new Resources { wood: a.wood, clay: a.clay, iron: a.iron }
+			b = new Resources {wood: a.wood, clay: a.clay, iron: a.iron}
 			assert.strictEqual a.equalTo(b), true
 
 		it 'should return `false` for `Resources` with any property being unequal', ->
-			b = new Resources { wood: a.wood, clay: a.clay - 1, iron: a.iron }
+			b = new Resources {wood: a.wood, clay: a.clay - 1, iron: a.iron}
 			assert.strictEqual a.equalTo(b), false
 
 

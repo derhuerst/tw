@@ -38,7 +38,7 @@ class Stocks
 
 
 
-	_maximaOnChange: () =>
+	_maximaOnChange: =>
 		if @_resources.wood > @maxima.wood then @_resources.wood = @maxima.wood
 		if @_resources.clay > @maxima.clay then @_resources.clay = @maxima.clay
 		if @_resources.iron > @maxima.iron then @_resources.iron = @maxima.iron

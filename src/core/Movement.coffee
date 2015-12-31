@@ -9,10 +9,10 @@ GameError =			require '../util/GameError'
 
 enoughUnits = ->
 	if @units.moreThan @origin.rallyPoint.units.available
-		throw new GameError "There are not enough units available."
+		throw new GameError 'There are not enough units available.'
 
 notReturning = ->
-	if @returning() then throw new GameError "The units are already on their way home."
+	if @returning() then throw new GameError 'The units are already on their way home.'
 
 timeToRevoke = ->
 	passed = @_timeout.duration() - @_timeout.remaining()
@@ -43,16 +43,16 @@ class Movement extends EventEmitter
 		super()
 
 		if props.origin?.isVillage is true then @origin = props.origin
-		else throw new ReferenceError "Missing `origin` argument."
+		else throw new ReferenceError 'Missing `origin` argument.'
 
 		if props.destination?.isVillage is true then @destination = props.destination
-		else throw new ReferenceError "Missing `destination` argument."
+		else throw new ReferenceError 'Missing `destination` argument.'
 
 		if @destination is @origin
-			throw new GameError "The destination is the origin."
+			throw new GameError 'The destination is the origin.'
 
 		if props.units?.isUnits is true then @units = props.units
-		else throw new ReferenceError "Missing `units` argument."
+		else throw new ReferenceError 'Missing `units` argument.'
 
 		@_returning = props.returning is true
 		@_aborted = false
