@@ -1,91 +1,150 @@
 assert =			require 'assert'
 sinon =				require 'sinon'
+{EventEmitter} =	require 'events'
 
 config =			require '../../config/buildings/rally-point'
 Vector =			require '../../src/util/Vector'
 Village =			require '../../src/core/Village'
 Units =				require '../../src/util/Units'
 Movement =			require '../../src/core/Movement'
-Timeout =			require '../../src/util/Timeout'
 GameError =			require '../../src/util/GameError'
+{equalUnits} =		require '../helpers'
 
 
-
-
-
-equalUnits = (a, b) ->
-	for type in ['spearFighter','swordsman','axeman','archer','scout','lightCavalry','mountedArcher','heavyCavalry','ram','catapult','paladin','nobleman']
-		assert.strictEqual a[type], b[type]
-	return true
 
 
 
 describe 'Movement', ->
 
 	origin = null
-	target = null
+	destination = null
 	d = null
-	u = null
+	units = null
 	m = null
 
 	beforeEach ->
 		origin = new Village position: new Vector 0, 0
-		target = new Village position: new Vector 1, 0
-		d = target.position.distanceTo origin.position
+		destination = new Village position: new Vector 1, 0
+		d = destination.position.distanceTo origin.position
 		origin.rallyPoint.units.available.add new Units axeman: 2, scout: 3
-		u = new Units axeman: 1, scout: 1
-		m = new Movement origin, target, u
-
-	beforeEach ->
-		# todo
+		units = new Units axeman: 1, scout: 1
+		m = new Movement {origin, destination, units}
 
 	it '`isMovement`', ->
 		assert.strictEqual m.isMovement, true
 
-	it 'should inherit from `Timeout`', ->
-		assert m instanceof Timeout
+	it 'should inherit from `EventEmitter`', ->
+		assert m instanceof EventEmitter
 
 
 
 	describe 'Movement::constructor', ->
 
-		it 'should throw a `ReferenceError` if an `origin` has not been passed', ->
+		it 'should throw a `ReferenceError` if `origin` has not been passed', ->
 			createWithoutOrigin = -> m = new Movement()
 			assert.throws createWithoutOrigin, ReferenceError
 
-		it 'should throw a `ReferenceError` if an `target` has not been passed', ->
-			createWithoutOrigin = -> m = new Movement()
-			assert.throws createWithoutOrigin, ReferenceError
+		it 'should throw a `ReferenceError` if `destination` has not been passed', ->
+			createWithoutDestination = -> m = new Movement()
+			assert.throws createWithoutDestination, ReferenceError
 
-		it 'should throw a `ReferenceError` if an `units` has not been passed', ->
-			createWithoutOrigin = -> m = new Movement()
-			assert.throws createWithoutOrigin, ReferenceError
+		it 'should throw a `ReferenceError` if `units` have not been passed', ->
+			createWithoutUnits = -> m = new Movement()
+			assert.throws createWithoutUnits, ReferenceError
+
+		it 'should throw a `GameError` if the `destination` is the `origin`', ->
+			createWithOriginAsDestination = ->
+				m = new Movement {origin, destination: origin, units}
+			createWithDestinationAsOrigin = ->
+				m = new Movement {origin: destination, destination, units}
+			assert.throws createWithOriginAsDestination, GameError
+			assert.throws createWithDestinationAsOrigin, GameError
 
 		it 'should set `origin` to the passed one', ->
 			assert.strictEqual m.origin, origin
 
-		it 'should set `target` to the passed one', ->
-			assert.strictEqual m.target, target
+		it 'should set `destination` to the passed one', ->
+			assert.strictEqual m.destination, destination
 
 		it 'should set `units` to the passed one', ->
-			assert.strictEqual m.units, u
+			assert.strictEqual m.units, units
 
-		it 'should set `returning` to `false`', ->
-			assert.strictEqual m.returning, false
+
+
+	describe 'Movement::running', ->
+
+		it 'should return `false` in the beginning', ->
+			assert.strictEqual m.running(), false
+
+		it 'should return `true` after it has been started', ->
+			m.start()
+			assert.strictEqual m.running(), true
+
+		# todo: move to `core/Attack`
+		it.skip 'should return `true` when it is returning', ->
+			m.start()
+			clock.tick 100
+			m.abort()
+			assert.strictEqual m.running(), true
+
+
+
+	describe 'Movement::returning', ->
+
+		clock = null
+		beforeEach -> clock = sinon.useFakeTimers()
+		afterEach -> clock.restore()
+
+		it 'should return `false` on the way to `destination`', ->
+			m.start()
+			clock.tick 100
+			assert.strictEqual m.returning(), false
+
+		it 'should return `true` after aborted', ->
+			m.start()
+			clock.tick 5
+			m.abort()
+			assert.strictEqual m.returning(), true
+
+		# todo: move to `core/Attack`
+		it.skip 'should return `true` after returning from `destination`', ->
+			# todo
+
+
+
+	describe 'Movement::aborted', ->
+
+		clock = null
+		beforeEach -> clock = sinon.useFakeTimers()
+		afterEach -> clock.restore()
+
+		it 'should return `false` on the way to `destination`', ->
+			m.start()
+			clock.tick 5
+			assert.strictEqual m.aborted(), false
+
+		it 'should return `true` after aborted and returning', ->
+			m.start()
+			clock.tick 100
+			m.abort()
+			assert.strictEqual m.aborted(), true
+
+		it 'should return `true` after aborted and arrived at the `origin`', ->
+			m.start()
+			clock.tick 5
+			m.abort()
+			clock.tick 5
+			assert.strictEqual m.aborted(), true
 
 
 
 	describe 'Movement::start', ->
 
-		it 'should throw a `GameError` if `origin` and `target` are the same', ->
-			startWithSameOriginAndTarget = ->
-				m.target = m.origin
-				m.start()
-			assert.throws startWithSameOriginAndTarget, GameError
+		start = null
+		beforeEach -> start = -> m.start()
 
 		it 'should throw a `GameError` if there are not enough units in `origin`', ->
 			m.origin.rallyPoint.units.available.reset 0
-			start = -> m.start()
 			assert.throws start, GameError
 
 		it 'should add the `units` to `origin.rallyPoint.units.away`', ->
@@ -94,7 +153,7 @@ describe 'Movement', ->
 
 			m.start()
 			assert onChange.calledOnce
-			equalUnits origin.rallyPoint.units.away, new Units axeman: 1, scout: 1
+			assert equalUnits origin.rallyPoint.units.away, new Units axeman: 1, scout: 1
 
 		it 'should subtract the `units` from `origin.rallyPoint.units.available`', ->
 			onChange = sinon.spy()
@@ -102,212 +161,58 @@ describe 'Movement', ->
 
 			m.start()
 			assert onChange.calledOnce
-			equalUnits origin.rallyPoint.units.available, new Units axeman: 1, scout: 2
+			assert equalUnits origin.rallyPoint.units.available, new Units axeman: 1, scout: 2
 
-		it 'should `start` itself', ->
+		it 'should emit `start`', ->
+			onStart = sinon.spy()
+			m.on 'start', onStart
 			m.start()
-			assert m.running()
+			assert onStart.calledOnce
 
 
 
-	describe 'event handling', ->
+	describe 'Movement::abort', ->
 
-		spy = null
 		clock = null
-
-		beforeEach ->
-			spy = sinon.spy()
-			clock = sinon.useFakeTimers()
-
+		beforeEach -> clock = sinon.useFakeTimers()
 		afterEach -> clock.restore()
 
-		assertSpyCalledOnceWithM = ->
-			assert spy.calledOnce
-			assert spy.calledWithExactly m
-
-
-
-		describe 'when started', ->
-
-			it 'should emit `outgoing-movement` on `origin`', ->
-				origin.on 'outgoing-movement', spy
-				m.start()
-				assertSpyCalledOnceWithM()
-
-			it 'should emit `outgoing-movement.start` on `origin`', ->
-				origin.on 'outgoing-movement.start', spy
-				m.start()
-				assertSpyCalledOnceWithM()
-
-			it 'should emit `incoming-movement` on `target`', ->
-				target.on 'incoming-movement', spy
-				m.start()
-				assertSpyCalledOnceWithM()
-
-			it 'should emit `incoming-movement.start` on `target`', ->
-				target.on 'incoming-movement.start', spy
-				m.start()
-				assertSpyCalledOnceWithM()
-
-
-
-		describe 'when arrived', ->
-
-			expectedDuration = null
-			beforeEach -> expectedDuration = 5 + m.units.speed() * d
-
-			afterEach -> clock.restore()
-
-			it 'should emit `outgoing-movement.finish` on `origin`', ->
-				origin.on 'outgoing-movement.finish', spy
-				m.start()
-				clock.tick expectedDuration
-				assertSpyCalledOnceWithM()
-
-			it 'should emit `incoming-movement.finish` on `target`', ->
-				target.on 'incoming-movement.finish', spy
-				m.start()
-				clock.tick expectedDuration
-				assertSpyCalledOnceWithM()
-
-
-
-		describe 'when started returning', ->
-
-			expectedDuration = null
-			beforeEach -> expectedDuration = 5 + m.units.speed() * d
-
-			it 'should emit `incoming-movement` on `origin`', ->
-				origin.on 'incoming-movement', spy
-				m.start()
-				clock.tick expectedDuration
-				assertSpyCalledOnceWithM()
-
-			it 'should emit `incoming-movement.start` on `origin`', ->
-				origin.on 'incoming-movement.start', spy
-				m.start()
-				clock.tick expectedDuration
-				assertSpyCalledOnceWithM()
-
-			it 'should emit `outgoing-movement` on `target`', ->
-				target.on 'outgoing-movement', spy
-				m.start()
-				clock.tick expectedDuration
-				assertSpyCalledOnceWithM()
-
-			it 'should emit `outgoing-movement.start` on `target`', ->
-				target.on 'outgoing-movement.start', spy
-				m.start()
-				clock.tick expectedDuration
-				assertSpyCalledOnceWithM()
-
-
-
-		describe 'when arrived, after returned', ->
-
-			expectedDuration = null
-			beforeEach -> expectedDuration = 5 + 2 * m.units.speed() * d
-
-			it 'should emit `incoming-movement.finish` on `origin`', ->
-				origin.on 'incoming-movement.finish', spy
-				m.start()
-				clock.tick expectedDuration
-				assertSpyCalledOnceWithM()
-
-			it 'should emit `outgoing-movement.finish` on `target`', ->
-				target.on 'outgoing-movement.finish', spy
-				m.start()
-				clock.tick expectedDuration
-				assertSpyCalledOnceWithM()
-
-
-
-		describe 'when stopped', ->
-
-			it 'should emit `outgoing-movement.stop` on `origin`', ->
-				origin.on 'outgoing-movement.stop', spy
-				m.start()
-				clock.tick 100
-				m.stop()
-				assertSpyCalledOnceWithM()
-
-			it 'should emit `incoming-movement.stop` on `target`', ->
-				target.on 'incoming-movement.stop', spy
-				m.start()
-				clock.tick 100
-				m.stop()
-				assertSpyCalledOnceWithM()
-
-			it 'should emit `incoming-movement` on `origin`', ->
-				origin.on 'incoming-movement', spy
-				m.start()
-				clock.tick 100
-				m.stop()
-				clock.tick 5
-				assertSpyCalledOnceWithM()
-
-			it 'should emit `incoming-movement.start` on `origin`', ->
-				origin.on 'incoming-movement.start', spy
-				m.start()
-				clock.tick 100
-				m.stop()
-				clock.tick 5
-				assertSpyCalledOnceWithM()
-
-
-
-		describe 'when arrived after stopped', ->
-
-			it 'should emit `incoming-movement.finish` on `origin`', ->
-				origin.on 'incoming-movement.finish', spy
-				m.start()
-				clock.tick 100
-				m.stop()
-				clock.tick 100
-				assertSpyCalledOnceWithM()
-
-
-
-	describe 'Movement::stop', ->
-
-		clock = null
 		expectedDuration = null
+		beforeEach -> expectedDuration = 5 + m.units.speed() * d
 
-		beforeEach ->
-			clock = sinon.useFakeTimers()
-			expectedDuration = 5 + m.units.speed() * d
-
-		afterEach -> clock.restore()
+		abort = null
+		beforeEach -> abort = -> m.abort()
 
 		it 'should throw a `GameError` if `config.movementsTimeToRevoke` is over', ->
-			stop = -> m.stop()
 			m.start()
 			clock.tick 5 + config.movementsTimeToRevoke
-			assert.throws stop, GameError
+			assert.throws abort, GameError
 
-		it 'should throw a `GameError` if `returning`', ->
-			stop = -> m.stop()
+		it.skip 'should throw a `GameError` if `returning`', ->
 			m.start()
 			clock.tick expectedDuration
-			assert.throws stop, GameError
+			assert m.returning()
+			assert.throws abort, GameError
 
-		it 'should correctly set the time to return', ->
+		it.skip 'should correctly set the time to return', ->
+			before = m.origin.rallyPoint.units.available.clone()
 			m.start()
-			clock.tick 100
-			m.stop()
-			assert.strictEqual m.remaining().valueOf(), 100
+			clock.tick 10
+			m.abort()
+			clock.tick 5
+			assert equalUnits m.origin.rallyPoint.units.available, before
 
-		it 'should set `returning` and `stopped` to `true`', ->
+		it 'should emit `abort`', ->
+			onAbort = sinon.spy()
+			m.on 'abort', onAbort
 			m.start()
-			clock.tick 100
-			m.stop()
-			assert.strictEqual m.returning, true
-			assert.strictEqual m.stopped, true
+			m.abort()
+			assert onAbort.calledOnce
 
 
 
 	describe 'Movement::toString', ->
 
-		it 'should return a `String`', ->
+		it.skip 'should return a `String`', ->
 			assert.strictEqual typeof m.toString(), 'string'
 			assert.strictEqual typeof ('' + m), 'string'
