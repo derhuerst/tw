@@ -1,6 +1,6 @@
 GameError =			require '../util/GameError'
-
 Movement =			require '../core/Movement'
+Units =				require '../util/Units'
 
 
 
@@ -14,40 +14,45 @@ class Support extends Movement
 
 
 
-	constructor: ->
+	constructor: (props = {}) ->
 		@isSupport = true
-		super arguments...
+		super props
+
+		@_timeout.on 'start', @_onStart
+		@_timeout.on 'stop', @_onAbort
+		@_timeout.on 'finish', @_onFinish
+
+		if @returning() then [@_to, @_from] = [@origin, @destination]
+		else [@_from, @_to] = [@origin, @destination]
+
+		return this
 
 
 
-	start: ->
-		return if @running()
+	_onStart: => # started at `origin`
+		@_from.emit 'outgoing-movement', this
+		@_from.emit 'outgoing-movement.start', this
+		@_to.emit 'incoming-movement', this
+		@_to.emit 'incoming-movement.start', this
 
-		# todo?
+	_onAbort: => # aborted
+		@origin.emit 'outgoing-movement.abort', this
+		@destination.emit 'incoming-movement.abort', this
 
-		return super()
+		[@_from, @_to] = [@_to, @_from]
 
+	_onFinish: => # back at `origin`, either aborted or returning
+		@_from.emit 'outgoing-movement.finish', this
+		unless @aborted() then @_to.emit 'incoming-movement.finish', this
 
+		if @returning()
+			@origin.rallyPoint.units.away.subtract @units
+			@origin.rallyPoint.units.available.add @units
+		else
+			@destination.rallyPoint.units.supporting[@origin.id] ?= new Units()
+			@destination.rallyPoint.units.supporting[@origin.id].add @units
 
-	onStart: ->
-		super()
-		origin.emit 'outgoing-support', this
-		origin.emit 'outgoing-support.start', this
-		target.emit 'incoming-support', this
-		target.emit 'incoming-support.start', this
-
-
-	onStop: ->
-		super()
-		origin.emit 'outgoing-support.stop', this
-		target.emit 'incoming-support.stop', this
-
-
-	onFinish: ->
-		super()
-		origin.emit 'outgoing-support.finish', this
-		target.emit 'incoming-support.finish', this
-		# todo: add troops to rally point
+		@emit if @returning() then 'finish' else 'support'
 
 
 
