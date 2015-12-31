@@ -18,7 +18,7 @@ class Wall extends Building
 
 	constructor: (props = {}) ->
 		@isWall = true
-		props.type = 'timberCamp'
+		props.type = 'wall'
 		super props
 
 		@basicDefense = new NumericValue @config.basicDefense @level

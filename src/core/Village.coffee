@@ -155,7 +155,7 @@ class Village extends EventEmitter
 
 
 
-	toString: -> "vlg #{@position} #{@points} ##{@id}"
+	toString: -> "vlg #{@position.toString()} #{@points} ##{@id}"
 
 
 
