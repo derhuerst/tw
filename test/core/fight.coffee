@@ -4,6 +4,8 @@ sinon =				require 'sinon'
 fight =				require '../../src/core/fight'
 Units =				require '../../src/util/Units'
 Resources =			require '../../src/util/Resources'
+Village =			require '../../src/core/Village'
+Wall =				require '../../src/buildings/Wall'
 {equalResources} =	require '../helpers'
 
 
@@ -74,10 +76,10 @@ describe 'fight', ->
 			beforeEach -> results = fight.simulate {attacking, defending}
 
 			it 'should return `attackingDead` as `Units`', ->
-				assert results.attackingDead instanceof Units
+				assert results.attackingDead.isUnits
 
 			it 'should return `defendingDead` as `Units`', ->
-				assert results.defendingDead instanceof Units
+				assert results.defendingDead.isUnits
 
 			it 'should return `wallNewLevel` as `Number`', ->
 				assert.strictEqual typeof results.wallNewLevel, 'number'
@@ -86,7 +88,14 @@ describe 'fight', ->
 				assert.strictEqual typeof results.catapultsTargetNewLevel, 'number'
 
 		it.skip 'should compute scouts independently', ->
-			# todo
+			# the attacking units are going to die, except scouts
+			attacking.spearFighter = 1
+			attacking.scout = 1
+			console.log 'attacking', attacking
+			defending.spearFighter = 1000
+			console.log 'defending', defending
+			results = fight.simulate {attacking, defending}
+			assert.strictEqual results.attackingDead.scout, 0
 
 		it.skip 'should compute damage by rams', ->
 			# todo
@@ -105,17 +114,17 @@ describe 'fight', ->
 	describe 'fight', ->
 
 		origin = null
-		target = null
+		destination = null
 		units = null
 		haul = null
 		props = null
 
 		beforeEach ->
 			origin = new Village()
-			target = new Village()
+			destination = new Village()
 			units = new Units axeman: 1, scout: 1
 			haul = new Resources()
-			props = {origin, target, type: 'attack', units, haul}
+			props = {origin, destination, type: 'attack', units, haul}
 
 		it 'shoud subtract from the attack\'s `units`', ->
 			spy = sinon.spy units, 'subtract'
@@ -129,16 +138,16 @@ describe 'fight', ->
 			assert spy.calledOnce
 			assert spy.firstCall.args[0].isUnits
 
-		it.skip 'shoud subtract from `target.rallyPoint.units.available`', ->
+		it.skip 'shoud subtract from `destination.rallyPoint.units.available`', ->
 			# todo
 
-		it.skip 'shoud subtract from `target.rallyPoint.units.supporting`', ->
+		it.skip 'shoud subtract from `destination.rallyPoint.units.supporting`', ->
 			# todo
 
 		it.skip 'shoud remove the wall if destroyed by rams', ->
 			onDeleteBuilding = sinon.spy()
-			target.on 'delete-building', onDeleteBuilding
-			wall = target.wall
+			destination.on 'delete-building', onDeleteBuilding
+			wall = destination.wall
 			props.units.ram = 1000
 			fight.fight props
 			assert onDeleteBuilding.calledOnce
@@ -146,16 +155,16 @@ describe 'fight', ->
 
 		it.skip 'shoud reduce the level of the wall if attacked by rams', ->
 			wallLevelOnChange = sinon.spy()
-			target.addBuilding new Wall level: 10
-			target.wall.level.on 'change', wallLevelOnChange
+			destination.addBuilding new Wall level: 10
+			destination.wall.level.on 'change', wallLevelOnChange
 			props.units.ram = 1
 			fight.fight props
 			assert wallLevelOnChange.calledOnce
 
 		it.skip 'shoud remove the building destroyed by catapults', ->
 			onDeleteBuilding = sinon.spy()
-			target.on 'delete-building', onDeleteBuilding
-			wall = target.wall
+			destination.on 'delete-building', onDeleteBuilding
+			wall = destination.wall
 			props.catapultsTarget = 'wall'
 			props.units.catapults = 100
 			fight.fight props
@@ -164,8 +173,8 @@ describe 'fight', ->
 
 		it.skip 'shoud reduce the level of the building attacked by catapults', ->
 			wallLevelOnChange = sinon.spy()
-			target.addBuilding new Wall level: 10
-			target.wall.level.on 'change', wallLevelOnChange
+			destination.addBuilding new Wall level: 10
+			destination.wall.level.on 'change', wallLevelOnChange
 			props.catapultsTarget = 'wall'
 			props.units.catapults = 10
 			fight.fight props

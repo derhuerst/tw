@@ -107,15 +107,15 @@ simulate = (props = {}) ->
 
 
 
-fight = (props) ->
-	catapultsTarget = if props.target[props.catapultsTarget]?.isBuilding
-		props.target[props.catapultsTarget]
+fight = (props = {}) ->
+	catapultsTarget = if props.destination[props.catapultsTarget]?.isBuilding
+		props.destination[props.catapultsTarget]
 	else null
-	wall = if props.target.wall?.isBuilding then props.target.wall else null
+	wall = if props.destination.wall?.isBuilding then props.destination.wall else null
 
 	results = simulate
 		attacking:				props.units
-		defending:				props.target.rallyPoint.allAvailableUnits()
+		defending:				props.destination.rallyPoint.allAvailableUnits()
 		wallBasicDefense:		0 + wall?.basicDefense or 0
 		wallDefenseFactor:		0 + wall?.defenseFactor or 1
 		catapultsTargetLevel:	0 + catapultsTarget?.level or 0
@@ -126,24 +126,24 @@ fight = (props) ->
 	props.origin.rallyPoint.units.away.subtract results.attackingDead
 
 	# results.defendingDead
-	# todo: props.target.rallyPoint.units.available
-	# todo: props.target.rallyPoint.units.supporting
+	# todo: props.destination.rallyPoint.units.available
+	# todo: props.destination.rallyPoint.units.supporting
 
 	# results.wallNewLevel
 	if wall?.isBuilding
-		if results.wallNewLevel is 0 then props.target.deleteBuilding wall
+		if results.wallNewLevel is 0 then props.destination.deleteBuilding wall
 		else wall.level.reset results.wallNewLevel
 		# todo: what about minimal levels?
 
 	if catapultsTarget?.isBuilding
 		if results.catapultsTargetNewLevel is 0
-			props.target.deleteBuilding catapultsTarget
+			props.destination.deleteBuilding catapultsTarget
 		else catapultsTarget.level.reset results.catapultsTargetNewLevel
 		# todo: what about minimal levels?
 
 	# results.haul
-	hauled = haul props.target.warehouse.stocks.resources(), props.units.haul()
-	props.target.warehouse.stocks.resources().subtract hauled
+	hauled = haul props.destination.warehouse.stocks.resources(), props.units.haul()
+	props.destination.warehouse.stocks.resources().subtract hauled
 	props.haul.add hauled
 
 
