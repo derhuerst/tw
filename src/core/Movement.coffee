@@ -1,23 +1,40 @@
+{EventEmitter} =	require 'events'
+
 Timeout =			require '../util/Timeout'
 GameError =			require '../util/GameError'
-Units =				require '../util/Units'
 
 
 
 
 
-class Movement extends Timeout
+enoughUnits = ->
+	if @units.moreThan @origin.rallyPoint.units.available
+		throw new GameError "There are not enough units available."
+
+notReturning = ->
+	if @returning() then throw new GameError "The units are already on their way home."
+
+timeToRevoke = ->
+	passed = @_timeout.duration() - @_timeout.remaining()
+	limit = @origin.rallyPoint.config.movementsTimeToRevoke
+	if passed > limit
+		throw new GameError "You can only call units back for #{limit}."
+
+
+
+class Movement extends EventEmitter
 
 
 
 	# isMovement
 
 	# origin
-	# target
+	# destination
 	# units
 
-	# returning
-	# stopped
+	# _aborted
+
+	# _timeout
 
 
 
@@ -25,90 +42,79 @@ class Movement extends Timeout
 		@isMovement = true
 		super()
 
-		if props.origin and props.origin.isVillage is true then @origin = props.origin
+		if props.origin?.isVillage is true then @origin = props.origin
 		else throw new ReferenceError "Missing `origin` argument."
-		if props.target and props.target.isVillage is true then @target = props.target
-		else throw new ReferenceError "Missing `target` argument."
 
-		if props.units and props.units.isUnits is true then @units = props.units
+		if props.destination?.isVillage is true then @destination = props.destination
+		else throw new ReferenceError "Missing `destination` argument."
+
+		if @destination is @origin
+			throw new GameError "The destination is the origin."
+
+		if props.units?.isUnits is true then @units = props.units
 		else throw new ReferenceError "Missing `units` argument."
 
-		@returning = false
-		@stopped = false
+		@_returning = props.returning is true
+		@_aborted = false
 
-		@on 'start', @_onStart
-		@on 'stop', @_onStop
-		@on 'finish', @_onFinish
+		@_timeout = new Timeout()
+
+		@_startRequirements = [enoughUnits]
+		@_abortRequirements = [notReturning, timeToRevoke]
+
+		return this
 
 
+
+	running: -> @_timeout.running()
+	returning: -> @_returning
+	aborted: -> @_aborted
+
+
+
+	_startRequirements: null
 
 	start: ->
 		return if @running()
+		requirement.call this for requirement in @_startRequirements
 
-		if @target is @origin
-			throw new GameError "The target is the origin."
-
-		unless @origin.rallyPoint.units.available.moreThan @units
-			throw new GameError "Not enough units."
 		@origin.rallyPoint.units.available.subtract @units
 		@origin.rallyPoint.units.away.add @units # todo: improve this?
+		@_aborted = false
 
-		@duration().reset @units.speed().multiply(@origin.position.distanceTo @target.position).valueOf()
+		distance = 0 + @origin.position.distanceTo @destination.position
+		@_timeout.duration().reset @units.speed().multiply distance
+		@_timeout.start()
 
-		return super()
-
-	stop: ->
-		passed = @duration() - @remaining()
-
-		if @returning
-			throw new GameError "The units are already on their way home."
-		if passed > @origin.rallyPoint.config.movementsTimeToRevoke
-			throw new GameError "You can only call units back for #{@origin.rallyPoint.config.movementsTimeToRevoke}."
-
-		super()
-		@returning = true
-		@stopped = true
-		@duration().reset passed
-		Timeout.prototype.start.call this # todo: this is ugly.
+		@emit 'start'
+		return this
 
 
 
-	_onStart: =>
-		# todo: improve event names?
-		#console.log '_onStart', '@returning', @returning, '@stopped', @stopped
-		if @returning then [to, from] = [@origin, @target]
-		else [from, to] = [@origin, @target]
-		if not @stopped
-			from.emit 'outgoing-movement', this
-			from.emit 'outgoing-movement.start', this
-		to.emit 'incoming-movement', this
-		to.emit 'incoming-movement.start', this
+	_abortRequirements: null
 
-	_onStop: =>
-		# todo: improve event names?
-		#console.log '_onStop', '@returning', @returning, '@stopped', @stopped
-		@origin.emit 'outgoing-movement.stop', this
-		@target.emit 'incoming-movement.stop', this
+	abort: ->
+		return unless @running()
+		return if @aborted()
+		requirement.call this for requirement in @_abortRequirements
 
-	_onFinish: =>
-		# todo: improve event names?
-		#console.log '_onFinish', '@returning', @returning, '@stopped', @stopped
-		if @returning then [to, from] = [@origin, @target]
-		else [from, to] = [@origin, @target]
-		if not @stopped then from.emit 'outgoing-movement.finish', this
-		to.emit 'incoming-movement.finish', this
+		@_aborted = true
+		@_returning = true
 
-		if not @returning
-			@returning = true
-			Timeout.prototype.start.call this # todo: this is ugly.
+		@_timeout.stop()
+		@_timeout.duration().reset @_timeout.duration() - @_timeout.remaining()
+		@_timeout.start()
+
+		@emit 'abort'
+		return this
 
 
 
 	toString: -> [
-		"(#{@units})"
-		@origin.toString()
-		if @returning then '<-' else '->'
-		@target.toString()
+		@units
+		@origin
+		if @returning() then '<-' else '->'
+		@destination
 	].join ' '
 
 
