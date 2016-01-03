@@ -1,12 +1,15 @@
+proxyquire =		require 'proxyquire'
 assert =			require 'assert'
 sinon =				require 'sinon'
 
 Upgrade =			require '../../src/core/Upgrade'
 Village =			require '../../src/core/Village'
 Timeout =			require '../../src/util/Timeout'
-config =			require '../../config/buildings/headquarter'
 GameError =			require '../../src/util/GameError'
 {equalResources} =	require '../../test/helpers'
+
+Village =			proxyquire '../../src/core/Village',
+	'../../config/buildings':	stubbedConfig = {}
 
 
 
@@ -74,16 +77,11 @@ describe 'Upgrade', ->
 			building.village.warehouse.stocks.resources().reset 10
 			assert.throws start, GameError
 
-		it 'should subtract the neede workers from the village', ->
-			# todo: mock building config
-			onChange = sinon.spy()
-			village.farm.workers.on 'change', onChange
-
+		it 'should subtract the workers needed from the village', ->
+			stubbedConfig.custom = workers: (lvl) -> 0 + lvl
+			before = 0 + village.farm.workers
 			start()
-			assert onChange.calledOnce
-			expected = config.workers(1) - config.workers(2)
-			actual = onChange.firstCall.args[1] - onChange.firstCall.args[0]
-			assert.strictEqual actual, expected
+			assert.strictEqual 0 + village.farm.workers, before - 1
 
 		it 'should emit `start`', ->
 			onStart = sinon.spy()
