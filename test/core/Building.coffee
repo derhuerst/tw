@@ -42,7 +42,8 @@ describe 'Building', ->
 			b = new Building type: 'statue', level: 2
 			assert.strictEqual 0 + b.level, 2
 
-		it 'should use `initialLevel` as a fallback for the `level`', ->
+		it.skip 'should use `initialLevel` as a fallback for the `level`', ->
+			# todo: mock config first
 			assert.strictEqual 0 + b.level, config.buildings['statue'].initialLevel
 
 		it.skip 'should use `1` as a fallback for the `initialLevel`', ->

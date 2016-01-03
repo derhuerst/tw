@@ -1,13 +1,17 @@
-class GameError extends Error
+# We use the classical JavaScript inheritance pattern for greater flexibility here.
+# See http://stackoverflow.com/a/5251506
 
+GameError = (message = '') ->
+	@isGameError = true
 
+	# mimic the `Error` class
+	@name = 'GameError'
+	@message = message
+	@stack = new Error().stack
 
-	# isGameError
+	return this
 
-
-
-	constructor: ->
-		@isGameError = true
+GameError.prototype = new Error()
 
 
 

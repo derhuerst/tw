@@ -70,12 +70,13 @@ class Headquarter extends Building
 
 
 	anticipatedLevel: (building) =>
-		@constructions.timeouts()
+		return 0 unless building?.isBuilding
+		return @constructions.timeouts()
 		.filter (construction) -> construction.building is building
 		.reduce (level, construction) ->
 			if construction.mode is 'upgrade' then result++
 			else if construction.mode is 'downgrade' then result--
-		, building.level # initial value for `level`
+		, 0 + building.level # initial value for `level`
 
 
 

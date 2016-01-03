@@ -118,8 +118,7 @@ class Village extends EventEmitter
 		@[building.type] = building
 		building.village = this
 
-		building.on 'upgrade', @_buildingOnConstruction
-		building.on 'downgrade', @_buildingOnConstruction
+		building.level.on 'change', @_buildingLevelOnChange
 		@_recomputePoints()
 
 		@emit 'add-building', building
@@ -134,8 +133,7 @@ class Village extends EventEmitter
 		@[building.type] = null
 		building.village = null
 
-		building.removeListener 'upgrade', @_buildingOnConstruction
-		building.removeListener 'downgrade', @_buildingOnConstruction
+		building.level.removeListener 'change', @_buildingLevelOnChange
 		@_recomputePoints()
 
 		@emit 'delete-building', building
@@ -149,9 +147,7 @@ class Village extends EventEmitter
 			result += @[type]?.points() or 0
 		@points.reset result
 
-	_buildingOnConstruction: (construction) =>
-		@emit "#{construction.mode}-building", construction
-		@_recomputePoints()
+	_buildingLevelOnChange: => @_recomputePoints()
 
 
 
