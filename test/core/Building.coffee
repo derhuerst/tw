@@ -1,9 +1,10 @@
+proxyquire =		require 'proxyquire'
 assert =			require 'assert'
 {EventEmitter} =	require 'events'
 sinon =				require 'sinon'
 
-config =			require '../../config'
-Building =			require '../../src/core/Building'
+Building =			proxyquire '../../src/core/Building',
+	'../../config/buildings':	stubbedConfig = {}
 
 
 
@@ -11,10 +12,11 @@ Building =			require '../../src/core/Building'
 
 describe 'Building', ->
 
-	# todo: mock buildings config
+	beforeEach -> stubbedConfig.custom =
+		initialLevel: 1
 
 	b = null
-	beforeEach -> b = new Building type: 'statue'
+	beforeEach -> b = new Building type: 'custom'
 
 
 	it '`isBuilding`', ->
@@ -27,40 +29,43 @@ describe 'Building', ->
 
 	describe 'Resources::constructor', ->
 
-		# todo: mock buildings config
-
 		it 'should set `id` to the given one', ->
-			b = new Building id: 'building-1', type: 'statue'
+			b = new Building id: 'building-1', type: 'custom'
 			assert.strictEqual b.id, 'building-1'
 
 		it 'should generate a random `id` as fallback', ->
 			assert.strictEqual typeof b.id, 'string'
 
 		it 'should set `config`', ->
-			assert.strictEqual b.config, config.buildings['statue']
+			assert.strictEqual b.config, stubbedConfig.custom
 
 		it 'should set `level` to the passed one', ->
-			b = new Building type: 'statue', level: 2
+			b = new Building type: 'custom', level: 2
 			assert.strictEqual 0 + b.level, 2
 
-		it.skip 'should use `initialLevel` as a fallback for the `level`', ->
-			# todo: mock config first
-			assert.strictEqual 0 + b.level, config.buildings['statue'].initialLevel
+		it 'should use `initialLevel` as a fallback for the `level`', ->
+			stubbedConfig.custom.initialLevel = 3
+			b = new Building type: 'custom'
+			assert.strictEqual 0 + b.level, stubbedConfig.custom.initialLevel
 
-		it.skip 'should use `1` as a fallback for the `initialLevel`', ->
-			# todo: mock config first
+		it 'should use `1` as a fallback for the `initialLevel`', ->
+			stubbedConfig.custom = {}
+			b = new Building type: 'custom'
+			assert.strictEqual 0 + b.level, 1
 
 		it 'should set `village` to the given one', ->
 			v = {}
-			b = new Building type: 'statue', village: v
+			b = new Building type: 'custom', village: v
 			assert.strictEqual b.village, v
 
 
 
 	describe 'Resources::points', ->
 
+		beforeEach -> stubbedConfig.custom.points = () -> 0
+
 		beforeEach ->
-			b = new Building type: 'statue', level: 2
+			b = new Building type: 'custom', level: 2
 			b.config.points = sinon.spy b.config, 'points'
 
 		afterEach -> b.config.points.restore()
@@ -72,17 +77,7 @@ describe 'Building', ->
 		it 'should call `config.points` with the `level`', ->
 			b.points()
 			assert b.config.points.calledOnce
-			assert.strictEqual 0 + b.config.points.firstCall.args[0], 2
-
-		it 'should, after an upgrade, call `config.points` with the `level`', ->
-			b.points()
-			assert b.config.points.calledOnce
-			assert.strictEqual 0 + b.config.points.firstCall.args[0], 2
-
-			b.level++
-			b.points()
-			assert b.config.points.calledTwice
-			assert.strictEqual 0 + b.config.points.secondCall.args[0], 3
+			assert b.config.points.calledWithExactly b.level
 
 
 
