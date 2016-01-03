@@ -1,5 +1,6 @@
 Timeout =			require '../util/Timeout'
 GameError =			require '../util/GameError'
+Resources =			require '../util/Resources'
 
 
 
@@ -13,57 +14,70 @@ class Upgrade extends Timeout
 
 	# building
 
-	# config
+	# _targetLevel
+	# _resources
+	# _workers
 
 
 
 	constructor: (building) ->
 		@isUpgrade = true
-
-		@building = building or null
-
-		@on 'start', @onStart
-		@on 'stop', @onStop
-		@on 'finish', @onFinish
-
 		super()
+
+		if building?.isBuilding then @building = building or null
+		else throw new ReferenceError 'Missing `building` argument.'
+
+		@_targetLevel = 1 + @building.village.headquarter.anticipatedLevel @building
+		@_resources = new Resources
+			wood: @building.config.costs.wood @_targetLevel
+			clay: @building.config.costs.clay @_targetLevel
+			iron: @building.config.costs.iron @_targetLevel
+		@_workers = @building.config.workers(@_targetLevel) -
+			@building.config.workers(@_targetLevel - 1)
+
+		@on 'start', @_onStart
+		@on 'stop', @_onStop
+		@on 'finish', @_onFinish
+
+		return this
 
 
 
 	start: ->
-		return if @running()
+		return this if @running()
 
-		if @building.level >= @building.config.maximumLevel
-			throw new GameError "#{@building} cannot be upgraded any further."
+		targetLevel = 1 + @building.village.headquarter.anticipatedLevel @building
+		if targetLevel isnt @_targetLevel
+			throw new GameError "This #{@building.config.title} cannot be \
+			upgraded to level #{@_targetLevel} anymore."
 
-		@config = @building.config.levels[@building.level.value + 1]
+		if @_targetLevel > @building.config.maximalLevel
+			throw new GameError "This #{@building} cannot be upgraded any further."
 
-		if @building.village.warehouse.stocks.update().moreThan @config.resources
-			@building.village.warehouse.stocks.subtract @config.resources or 0
-		else
-			throw new GameError "Not enough resources to upgrade #{this}."
-		# todo: move to constructor
+		if @building.village.warehouse.stocks.resources().moreThan @_resources
+			@building.village.warehouse.stocks.resources().subtract @_resources
+		else throw new GameError "Not enough resources to upgrade #{this}."
 
-		@building.village.farm.workers.subtract @config.workers or 0
+		@building.village.farm.workers.subtract @_workers
 
-		@duration.reset @config.duration.clone().multiply @building.village.headquarter.timeFactor
+		duration = @building.config.costs.time @_targetLevel
+		@duration().reset duration * @building.village.headquarter.timeFactor
+
 		return super()
 
 
 
-	onStart: ->
+	_onStart: =>
 		@building.emit 'upgrade.start', this
 
-
-	onStop: ->
-		@building.village.warehouse.stocks.add @config.resources
-		@building.farm.workers.add @config.workers
+	_onStop: =>
+		# todo: run timeout with passed time, see core/Movement
+		@building.village.warehouse.stocks.resources().add @_resources
+		@building.village.farm.workers.add @_workers
 		@building.emit 'upgrade.stop', this
 
-
-	onFinish: ->
+	_onFinish: =>
 		@building.level.add 1
-		@building.points.add @config.points
 		@building.emit 'upgrade.finish', this
 		@building.emit 'upgrade', this
 
