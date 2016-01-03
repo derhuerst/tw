@@ -24,6 +24,10 @@ class TimeoutQueue extends EventEmitter
 
 
 
+	timeouts: -> @_timeouts
+
+
+
 	_removePreviousTimeout: =>
 		timeout = @_timeouts.shift()
 		@emit 'progress', timeout

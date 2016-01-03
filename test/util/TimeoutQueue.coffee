@@ -35,6 +35,18 @@ describe 'TimeoutQueue', ->
 
 
 
+	describe 'TimeoutQueue::timeouts', ->
+
+		it 'should return an empty `Array` in the beginning', ->
+			assert.deepEqual a.timeouts(), []
+
+		it 'should return the timeouts added', ->
+			a.add t1
+			a.add t2
+			assert.deepEqual a.timeouts(), [t1, t2]
+
+
+
 	describe 'TimeoutQueue::add', ->
 
 		it 'should return the instance', ->
