@@ -38,8 +38,15 @@ describe 'Building', ->
 		it 'should set `config`', ->
 			assert.strictEqual b.config, config.buildings['statue']
 
-		it 'should set `level` to the `initialLevel` from the config', ->
+		it 'should set `level` to the passed one', ->
+			b = new Building type: 'statue', level: 2
+			assert.strictEqual 0 + b.level, 2
+
+		it 'should use `initialLevel` as a fallback for the `level`', ->
 			assert.strictEqual 0 + b.level, config.buildings['statue'].initialLevel
+
+		it.skip 'should use `1` as a fallback for the `initialLevel`', ->
+			# todo: mock config first
 
 		it 'should set `village` to the given one', ->
 			v = {}

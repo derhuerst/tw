@@ -34,7 +34,7 @@ class Building extends EventEmitter
 		@config = config[@type] or null
 		# todo: throw error if no config
 
-		@level = new NumericValue props.level or @config.initialLevel or 0
+		@level = new NumericValue props.level or @config.initialLevel or 1
 		@emit 'upgrade'
 
 		@village = props.village or null
