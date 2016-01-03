@@ -14,8 +14,8 @@ module.exports =
 	initialLevel: 0
 	minimalLevel: 0
 	maximalLevel: 25
-	points: (lvl) -> Math.round 16 * 1.2000019829319 ^ (lvl - 1)
-	workers: (lvl) -> Math.round 7 * 1.17 ^ (lvl - 1)
+	points: (lvl) -> if lvl < 1 then 0 else Math.round 16 * 1.2000019829319 ^ (lvl - 1)
+	workers: (lvl) -> if lvl < 1 then 0 else Math.round 7 * 1.17 ^ (lvl - 1)
 	costs:
 		wood: (lvl) -> Math.round 200 * 1.26 ^ (lvl - 1)
 		clay: (lvl) -> Math.round 170 * 1.28 ^ (lvl - 1)
