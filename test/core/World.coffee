@@ -28,6 +28,7 @@ describe 'World', ->
 			id:			'player-1'
 			villages:	[v]
 
+
 	it '`isWorld`', ->
 		assert.strictEqual w.isWorld, true
 
@@ -68,6 +69,7 @@ describe 'World', ->
 
 		beforeEach -> w.addVillage v
 
+
 		it 'should return `null` for a non-existent `Village`', ->
 			assert.strictEqual w.getVillage('non-existent'), null
 
@@ -82,6 +84,7 @@ describe 'World', ->
 	describe 'World::deleteVillage', ->
 
 		beforeEach -> w.addVillage v
+
 
 		it 'should return the instance', ->
 			assert.strictEqual w.deleteVillage(), w
@@ -142,6 +145,7 @@ describe 'World', ->
 
 		beforeEach -> w.addPlayer p
 
+
 		it 'should return `null` for a non-existent `Player`', ->
 			assert.strictEqual w.getPlayer('non-existent'), null
 
@@ -153,6 +157,7 @@ describe 'World', ->
 	describe 'World::deletePlayer', ->
 
 		beforeEach -> w.addPlayer p
+
 
 		it 'should return the instance', ->
 			assert.strictEqual w.deletePlayer(), w
@@ -192,6 +197,7 @@ describe 'World', ->
 
 		v2 = null
 		beforeEach -> v2 = w.createVillage()
+
 
 		it 'should return a `Village`', ->
 			assert v2 instanceof Village
@@ -238,6 +244,7 @@ describe 'World', ->
 
 		p2 = null
 		beforeEach -> p2 = w.createPlayer()
+
 
 		it 'should return a `Player`', ->
 			assert p2 instanceof Player

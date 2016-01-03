@@ -28,6 +28,7 @@ describe 'Attack', ->
 		units = new Units axeman: 1, scout: 1
 		a = new Attack {origin, destination, units}
 
+
 	it '`isAttack`', ->
 		assert.strictEqual a.isAttack, true
 
@@ -47,6 +48,7 @@ describe 'Attack', ->
 
 		start = null
 		beforeEach -> start = -> a.start()
+
 
 		it 'should throw a `GameError` if noblemen would travel further than `50`', ->
 			a.units.nobleman = 1
@@ -103,6 +105,7 @@ describe 'Attack', ->
 			expectedDuration = null
 			beforeEach -> expectedDuration = 5 + a.units.speed() * d
 
+
 			it 'should emit `outgoing-movement.finish` on `origin`', ->
 				origin.on 'outgoing-movement.finish', spy
 				a.start()
@@ -156,6 +159,7 @@ describe 'Attack', ->
 			expectedDuration = null
 			beforeEach -> expectedDuration = 5 + a.units.speed() * d
 
+
 			it 'should emit `incoming-movement` on `origin`', ->
 				origin.on 'incoming-movement', spy
 				a.start()
@@ -180,10 +184,13 @@ describe 'Attack', ->
 				clock.tick expectedDuration
 				assertSpyCalledOnceWithA()
 
+
+
 		describe 'when arriving at `origin`', ->
 
 			expectedDuration = null
 			beforeEach -> expectedDuration = 5 + 2 * a.units.speed() * d
+
 
 			it 'should emit `incoming-movement.finish` on `origin`', ->
 				origin.on 'incoming-movement.finish', spy

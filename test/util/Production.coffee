@@ -23,6 +23,7 @@ describe 'Production', ->
 		r1 = new Resources {wood: 100, clay: 200, iron: 300}
 		a = new Production r1, d1
 
+
 	it '`isProduction`', ->
 		assert.strictEqual a.isProduction, true
 
@@ -64,6 +65,7 @@ describe 'Production', ->
 
 		afterEach -> spy.reset()
 
+
 		it 'should properly add a `Production` with different `resources`', ->
 			a.add b
 			assert.strictEqual a.resources.wood, 400
@@ -97,6 +99,7 @@ describe 'Production', ->
 
 		afterEach -> spy.reset()
 
+
 		it 'should properly subtract a `Production` with different `resources`', ->
 			a.subtract b
 			assert.strictEqual a.resources.wood, -200
@@ -129,6 +132,7 @@ describe 'Production', ->
 			c = a.resourcesDuring new Duration '30s'
 			d = a.resourcesDuring 3 * 60 * 1000
 
+
 		it '`isResources`', ->
 			assert.strictEqual b.isResources, true
 			assert.strictEqual c.isResources, true
@@ -155,6 +159,7 @@ describe 'Production', ->
 			b = a.durationToGet r1.clone().multiply 2
 			c = a.durationToGet r1.clone().multiply 1 / 2
 
+
 		it '`isDuration`', ->
 			assert.strictEqual b.isDuration, true
 			assert.strictEqual c.isDuration, true
@@ -169,6 +174,7 @@ describe 'Production', ->
 
 		b = null
 		beforeEach -> b = a.clone()
+
 
 		it 'should properly instanciate the clone', ->
 			assert.strictEqual b.isProduction, true

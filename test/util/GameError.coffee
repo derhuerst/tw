@@ -9,9 +9,9 @@ GameError =		require '../../src/util/GameError'
 describe 'GameError', ->
 
 	myGameError = null
+	beforeEach -> myGameError = new GameError 'test message'
 
-	beforeEach ->
-		myGameError = new GameError 'test message'
+
 
 	it '`isGameError`', ->
 		assert.strictEqual myGameError.isGameError, true

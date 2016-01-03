@@ -30,6 +30,7 @@ describe 'Movement', ->
 		units = new Units axeman: 1, scout: 1
 		m = new Movement {origin, destination, units}
 
+
 	it '`isMovement`', ->
 		assert.strictEqual m.isMovement, true
 
@@ -95,6 +96,7 @@ describe 'Movement', ->
 		beforeEach -> clock = sinon.useFakeTimers()
 		afterEach -> clock.restore()
 
+
 		it 'should return `false` on the way to `destination`', ->
 			m.start()
 			clock.tick 100
@@ -117,6 +119,7 @@ describe 'Movement', ->
 		clock = null
 		beforeEach -> clock = sinon.useFakeTimers()
 		afterEach -> clock.restore()
+
 
 		it 'should return `false` on the way to `destination`', ->
 			m.start()
@@ -142,6 +145,7 @@ describe 'Movement', ->
 
 		start = null
 		beforeEach -> start = -> m.start()
+
 
 		it 'should throw a `GameError` if there are not enough units in `origin`', ->
 			m.origin.rallyPoint.units.available.reset 0
@@ -182,6 +186,7 @@ describe 'Movement', ->
 
 		abort = null
 		beforeEach -> abort = -> m.abort()
+
 
 		it 'should throw a `GameError` if `config.movementsTimeToRevoke` is over', ->
 			m.start()

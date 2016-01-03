@@ -23,6 +23,7 @@ describe 'Player', ->
 			id:			'village-1'
 			position:	new Vector 1, 1
 
+
 	it '`isPlayer`', ->
 		assert.strictEqual p.isPlayer, true
 
@@ -74,6 +75,7 @@ describe 'Player', ->
 
 		beforeEach -> p.addVillage v
 
+
 		it 'should return `null` for a non-existent `Village`', ->
 			assert.strictEqual p.getVillage('non-existent'), null
 
@@ -85,6 +87,7 @@ describe 'Player', ->
 	describe 'Player::deleteVillage', ->
 
 		beforeEach -> p.addVillage v
+
 
 		it 'should return the instance', ->
 			assert.strictEqual p.deleteVillage(), p

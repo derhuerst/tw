@@ -16,6 +16,7 @@ describe 'Building', ->
 	b = null
 	beforeEach -> b = new Building type: 'statue'
 
+
 	it '`isBuilding`', ->
 		assert.strictEqual b.isBuilding, true
 
@@ -63,6 +64,7 @@ describe 'Building', ->
 			b.config.points = sinon.spy b.config, 'points'
 
 		afterEach -> b.config.points.restore()
+
 
 		it 'should return a `Number`', ->
 			assert.strictEqual typeof b.points(), 'number'

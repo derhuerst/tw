@@ -28,6 +28,7 @@ describe 'Support', ->
 		units = new Units axeman: 1, scout: 1
 		s = new Support {origin, destination, units}
 
+
 	it '`isSupport`', ->
 		assert.strictEqual s.isSupport, true
 
@@ -79,6 +80,7 @@ describe 'Support', ->
 
 			expectedDuration = null
 			beforeEach -> expectedDuration = 5 + s.units.speed() * d
+
 
 			it 'should emit `outgoing-movement.finish` on `origin`', ->
 				origin.on 'outgoing-movement.finish', spy
@@ -150,6 +152,7 @@ describe 'Support', ->
 			expectedDuration = null
 			beforeEach -> expectedDuration = 5 + s.units.speed() * d
 
+
 			it 'should emit `incoming-movement` on `origin`', ->
 				origin.on 'incoming-movement', spy
 				s.start()
@@ -178,6 +181,7 @@ describe 'Support', ->
 
 			expectedDuration = null
 			beforeEach -> expectedDuration = 5 + 2 * s.units.speed() * d
+
 
 			it 'should emit `incoming-movement.finish` on `origin`', ->
 				origin.on 'incoming-movement.finish', spy

@@ -23,6 +23,7 @@ describe 'Timeout', ->
 		a.stop()
 		spy.reset()
 
+
 	it '`isTimeout`', ->
 		assert.strictEqual a.isTimeout, true
 
@@ -35,6 +36,7 @@ describe 'Timeout', ->
 
 		b = null
 		beforeEach -> b = new Timeout new Duration 100
+
 
 		it 'should return the duration passed to the constructor', ->
 			assert.strictEqual a.duration() + 0, 100
@@ -92,6 +94,7 @@ describe 'Timeout', ->
 
 		beforeEach -> a.start()
 
+
 		it 'should return `true` for started timeouts', ->
 			assert.strictEqual a.running(), true
 
@@ -136,7 +139,8 @@ describe 'Timeout', ->
 
 		beforeEach -> a = new Timeout 500
 
-		it 'should return `0` in the non-running timeout', ->
+
+		it 'should return `0` for a non-running timeout', ->
 			assert.strictEqual a.remaining(), 0
 			a.start();a.stop()
 			assert.strictEqual a.remaining(), 0
@@ -175,6 +179,7 @@ describe 'Timeout', ->
 		beforeEach ->
 			a = new Timeout 2, 'test'
 			b = a.clone()
+
 
 		it 'should properly instanciate the clone', ->
 			assert.strictEqual b.isTimeout, true

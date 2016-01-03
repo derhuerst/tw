@@ -13,6 +13,7 @@ describe 'NumericValue', ->
 	onChange = sinon.spy()
 	afterEach -> onChange.reset()
 
+
 	it '`isNumericValue`', ->
 		a = new NumericValue()
 		assert.strictEqual a.isNumericValue, true
@@ -60,6 +61,7 @@ describe 'NumericValue', ->
 			b = 2
 			a.on 'change', onChange
 
+
 		it 'should return the instance', ->
 			assert.strictEqual a.reset(b), a
 			assert.strictEqual a.reset(), a
@@ -90,6 +92,7 @@ describe 'NumericValue', ->
 			a = new NumericValue 1, 'test'
 			a.on 'change', onChange
 
+
 		it 'should return the instance', ->
 			assert.strictEqual a.add(2), a
 
@@ -99,11 +102,14 @@ describe 'NumericValue', ->
 			assert.strictEqual a.value, oldValue
 			assert onChange.callCount is 0
 
+
+
 		describe 'when adding a `Number`', ->
 
 			beforeEach ->
 				b = 2
 				expected = a + b
+
 
 			it 'should set `value` correctly', ->
 				a.add b
@@ -115,9 +121,12 @@ describe 'NumericValue', ->
 				assert onChange.calledOnce
 				assert onChange.calledWithExactly oldValue, a.value
 
+
+
 		describe 'when adding a `NumericValue`', ->
 
 			beforeEach -> b = new NumericValue 2
+
 
 			it 'should set `value` correctly', ->
 				a.add b
@@ -140,6 +149,7 @@ describe 'NumericValue', ->
 			a = new NumericValue 1, 'test'
 			a.on 'change', onChange
 			b = 2
+
 
 		it 'should return the instance', ->
 			assert.strictEqual a.subtract(2), a
@@ -168,6 +178,7 @@ describe 'NumericValue', ->
 			a = new NumericValue 1, 'test'
 			a.on 'change', onChange
 
+
 		it 'should return the instance', ->
 			assert.strictEqual a.multiply(2), a
 
@@ -177,11 +188,14 @@ describe 'NumericValue', ->
 			assert.strictEqual a.value, oldValue
 			assert onChange.callCount is 0
 
+
+
 		describe 'when multiplying with a `Number`', ->
 
 			beforeEach ->
 				b = 3
 				expected = a * b
+
 
 			it 'should set `value` correctly', ->
 				a.multiply b
@@ -193,11 +207,14 @@ describe 'NumericValue', ->
 				assert onChange.calledOnce
 				assert onChange.calledWithExactly oldValue, a.value
 
+
+
 		describe 'when multiplying a `NumericValue`', ->
 
 			beforeEach ->
 				b = new NumericValue 3
 				expected = a * b
+
 
 			it 'should set `value` correctly', ->
 				a.multiply b
@@ -218,6 +235,7 @@ describe 'NumericValue', ->
 		beforeEach ->
 			a = new NumericValue 1.5, 'test'
 			a.on 'change', onChange
+
 
 		it 'should return the instance', ->
 			assert.strictEqual a.round(), a
@@ -251,6 +269,7 @@ describe 'NumericValue', ->
 			b.watch a
 			b.on 'change', onChange
 
+
 		it 'should return the instance', ->
 			assert.strictEqual a.watch(b), a
 
@@ -281,6 +300,7 @@ describe 'NumericValue', ->
 			b = new NumericValue 1, 'test'
 			b.on 'change', onChange
 
+
 		it 'should return the instance', ->
 			assert.strictEqual a.watch(b), a
 
@@ -308,6 +328,7 @@ describe 'NumericValue', ->
 			a = new NumericValue 2, 'test'
 			b = a.clone()
 
+
 		it 'should properly instanciate the clone', ->
 			assert.strictEqual b.isNumericValue, true
 			assert b instanceof EventEmitter
@@ -323,9 +344,8 @@ describe 'NumericValue', ->
 	describe 'NumericValue::valueOf', ->
 
 		a = null
+		beforeEach -> a = new NumericValue 2.5, 'test'
 
-		beforeEach ->
-			a = new NumericValue 2.5, 'test'
 
 		it 'should return `value`', ->
 			assert.strictEqual a.valueOf(), a.value
@@ -336,9 +356,8 @@ describe 'NumericValue', ->
 	describe 'NumericValue::toString', ->
 
 		a = null
+		beforeEach -> a = new NumericValue 2.5, 'test'
 
-		beforeEach ->
-			a = new NumericValue 2.5, 'test'
 
 		it 'should return a `String`', ->
 			assert.strictEqual typeof a.toString(), 'string'

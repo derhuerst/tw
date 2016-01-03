@@ -36,6 +36,7 @@ describe 'Resources', ->
 
 	afterEach -> spy.reset()
 
+
 	it '`isResources`', ->
 		assert.strictEqual a.isResources, true
 
@@ -121,6 +122,7 @@ describe 'Resources', ->
 	describe 'Resources::subtract', ->
 
 		beforeEach -> spy = sinon.spy a, 'add'
+
 
 		it 'should return the instance', ->
 			assert.strictEqual a.subtract(b), a
@@ -244,6 +246,7 @@ describe 'Resources', ->
 
 		b = null
 		beforeEach -> b = a.clone()
+
 
 		it 'should properly instanciate the clone', ->
 			assert.strictEqual b.isResources, true

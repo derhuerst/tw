@@ -22,6 +22,7 @@ describe 'Duration', ->
 	a = null
 	beforeEach -> a = new Duration testAsNumber
 
+
 	it '`isDuration`', ->
 		assert.strictEqual a.isDuration, true
 
@@ -119,6 +120,7 @@ describe 'Duration', ->
 
 		b = null
 		beforeEach -> b = a.clone()
+
 
 		it 'should properly instanciate the clone', ->
 			assert.strictEqual b.isDuration, true

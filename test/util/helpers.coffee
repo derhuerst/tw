@@ -9,9 +9,9 @@ _ =				require '../../src/util/helpers'
 describe 'Array::has', ->
 
 	a = null
+	beforeEach -> a = [ 'one', 'two' ]
 
-	beforeEach ->
-		a = [ 'one', 'two' ]
+
 
 	it 'should be a function', ->
 		assert.strictEqual typeof a.has, 'function'
@@ -29,9 +29,9 @@ describe 'Array::has', ->
 describe 'Array::add', ->
 
 	a = null
+	beforeEach -> a = [ 'one', 'two' ]
 
-	beforeEach ->
-		a = [ 'one', 'two' ]
+
 
 	it 'should be a function', ->
 		assert.strictEqual typeof a.add, 'function'
@@ -52,9 +52,9 @@ describe 'Array::add', ->
 describe 'Array::remove', ->
 
 	a = null
+	beforeEach -> a = [ 'one', 'two', 'three' ]
 
-	beforeEach ->
-		a = [ 'one', 'two', 'three' ]
+
 
 	it 'should be a function', ->
 		assert.strictEqual typeof a.remove, 'function'

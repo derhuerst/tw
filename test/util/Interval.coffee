@@ -22,6 +22,7 @@ describe 'Interval', ->
 		a.stop()
 		spy.reset()
 
+
 	it '`isInterval`', ->
 		assert.strictEqual a.isInterval, true
 
@@ -89,6 +90,7 @@ describe 'Interval', ->
 
 		b = null
 		beforeEach -> b = a.clone()
+
 
 		it 'should properly instanciate the clone', ->
 			assert.strictEqual b.isInterval, true

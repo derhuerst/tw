@@ -28,6 +28,7 @@ describe 'Stocks', ->
 		p = new Production new Resources({wood: 50, clay: 100, iron: 150}), new Duration '1m'
 		s = new Stocks {maxima: m, production: p}
 
+
 	it '`isStocks`', ->
 		assert.strictEqual s.isStocks, true
 

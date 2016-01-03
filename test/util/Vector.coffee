@@ -17,6 +17,7 @@ describe 'Vector', ->
 		oldX = a.x
 		oldY = a.y
 
+
 	it '`isVector`', ->
 		assert.strictEqual a.isVector, true
 
@@ -57,20 +58,26 @@ describe 'Vector', ->
 			assert.strictEqual a.x, oldX
 			assert.strictEqual a.y, oldY
 
+
+
 		describe 'when adding a `Number`', ->
 
 			b = null
 			beforeEach -> b = 2
+
 
 			it 'should add the number to `x` and `y`', ->
 				a.add b
 				assert.strictEqual a.x, oldX + b
 				assert.strictEqual a.y, oldY + b
 
+
+
 		describe 'when adding a `Vector`', ->
 
 			b = null
 			beforeEach -> b = new Vector 2, 3
+
 
 			it 'should add the vector to `x` and `y`', ->
 				a.add b
@@ -89,20 +96,26 @@ describe 'Vector', ->
 			assert.strictEqual a.x, oldX
 			assert.strictEqual a.y, oldY
 
+
+
 		describe 'when subtracting a `Number`', ->
 
 			b = null
 			beforeEach -> b = 2
+
 
 			it 'should subtract the number from `x` and `y`', ->
 				a.subtract b
 				assert.strictEqual a.x, oldX - b
 				assert.strictEqual a.y, oldY - b
 
+
+
 		describe 'when subtracting a `Vector`', ->
 
 			b = null
 			beforeEach -> b = new Vector 2, 3
+
 
 			it 'should subtract the vector from `x` and `y`', ->
 				a.subtract b
@@ -121,20 +134,26 @@ describe 'Vector', ->
 			assert.strictEqual a.x, oldX
 			assert.strictEqual a.y, oldY
 
+
+
 		describe 'when multiplying with a `Number`', ->
 
 			b = null
 			beforeEach -> b = 2
+
 
 			it 'should multiply `x` and `y` with the number', ->
 				a.multiply b
 				assert.strictEqual a.x, oldX * b
 				assert.strictEqual a.y, oldY * b
 
+
+
 		describe 'when multiplying with a `Vector`', ->
 
 			b = null
 			beforeEach -> b = new Vector 2, 3
+
 
 			it 'should multiply `x` and `y` with the vector\'s components', ->
 				a.multiply b
@@ -164,6 +183,7 @@ describe 'Vector', ->
 			b = new Vector 3, 4
 			d = a.vectorTo b
 
+
 		it 'should return the null vector when called without a target', ->
 			d = a.vectorTo()
 			assert.strictEqual d.x, 0
@@ -183,6 +203,7 @@ describe 'Vector', ->
 		b = null
 		d = null
 
+
 		beforeEach ->
 			b = new Vector 4.5, 6.5
 			d = a.distanceTo b
@@ -196,6 +217,7 @@ describe 'Vector', ->
 
 		b = null
 		beforeEach -> b = a.clone()
+
 
 		it 'should properly instanciate the clone', ->
 			assert.strictEqual b.isVector, true

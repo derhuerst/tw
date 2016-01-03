@@ -24,6 +24,7 @@ describe 'Upgrade', ->
 		building.village.warehouse.stocks.resources().reset 1000
 		upgrade = new Upgrade building
 
+
 	it '`isUpgrade`', ->
 		assert.strictEqual upgrade.isUpgrade, true
 
@@ -47,6 +48,7 @@ describe 'Upgrade', ->
 
 		start = null
 		beforeEach -> start = -> upgrade.start()
+
 
 		it 'should throw a `GameError` if the building has been upgraded in the mean time', ->
 			assert.doesNotThrow start, GameError
@@ -96,6 +98,7 @@ describe 'Upgrade', ->
 		spy = null
 		beforeEach -> spy = sinon.spy()
 
+
 		it 'should do nothing if not `running`', ->
 			upgrade.on 'stop', spy
 			upgrade.stop()
@@ -133,6 +136,7 @@ describe 'Upgrade', ->
 
 		spy = null
 		beforeEach -> spy = sinon.spy()
+
 
 		it 'should emit `upgrade.start` when `start`ed', ->
 			building.on 'upgrade.start', spy

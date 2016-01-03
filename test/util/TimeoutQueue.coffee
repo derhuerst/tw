@@ -27,6 +27,7 @@ describe 'TimeoutQueue', ->
 
 	afterEach -> spy.reset()
 
+
 	it '`isTimeoutQueue`', ->
 		assert.strictEqual a.isTimeoutQueue, true
 

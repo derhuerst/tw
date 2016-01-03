@@ -25,6 +25,7 @@ describe 'fight', ->
 			stored = new Resources {wood: 10, clay: 8, iron: 12}
 			capacity = 25 # 25/3 > wood
 
+
 		it 'should return `Resources`', ->
 			result = fight.haul stored, capacity
 			assert result.isResources
@@ -70,10 +71,13 @@ describe 'fight', ->
 			attacking = new Units spearFighter: 10, scout: 10
 			defending = new Units archer: 5, scout: 5
 
+
+
 		describe 'return value', ->
 
 			results = null
 			beforeEach -> results = fight.simulate {attacking, defending}
+
 
 			it 'should return `attackingDead` as `Units`', ->
 				assert results.attackingDead.isUnits
@@ -86,6 +90,8 @@ describe 'fight', ->
 
 			it 'should return `catapultsTargetNewLevel` as `Number`', ->
 				assert.strictEqual typeof results.catapultsTargetNewLevel, 'number'
+
+
 
 		it.skip 'should compute scouts independently', ->
 			# the attacking units are going to die, except scouts
@@ -125,6 +131,7 @@ describe 'fight', ->
 			units = new Units axeman: 1, scout: 1
 			haul = new Resources()
 			props = {origin, destination, type: 'attack', units, haul}
+
 
 		it 'shoud subtract from the attack\'s `units`', ->
 			spy = sinon.spy units, 'subtract'

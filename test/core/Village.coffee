@@ -22,6 +22,7 @@ describe 'Village', ->
 		v = new Village id: 'village-1', position: new Vector 1, 1
 		b = new Statue()
 
+
 	it '`isVillage`', ->
 		assert.strictEqual v.isVillage, true
 
@@ -93,6 +94,7 @@ describe 'Village', ->
 	describe 'Village::deleteBuilding', ->
 
 		beforeEach -> v.addBuilding b
+
 
 		it 'should return the instance', ->
 			assert.strictEqual v.deleteBuilding(), v

@@ -43,6 +43,7 @@ describe 'Units', ->
 
 	afterEach -> spy.reset()
 
+
 	it '`isUnits`', ->
 		assert.strictEqual a.isUnits, true
 
@@ -95,6 +96,7 @@ describe 'Units', ->
 		old = null
 		beforeEach -> old = new Units a
 
+
 		it 'should return the instance', ->
 			assert.strictEqual a.add(b), a
 			assert.strictEqual a.add(10), a
@@ -126,6 +128,7 @@ describe 'Units', ->
 		old = null
 		beforeEach -> old = new Units a
 
+
 		it 'should return the instance', ->
 			assert.strictEqual a.subtract(b), a
 			assert.strictEqual a.subtract(10), a
@@ -156,6 +159,7 @@ describe 'Units', ->
 
 		old = null
 		beforeEach -> old = new Units a
+
 
 		it 'should return the instance', ->
 			assert.strictEqual a.multiply(2), a
@@ -196,6 +200,8 @@ describe 'Units', ->
 		it 'should return the sum of its values', ->
 			assert.strictEqual a.count(), 78
 
+
+
 	describe 'Units::moreThan', ->
 
 		it 'should return `true` for `Units` with every unit being greater or equal', ->
@@ -235,6 +241,8 @@ describe 'Units', ->
 				units.nobleman * config.nobleman.offense
 			)
 
+
+
 	describe 'Units::defenseGeneral', ->
 
 		# todo: mock units config
@@ -257,6 +265,8 @@ describe 'Units', ->
 				units.paladin * config.paladin.defenseGeneral +
 				units.nobleman * config.nobleman.defenseGeneral
 			)
+
+
 
 	describe 'Units::defenseCavalry', ->
 
@@ -281,6 +291,8 @@ describe 'Units', ->
 				units.nobleman * config.nobleman.defenseCavalry
 			)
 
+
+
 	describe 'Units::defenseArchers', ->
 
 		# todo: mock units config
@@ -304,6 +316,8 @@ describe 'Units', ->
 				units.nobleman * config.nobleman.defenseArchers
 			)
 
+
+
 	describe 'Units::haul', ->
 
 		# todo: mock units config
@@ -322,6 +336,8 @@ describe 'Units', ->
 				units.heavyCavalry * config.heavyCavalry.haul +
 				units.paladin * config.paladin.haul
 			)
+
+
 
 	describe 'Units::resources', ->
 
@@ -349,6 +365,8 @@ describe 'Units', ->
 			assert.strictEqual actual.clay, expected.clay
 			assert.strictEqual actual.iron, expected.iron
 
+
+
 	describe 'Units::duration', ->
 
 		# todo: mock units config
@@ -371,6 +389,8 @@ describe 'Units', ->
 				units.paladin * config.paladin.costs.time +
 				units.nobleman * config.nobleman.costs.time
 			)
+
+
 
 	describe 'Units::workers', ->
 
@@ -421,6 +441,8 @@ describe 'Units', ->
 			expected = new Units {axeman: 10, catapult: 3}
 			equalUnits a.subset(['axeman', 'catapult']), expected
 
+
+
 	describe 'Units::infantry', ->
 
 		it 'should return `Units`', ->
@@ -436,6 +458,8 @@ describe 'Units', ->
 				'axeman'
 				'archer'
 			]
+
+
 
 	describe 'Units::cavalry', ->
 
@@ -453,6 +477,8 @@ describe 'Units', ->
 				'heavyCavalry'
 			]
 
+
+
 	describe 'Units::siege', ->
 
 		it 'should return `Units`', ->
@@ -463,6 +489,8 @@ describe 'Units', ->
 			a.siege b
 			assert a.subset.calledOnce
 			assert a.subset.calledWithExactly ['ram', 'catapult']
+
+
 
 	describe 'Units::special', ->
 
@@ -481,6 +509,7 @@ describe 'Units', ->
 
 		b = null
 		beforeEach -> b = a.clone()
+
 
 		it 'should properly instanciate the clone', ->
 			assert.strictEqual b.isUnits, true
