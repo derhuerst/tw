@@ -69,6 +69,15 @@ class Headquarter extends Building
 
 
 
+	anticipatedLevel: (building) =>
+		@constructions.timeouts()
+		.filter (construction) -> construction.building is building
+		.reduce (level = 0, construction) ->
+			if construction.mode is 'upgrade' then result++
+			else if construction.mode is 'downgrade' then result--
+
+
+
 
 
 module.exports = Headquarter
