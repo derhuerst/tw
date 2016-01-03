@@ -103,11 +103,10 @@ describe 'Timeout', ->
 			assert.strictEqual a.running(), false
 
 		it 'should return `false` for finished timeouts', ->
-			a.start(); a.finish()
+			a.finish()
 			assert.strictEqual a.running(), false
 
 		it 'should return `false` after the given `Duration`', ->
-			a.start()
 			clock.tick 105
 			assert.strictEqual a.running(), false
 
@@ -115,7 +114,10 @@ describe 'Timeout', ->
 
 	describe 'Timeout::progress', ->
 
-		beforeEach -> a = new Timeout 500
+		beforeEach ->
+			a = new Timeout 500
+			a.start()
+
 
 		it 'should return `0` in the beginning', ->
 			assert.strictEqual a.progress(), 0
@@ -150,7 +152,7 @@ describe 'Timeout', ->
 		it 'should return ~ the remaining duration', ->
 			expected = a.duration() * 2 / 3
 			a.start()
-			clock.tick 500 / 3 + 5
+			clock.tick 5 + 500 / 3
 			assert .95 < (a.remaining() / expected) < 1.05
 
 

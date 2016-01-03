@@ -3,6 +3,7 @@ require './Building'
 require './Player'
 require './World'
 
+require './Upgrade'
 require './fight'
 require './Movement'
 require './Attack'
