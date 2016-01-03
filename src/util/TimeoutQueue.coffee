@@ -24,10 +24,8 @@ class TimeoutQueue extends EventEmitter
 
 
 
-	_removeOldTimeout: =>
+	_removePreviousTimeout: =>
 		timeout = @_timeouts.shift()
-		timeout.removeListener 'finish', @_removeOldTimeout
-		timeout.removeListener 'stop', @_removeOldTimeout
 		@emit 'progress', timeout
 		@_next()
 
@@ -35,16 +33,17 @@ class TimeoutQueue extends EventEmitter
 		if @_timeouts.length is 0
 			@emit 'finish'
 			return this
-		timeout = @_timeouts[0]
 
-		timeout.once 'finish', @_removeOldTimeout
-		timeout.once 'stop', @_removeOldTimeout
+		timeout = @_timeouts[0]
+		timeout.once 'finish', @_removePreviousTimeout
+		timeout.once 'stop', @_removePreviousTimeout
 		timeout.start()
 
 
 
 	add: (timeout) ->
-		return this unless timeout and timeout.isTimeout
+		return this unless timeout?.isTimeout
+		return this if timeout.running()
 
 		@_timeouts.add timeout
 		if @_timeouts.length is 1 # was empty before
@@ -56,10 +55,11 @@ class TimeoutQueue extends EventEmitter
 
 
 	remove: (timeout) ->
+		return this unless timeout?.isTimeout
 		i = @_timeouts.indexOf timeout
 		return this if i is -1
 
-		if i is 0 then @_removeOldTimeout
+		if i is 0 then @_removePreviousTimeout
 		else @_timeouts.remove timeout
 
 		@emit 'remove', timeout
