@@ -141,7 +141,7 @@ class Village extends EventEmitter
 
 
 
-	_recomputePoints: () ->
+	_recomputePoints: ->
 		result = 0
 		for type, traits of config.buildings
 			result += @[type]?.points() or 0

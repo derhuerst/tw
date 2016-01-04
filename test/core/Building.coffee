@@ -62,7 +62,7 @@ describe 'Building', ->
 
 	describe 'Resources::points', ->
 
-		beforeEach -> stubbedConfig.custom.points = () -> 0
+		beforeEach -> stubbedConfig.custom.points = -> 0
 
 		beforeEach ->
 			b = new Building type: 'custom', level: 2

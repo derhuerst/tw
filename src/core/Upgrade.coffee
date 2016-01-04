@@ -32,8 +32,8 @@ class Upgrade extends Timeout
 			wood: @building.config.costs.wood @_targetLevel
 			clay: @building.config.costs.clay @_targetLevel
 			iron: @building.config.costs.iron @_targetLevel
-		@_workers = @building.config.workers(@_targetLevel) -
-			@building.config.workers(@_targetLevel - 1)
+		@_workers = @building.config.workers(@_targetLevel - 1) -
+			@building.config.workers(@_targetLevel)
 
 		@on 'start', @_onStart
 		@on 'stop', @_onStop
