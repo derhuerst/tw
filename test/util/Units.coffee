@@ -1,458 +1,419 @@
+proxyquire =		require('proxyquire').noPreserveCache()
 assert =			require 'assert'
 sinon =				require 'sinon'
 
 config =			require '../../config/units'
 Duration =			require '../../src/util/Duration'
 Resources =			require '../../src/util/Resources'
-Units =				require '../../src/util/Units'
-{equalUnits} =		require '../helpers'
+{equalUnits,
+equalResources,
+equalDuration} =	require '../helpers'
+
+Units =				proxyquire '../../src/util/Units',
+	'../../config/units':	stubbedConfig = {}
 
 
 
 
 
 correctChangeEvent = (spy, before, after) ->
-	assert spy.calledOnce
+	return false unless spy.calledOnce
 	args = spy.firstCall.args
-	assert equalUnits args[0], before
-	assert equalUnits args[1], after
-
-units =
-	spearFighter: 12, swordsman: 11, axeman: 10, archer: 9 # infantry
-	scout: 8, lightCavalry: 7, mountedArcher: 6, heavyCavalry: 5 # cavalry
-	ram: 4, catapult: 3 # siege
-	paladin: 2, nobleman: 1 # special
+	return false unless equalUnits args[0], before
+	return false unless equalUnits args[1], after
+	return true
 
 
 
 describe 'Units', ->
 
-	a = null
-	b = null
+	beforeEach -> Object.assign stubbedConfig,
+		a: abbreviation: 'a'
+		b: abbreviation: 'b'
+		c: abbreviation: 'c'
+
+	u = null
 	spy = null
 
 	beforeEach ->
-		a = new Units units
-		b = new Units
-			spearFighter: 11, axeman: 9 # infantry
-			scout: 8 # cavalry
-			catapult: 4 # siege
-			paladin: 3 # special
+		u = new Units a: 4, b: 5, c: 6
+		# b = new Units
+		# 	spearFighter: 11, axeman: 9 # infantry
+		# 	scout: 8 # cavalry
+		# 	catapult: 4 # siege
+		# 	paladin: 3 # special
 		spy = sinon.spy()
-		a.on 'change', spy
+		u.on 'change', spy
 
 	afterEach -> spy.reset()
 
 
 	it '`isUnits`', ->
-		assert.strictEqual a.isUnits, true
+		assert.strictEqual u.isUnits, true
 
 
 
 	describe 'Units::constructor', ->
 
 		it 'should set all units to the given values', ->
-			for unit, amount of units
-				assert.strictEqual a[unit], amount
+			assert.strictEqual u.a, 4
+			assert.strictEqual u.b, 5
+			assert.strictEqual u.c, 6
 
 		it 'should set `0` as default the units', ->
-			a = new Units
-				swordsman: 1
-			for unit, amount of units
-				continue if unit is 'swordsman'
-				assert.strictEqual a[unit], 0
+			u = new Units a: 1, c: 1
+			assert.strictEqual u.b, 0
 
 
 
 	describe 'Units::reset', ->
 
+		# todo: mocks?
+
 		it 'should return the instance', ->
-			assert.strictEqual a.reset(b), a
-			assert.strictEqual a.reset(10), a
+			assert.strictEqual u.reset(), u
+			assert.strictEqual u.reset(new Units()), u
+			assert.strictEqual u.reset(10), u
 
 		it 'should set all units to the given value', ->
-			expected = Object.assign {}, a, b
-			a.reset b
-			equalUnits a, b
+			b = new Units a: 3, c: 1
+			u.reset b
+			equalUnits u, b
 
 		it 'should use `0` as the default value', ->
-			a.reset()
-			assert.strictEqual a[unit], 0 for unit of units
+			u.reset()
+			assert.strictEqual u.a, 0
 
 		it 'should emit a correct `change` event when given a `Number`', ->
-			old = new Units a
-			a.reset 10
-			correctChangeEvent spy, old, a
+			old = new Units a: u.a, b: u.b, c: u.c
+			u.reset 10
+			assert correctChangeEvent spy, old, u
 
 		it 'should emit a correct `change` event when given `Units`', ->
-			old = new Units a
-			a.reset b
-			correctChangeEvent spy, old, a
+			old = new Units a: u.a, b: u.b, c: u.c
+			u.reset new Units()
+			assert correctChangeEvent spy, old, u
 
 
 
 	describe 'Units::add', ->
 
 		old = null
-		beforeEach -> old = new Units a
+		beforeEach -> old = new Units a: u.a, b: u.b, c: u.c
 
 
 		it 'should return the instance', ->
-			assert.strictEqual a.add(b), a
-			assert.strictEqual a.add(10), a
+			assert.strictEqual u.add(), u
+			assert.strictEqual u.add(new Units()), u
+			assert.strictEqual u.add(10), u
 
 		it 'should do nothing when called without a summand', ->
-			a.add()
-			equalUnits a, old
+			u.add()
+			equalUnits u, old
 
 		it 'should correctly add a `Number` to all units', ->
-			a.add 10
-			assert.strictEqual a[unit], old[unit] + 10 for unit of units
+			u.add 10
+			assert.strictEqual u.a, old.a + 10
+			assert.strictEqual u.b, old.b + 10
+			assert.strictEqual u.c, old.c + 10
 
 		it 'should correctly emit a `change` event when given a `Number`', ->
-			a.add 10
-			correctChangeEvent spy, old, a
+			u.add 10
+			assert correctChangeEvent spy, old, u
 
 		it 'should correctly add `Units` to all units', ->
-			a.add b
-			assert.strictEqual a[unit], old[unit] + b[unit] for unit of units
+			b = new Units a: 3, c: 1
+			u.add b
+			assert.strictEqual u.a, old.a + 3
+			assert.strictEqual u.b, old.b
+			assert.strictEqual u.c, old.c + 1
 
 		it 'should correctly emit a `change` event when given `Units`', ->
-			a.add b
-			correctChangeEvent spy, old, a
+			u.add new Units a: 3, c: 1
+			assert correctChangeEvent spy, old, u
 
 
 
 	describe 'Units::subtract', ->
 
 		old = null
-		beforeEach -> old = new Units a
+		beforeEach -> old = new Units a: u.a, b: u.b, c: u.c
 
 
 		it 'should return the instance', ->
-			assert.strictEqual a.subtract(b), a
-			assert.strictEqual a.subtract(10), a
+			assert.strictEqual u.add(), u
+			assert.strictEqual u.add(new Units()), u
+			assert.strictEqual u.subtract(10), u
 
 		it 'should do nothing when called without a subtrahend', ->
-			a.subtract()
-			equalUnits a, old
+			u.subtract()
+			equalUnits u, old
 
 		it 'should correctly subtract a `Number` from all units', ->
-			a.subtract 10
-			assert.strictEqual a[unit], old[unit] - 10 for unit of units
+			u.subtract 10
+			assert.strictEqual u.a, old.a - 10
+			assert.strictEqual u.b, old.b - 10
+			assert.strictEqual u.c, old.c - 10
 
 		it 'should correctly emit a `change` event when given a `Number`', ->
-			a.subtract 10
-			correctChangeEvent spy, old, a
+			u.subtract 10
+			assert correctChangeEvent spy, old, u
 
 		it 'should correctly subtract `Units` from all units', ->
-			a.subtract b
-			assert.strictEqual a[unit], old[unit] - b[unit] for unit of units
+			b = new Units a: 3, c: 1
+			u.subtract b
+			assert.strictEqual u.a, old.a - 3
+			assert.strictEqual u.b, old.b
+			assert.strictEqual u.c, old.c - 1
 
 		it 'should correctly emit a `change` event when given `Units`', ->
-			a.subtract b
-			correctChangeEvent spy, old, a
+			u.subtract new Units a: 3, c: 1
+			assert correctChangeEvent spy, old, u
 
 
 
 	describe 'Units::multiply', ->
 
 		old = null
-		beforeEach -> old = new Units a
+		beforeEach -> old = new Units a: u.a, b: u.b, c: u.c
 
 
 		it 'should return the instance', ->
-			assert.strictEqual a.multiply(2), a
+			assert.strictEqual u.multiply(), u
+			assert.strictEqual u.multiply(2), u
 
 		it 'should do nothing when called without a factor', ->
-			a.multiply()
-			equalUnits a, old
+			u.multiply()
+			equalUnits u, old
 
 		it 'should correctly multiply a `Number` with all units', ->
-			a.multiply 2
-			assert.strictEqual a[unit], old[unit] * 2 for unit of units
+			u.multiply 2
+			assert.strictEqual u.a, old.a * 2
+			assert.strictEqual u.b, old.b * 2
+			assert.strictEqual u.c, old.c * 2
 
 		it 'should correctly emit a `change` event when given a `Number`', ->
-			a.multiply 2
-			correctChangeEvent spy, old, a
+			u.multiply 2
+			assert correctChangeEvent spy, old, u
 
 
 
 	describe 'Units::round', ->
 
+		beforeEach -> u = new Units a: 0.9, b: 2, c: 3.1
+
+
 		it 'should return the instance', ->
-			assert.strictEqual a.round(), a
+			assert.strictEqual u.round(), u
 
 		it 'should round all units correctly', ->
-			a.round()
-			for unit of units
-				assert.strictEqual a[unit], Math.round a[unit]
+			u.round()
+			assert.strictEqual u.a, 1
+			assert.strictEqual u.b, 2
+			assert.strictEqual u.c, 3
 
 		it 'should emit a correct `change` event', ->
-			old = new Units a
-			a.round b
-			correctChangeEvent spy, old, a
+			old = new Units a: u.a, b: u.b, c: u.c
+			u.on 'change', bla = sinon.spy()
+			u.round()
+			assert correctChangeEvent bla, old, u
 
 
 
 	describe 'Units::count', ->
 
 		it 'should return the sum of its values', ->
-			assert.strictEqual a.count(), 78
+			assert.strictEqual u.count(), 4 + 5 + 6
 
 
 
 	describe 'Units::moreThan', ->
 
+		b = null
+		beforeEach -> b = new Units a: 2, b: 3, c: 4
+
+
 		it 'should return `true` for `Units` with every unit being greater or equal', ->
-			b = new Units a
-			b.spearFighter--
-			b.ram -= 2
-			b.nobleman = 0
-			assert.strictEqual a.moreThan(b), true
+			assert.strictEqual u.moreThan(b), true
 
 		it 'should return `false` for `Units` with any unit being lower', ->
-			b = new Units a
-			b.spearFighter++
-			b.ram += 2
-			assert.strictEqual a.moreThan(b), false
+			b.b = 6
+			assert.strictEqual u.moreThan(b), false
 
 
 
 	describe 'Units::offense', ->
 
-		# todo: mock units config
+		beforeEach -> Object.assign stubbedConfig,
+			a: offense: 1
+			b: offense: 2
+			c: offense: 3
+
 
 		it 'should return a `Number`', ->
-			assert.strictEqual typeof a.offense(), 'number'
+			assert.strictEqual typeof u.offense(), 'number'
 
 		it 'should return the sum of its `offense`s', ->
-			assert.strictEqual a.offense(), (
-				units.spearFighter * config.spearFighter.offense +
-				units.swordsman * config.swordsman.offense +
-				units.axeman * config.axeman.offense +
-				units.archer * config.archer.offense +
-				units.lightCavalry * config.lightCavalry.offense +
-				units.mountedArcher * config.mountedArcher.offense +
-				units.heavyCavalry * config.heavyCavalry.offense +
-				units.ram * config.ram.offense +
-				units.catapult * config.catapult.offense +
-				units.paladin * config.paladin.offense +
-				units.nobleman * config.nobleman.offense
-			)
+			assert.strictEqual u.offense(), 4 * 1 + 5 * 2 + 6 * 3
 
 
 
 	describe 'Units::defenseGeneral', ->
 
-		# todo: mock units config
+		beforeEach -> Object.assign stubbedConfig,
+			a: defenseGeneral: 3
+			b: defenseGeneral: 2
+			c: defenseGeneral: 1
+
 
 		it 'should return a `Number`', ->
-			assert.strictEqual typeof a.defenseGeneral(), 'number'
+			assert.strictEqual typeof u.defenseGeneral(), 'number'
 
 		it 'should return the sum of its `defenseGeneral`s', ->
-			assert.strictEqual a.defenseGeneral(), (
-				units.spearFighter * config.spearFighter.defenseGeneral +
-				units.swordsman * config.swordsman.defenseGeneral +
-				units.axeman * config.axeman.defenseGeneral +
-				units.archer * config.archer.defenseGeneral +
-				units.scout * config.scout.defenseGeneral +
-				units.lightCavalry * config.lightCavalry.defenseGeneral +
-				units.mountedArcher * config.mountedArcher.defenseGeneral +
-				units.heavyCavalry * config.heavyCavalry.defenseGeneral +
-				units.ram * config.ram.defenseGeneral +
-				units.catapult * config.catapult.defenseGeneral +
-				units.paladin * config.paladin.defenseGeneral +
-				units.nobleman * config.nobleman.defenseGeneral
-			)
+			assert.strictEqual u.defenseGeneral(), 4 * 3 + 5 * 2 + 6 * 1
 
 
 
 	describe 'Units::defenseCavalry', ->
 
-		# todo: mock units config
+		beforeEach -> Object.assign stubbedConfig,
+			a: defenseCavalry: 2
+			b: defenseCavalry: 3
+			c: defenseCavalry: 1
+
 
 		it 'should return a `Number`', ->
-			assert.strictEqual typeof a.defenseCavalry(), 'number'
+			assert.strictEqual typeof u.defenseCavalry(), 'number'
 
 		it 'should return the sum of its `defenseCavalry`s', ->
-			assert.strictEqual a.defenseCavalry(), (
-				units.spearFighter * config.spearFighter.defenseCavalry +
-				units.swordsman * config.swordsman.defenseCavalry +
-				units.axeman * config.axeman.defenseCavalry +
-				units.archer * config.archer.defenseCavalry +
-				units.scout * config.scout.defenseCavalry +
-				units.lightCavalry * config.lightCavalry.defenseCavalry +
-				units.mountedArcher * config.mountedArcher.defenseCavalry +
-				units.heavyCavalry * config.heavyCavalry.defenseCavalry +
-				units.ram * config.ram.defenseCavalry +
-				units.catapult * config.catapult.defenseCavalry +
-				units.paladin * config.paladin.defenseCavalry +
-				units.nobleman * config.nobleman.defenseCavalry
-			)
+			assert.strictEqual u.defenseCavalry(), 4 * 2 + 5 * 3 + 6 * 1
 
 
 
 	describe 'Units::defenseArchers', ->
 
-		# todo: mock units config
+		beforeEach -> Object.assign stubbedConfig,
+			a: defenseArchers: 3
+			b: defenseArchers: 1
+			c: defenseArchers: 2
+
 
 		it 'should return a `Number`', ->
-			assert.strictEqual typeof a.defenseArchers(), 'number'
+			assert.strictEqual typeof u.defenseArchers(), 'number'
 
 		it 'should return the sum of its `defenseArchers`s', ->
-			assert.strictEqual a.defenseArchers(), (
-				units.spearFighter * config.spearFighter.defenseArchers +
-				units.swordsman * config.swordsman.defenseArchers +
-				units.axeman * config.axeman.defenseArchers +
-				units.archer * config.archer.defenseArchers +
-				units.scout * config.scout.defenseArchers +
-				units.lightCavalry * config.lightCavalry.defenseArchers +
-				units.mountedArcher * config.mountedArcher.defenseArchers +
-				units.heavyCavalry * config.heavyCavalry.defenseArchers +
-				units.ram * config.ram.defenseArchers +
-				units.catapult * config.catapult.defenseArchers +
-				units.paladin * config.paladin.defenseArchers +
-				units.nobleman * config.nobleman.defenseArchers
-			)
+			assert.strictEqual u.defenseArchers(), 4 * 3 + 5 * 1 + 6 * 2
 
 
 
 	describe 'Units::haul', ->
 
-		# todo: mock units config
+		beforeEach -> Object.assign stubbedConfig,
+			a: haul: 10
+			b: haul: 15
+			c: haul: 20
+
 
 		it 'should return a `Number`', ->
-			assert.strictEqual typeof a.haul(), 'number'
+			assert.strictEqual typeof u.haul(), 'number'
 
 		it 'should return the sum of its `haul`s', ->
-			assert.strictEqual a.haul(), (
-				units.spearFighter * config.spearFighter.haul +
-				units.swordsman * config.swordsman.haul +
-				units.axeman * config.axeman.haul +
-				units.archer * config.archer.haul +
-				units.lightCavalry * config.lightCavalry.haul +
-				units.mountedArcher * config.mountedArcher.haul +
-				units.heavyCavalry * config.heavyCavalry.haul +
-				units.paladin * config.paladin.haul
-			)
+			assert.strictEqual u.haul(), 4 * 10 + 5 * 15 + 6 * 20
 
 
 
 	describe 'Units::resources', ->
 
-		# todo: mock units config
+		beforeEach -> Object.assign stubbedConfig,
+			a: costs: resources: new Resources().reset 20
+			b: costs: resources: new Resources().reset 15
+			c: costs: resources: new Resources().reset 10
+
 
 		it 'should return `Resources`', ->
-			assert a.resources() instanceof Resources
+			assert u.resources() instanceof Resources
 
 		it 'should return the sum of its `resources`s', ->
-			expected = new Resources()
-				.add config.spearFighter.costs.resources.clone().multiply units.spearFighter
-				.add config.swordsman.costs.resources.clone().multiply units.swordsman
-				.add config.axeman.costs.resources.clone().multiply units.axeman
-				.add config.archer.costs.resources.clone().multiply units.archer
-				.add config.scout.costs.resources.clone().multiply units.scout
-				.add config.lightCavalry.costs.resources.clone().multiply units.lightCavalry
-				.add config.mountedArcher.costs.resources.clone().multiply units.mountedArcher
-				.add config.heavyCavalry.costs.resources.clone().multiply units.heavyCavalry
-				.add config.ram.costs.resources.clone().multiply units.ram
-				.add config.catapult.costs.resources.clone().multiply units.catapult
-				.add config.paladin.costs.resources.clone().multiply units.paladin
-				.add config.nobleman.costs.resources.clone().multiply units.nobleman
-			actual = a.resources()
-			assert.strictEqual actual.wood, expected.wood
-			assert.strictEqual actual.clay, expected.clay
-			assert.strictEqual actual.iron, expected.iron
+			expected = new Resources
+				wood: 4 * 20 + 5 * 15 + 6 * 10
+				clay: 4 * 20 + 5 * 15 + 6 * 10
+				iron: 4 * 20 + 5 * 15 + 6 * 10
+			assert equalResources u.resources(), expected
 
 
 
 	describe 'Units::duration', ->
 
-		# todo: mock units config
+		beforeEach -> Object.assign stubbedConfig,
+			a: costs: time: new Duration 20
+			b: costs: time: new Duration 10
+			c: costs: time: new Duration 15
+
 
 		it 'should return a `Duration`', ->
-			assert a.duration() instanceof Duration
+			assert u.duration() instanceof Duration
 
 		it 'should return the sum of its `time`s', ->
-			assert.strictEqual a.duration().valueOf(), (
-				units.spearFighter * config.spearFighter.costs.time +
-				units.swordsman * config.swordsman.costs.time +
-				units.axeman * config.axeman.costs.time +
-				units.archer * config.archer.costs.time +
-				units.scout * config.scout.costs.time +
-				units.lightCavalry * config.lightCavalry.costs.time +
-				units.mountedArcher * config.mountedArcher.costs.time +
-				units.heavyCavalry * config.heavyCavalry.costs.time +
-				units.ram * config.ram.costs.time +
-				units.catapult * config.catapult.costs.time +
-				units.paladin * config.paladin.costs.time +
-				units.nobleman * config.nobleman.costs.time
-			)
+			assert.strictEqual u.duration().valueOf(), 4 * 20 + 5 * 10 + 6 * 15
 
 
 
 	describe 'Units::workers', ->
 
-		# todo: mock units config
+		beforeEach -> Object.assign stubbedConfig,
+			a: costs: workers: 1
+			b: costs: workers: 2
+			c: costs: workers: 3
+
 
 		it 'should return a `Number`', ->
-			assert.strictEqual typeof a.workers(), 'number'
+			assert.strictEqual typeof u.workers(), 'number'
 
 		it 'should return the sum of its `workers`s', ->
-			assert.strictEqual a.workers(), (
-				units.spearFighter * config.spearFighter.costs.workers +
-				units.swordsman * config.swordsman.costs.workers +
-				units.axeman * config.axeman.costs.workers +
-				units.archer * config.archer.costs.workers +
-				units.scout * config.scout.costs.workers +
-				units.lightCavalry * config.lightCavalry.costs.workers +
-				units.mountedArcher * config.mountedArcher.costs.workers +
-				units.heavyCavalry * config.heavyCavalry.costs.workers +
-				units.ram * config.ram.costs.workers +
-				units.catapult * config.catapult.costs.workers +
-				units.paladin * config.paladin.costs.workers +
-				units.nobleman * config.nobleman.costs.workers
-			)
+			assert.strictEqual u.workers(), 4 * 1 + 5 * 2 + 6 * 3
 
 
 
 	describe 'Units::speed', ->
 
-		it 'should not the speed of the slowest unit', ->
-			expected = config.nobleman.speed # slowest of a is nobleman
-			assert.strictEqual a.speed().valueOf(), expected.valueOf()
-			expected = config.catapult.speed # slowest of b is catapult
-			assert.strictEqual b.speed().valueOf(), expected.valueOf()
+		beforeEach -> Object.assign stubbedConfig,
+			a: speed: new Duration 100
+			b: speed: new Duration 200
+			c: speed: new Duration 300
+
+
+		it 'should return the speed of the slowest unit', ->
+			assert.strictEqual u.speed().valueOf(), 300
+			b = new Units a: 1, b: 1
+			assert.strictEqual b.speed().valueOf(), 200
 
 
 
 	describe 'Units::subset', ->
 
 		it 'should return `Units`', ->
-			assert a.subset([]) instanceof Units
-			assert a.subset(['spearFighter']) instanceof Units
+			assert u.subset([]) instanceof Units
+			assert u.subset(['spearFighter']) instanceof Units
 
 		it 'should not return the same instance', ->
-			assert.notEqual a.subset([]), a
-			assert.notEqual a.subset(['spearFighter']), a
+			assert.notEqual u.subset([]), u
+			assert.notEqual u.subset(['spearFighter']), u
 
 		it 'should correctly copy amounts for given types', ->
-			expected = new Units {axeman: 10, catapult: 3}
-			equalUnits a.subset(['axeman', 'catapult']), expected
+			assert equalUnits u.subset(['a', 'b']), new Units a: 1, b: 3
 
 
 
 	describe 'Units::infantry', ->
 
 		it 'should return `Units`', ->
-			assert a.infantry() instanceof Units
+			assert u.infantry() instanceof Units
 
 		it 'should call `subset` correctly', ->
-			a.subset = sinon.spy a.subset
-			a.infantry b
-			assert a.subset.calledOnce
-			assert a.subset.calledWithExactly [
+			u.subset = sinon.spy u.subset
+			u.infantry()
+			assert u.subset.calledOnce
+			assert u.subset.calledWithExactly [
 				'spearFighter'
 				'swordsman'
 				'axeman'
@@ -464,13 +425,13 @@ describe 'Units', ->
 	describe 'Units::cavalry', ->
 
 		it 'should return `Units`', ->
-			assert a.cavalry() instanceof Units
+			assert u.cavalry() instanceof Units
 
 		it 'should call `subset` correctly', ->
-			a.subset = sinon.spy a.subset
-			a.cavalry b
-			assert a.subset.calledOnce
-			assert a.subset.calledWithExactly [
+			u.subset = sinon.spy u.subset
+			u.cavalry()
+			assert u.subset.calledOnce
+			assert u.subset.calledWithExactly [
 				'scout'
 				'lightCavalry'
 				'mountedArcher'
@@ -482,45 +443,45 @@ describe 'Units', ->
 	describe 'Units::siege', ->
 
 		it 'should return `Units`', ->
-			assert a.siege() instanceof Units
+			assert u.siege() instanceof Units
 
 		it 'should call `subset` correctly', ->
-			a.subset = sinon.spy a.subset
-			a.siege b
-			assert a.subset.calledOnce
-			assert a.subset.calledWithExactly ['ram', 'catapult']
+			u.subset = sinon.spy u.subset
+			u.siege()
+			assert u.subset.calledOnce
+			assert u.subset.calledWithExactly ['ram', 'catapult']
 
 
 
 	describe 'Units::special', ->
 
 		it 'should return `Units`', ->
-			assert a.special() instanceof Units
+			assert u.special() instanceof Units
 
 		it 'should call `subset` correctly', ->
-			a.subset = sinon.spy a.subset
-			a.special b
-			assert a.subset.calledOnce
-			assert a.subset.calledWithExactly ['paladin', 'nobleman']
+			u.subset = sinon.spy u.subset
+			u.special()
+			assert u.subset.calledOnce
+			assert u.subset.calledWithExactly ['paladin', 'nobleman']
 
 
 
 	describe 'Units::clone', ->
 
 		b = null
-		beforeEach -> b = a.clone()
+		beforeEach -> b = u.clone()
 
 
 		it 'should properly instanciate the clone', ->
 			assert.strictEqual b.isUnits, true
 
-		it 'should return a `Units` with equal all units', ->
-			assert.strictEqual b[unit], a[unit] for unit of units
+		it 'should return a `Units` with equal units', ->
+			assert equalUnits b, u
 
 
 
 	describe 'Units::toString', ->
 
 		it 'should return a `String`', ->
-			assert.strictEqual typeof a.toString(), 'string'
-			assert.strictEqual typeof ('' + a), 'string'
+			assert.strictEqual typeof u.toString(), 'string'
+			assert.strictEqual typeof ('' + u), 'string'

@@ -1,4 +1,4 @@
-proxyquire =		require 'proxyquire'
+proxyquire =		require('proxyquire').noPreserveCache()
 assert =			require 'assert'
 {EventEmitter} =	require 'events'
 sinon =				require 'sinon'

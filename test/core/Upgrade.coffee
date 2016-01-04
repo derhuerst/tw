@@ -1,4 +1,4 @@
-proxyquire =		require 'proxyquire'
+proxyquire =		require('proxyquire').noPreserveCache()
 assert =			require 'assert'
 sinon =				require 'sinon'
 
