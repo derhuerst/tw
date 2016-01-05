@@ -108,10 +108,6 @@ describe 'Movement', ->
 			m.abort()
 			assert.strictEqual m.returning(), true
 
-		# todo: move to `core/Attack`
-		it.skip 'should return `true` after returning from `destination`', ->
-			# todo
-
 
 
 	describe 'Movement::aborted', ->

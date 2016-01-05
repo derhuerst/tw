@@ -44,6 +44,23 @@ describe 'Attack', ->
 
 
 
+	describe 'Movement::running', ->
+
+		clock = null
+		beforeEach -> clock = sinon.useFakeTimers()
+		afterEach -> clock.restore()
+
+		durationToReturn = null
+		beforeEach -> durationToReturn = 5 + a.units.speed() * d
+
+
+		it 'should return `true` after returning from `destination`', ->
+			a.start()
+			clock.tick durationToReturn
+			assert.strictEqual a.running(), true
+
+
+
 	describe 'Attack::start', ->
 
 		start = null
