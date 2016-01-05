@@ -106,11 +106,7 @@ class World extends EventEmitter
 
 
 
-	createVillage: (direction) ->
-		# random id
-		id = shortid.generate()
-		id = shortid.generate() while @_villages[id]
-
+	_createPosition: (direction) ->
 		angle = Math.PI / 2 * switch direction
 			when 'north-west' then	Math.random() - 2
 			when 'south-west' then	Math.random() - 1
@@ -120,8 +116,18 @@ class World extends EventEmitter
 		r = Math.sqrt config.map.spread * @_villages.length / Math.PI
 		x = Math.round @_map.size / 2 + r * Math.sin angle
 		y = Math.round @_map.size / 2 + r * Math.cos angle
+		return {x, y}
 
-		return new Village {id, position: new Vector x, y}
+	createVillage: (direction) ->
+		# random id
+		id = shortid.generate()
+		id = shortid.generate() while @_villages[id]
+
+		pos = @_createPosition direction
+		while @_map["#{pos.x}-#{pos.y}"]?
+			pos = @_createPosition direction
+
+		return new Village {id, position: new Vector pos.x, pos.y}
 
 	createPlayer: ->
 		id = shortid.generate()

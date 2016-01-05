@@ -216,27 +216,26 @@ describe 'World', ->
 
 		it 'should generate a `position` in the given direction', ->
 			size = config.map.size / 2
-			for i in [0...5]
 
-				nw = w.createVillage 'north-west'
-				w.addVillage nw
-				assert 0 <= nw.position.x <= size
-				assert 0 <= nw.position.y <= size
+			nw = w.createVillage 'north-west'
+			w.addVillage nw
+			assert 0 <= nw.position.x <= size
+			assert 0 <= nw.position.y <= size
 
-				sw = w.createVillage 'south-west'
-				w.addVillage sw
-				assert 0 <= sw.position.x <= size
-				assert size <= sw.position.y <= size * 2
+			sw = w.createVillage 'south-west'
+			w.addVillage sw
+			assert 0 <= sw.position.x <= size
+			assert size <= sw.position.y <= size * 2
 
-				se = w.createVillage 'south-east'
-				w.addVillage se
-				assert size <= se.position.x <= size * 2
-				assert size <= se.position.y <= size * 2
+			se = w.createVillage 'south-east'
+			w.addVillage se
+			assert size <= se.position.x <= size * 2
+			assert size <= se.position.y <= size * 2
 
-				ne = w.createVillage 'north-east'
-				w.addVillage ne
-				assert size <= ne.position.x <= size * 2
-				assert 0 <= ne.position.y <= size
+			ne = w.createVillage 'north-east'
+			w.addVillage ne
+			assert size <= ne.position.x <= size * 2
+			assert 0 <= ne.position.y <= size
 
 
 
