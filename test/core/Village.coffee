@@ -54,11 +54,10 @@ describe 'Village', ->
 			v = new Village id: 'village-1'
 			assert.deepEqual v.position, new Vector()
 
-		it 'should set `loyalty` to a `NumericValue` equal to the given one', ->
-			l = new NumericValue 11
-			v = new Village loyalty: l
-			assert.notStrictEqual v.loyalty, l
-			assert.strictEqual 0 + v.loyalty, 0 + l
+		it 'should set `loyalty` to a `Loyalty` equal to the given one', ->
+			v = new Village loyalty: 80
+			assert v.loyalty.isLoyalty
+			assert.strictEqual 0 + v.loyalty, 80
 
 		it 'should add each given building', ->
 			stash = new Stash()

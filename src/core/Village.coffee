@@ -6,6 +6,7 @@ helpers =			require '../util/helpers'
 GameError =			require '../util/GameError'
 Vector =			require '../util/Vector'
 NumericValue =		require '../util/NumericValue'
+Loyalty =			require '../util/Loyalty'
 
 Headquarter =		require '../buildings/Headquarter'
 Wall =				require '../buildings/Wall'
@@ -97,8 +98,7 @@ class Village extends EventEmitter
 
 		@points = new NumericValue()
 		@_recomputePoints()
-		props.loyalty ?= config.initialLoyalty or 1
-		@loyalty = new NumericValue props.loyalty, 'l'
+		@loyalty = new Loyalty props.loyalty ? config.initialLoyalty ? 100
 
 		for type, traits of config.buildings
 			given = props[type]
