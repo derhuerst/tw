@@ -4,6 +4,7 @@ require './Player'
 require './World'
 
 require './Upgrade'
+require './Downgrade'
 require './fight'
 require './Movement'
 require './Attack'
