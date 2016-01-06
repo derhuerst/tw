@@ -130,16 +130,20 @@ fight = (props = {}) ->
 	# todo: props.destination.rallyPoint.units.supporting
 
 	# results.wallNewLevel
+	# todo: abort running up-/downgrades
 	if wall?.isBuilding
 		if results.wallNewLevel is 0 then props.destination.deleteBuilding wall
 		else wall.level.reset results.wallNewLevel
 		# todo: what about minimal levels?
 
 	if catapultsTarget?.isBuilding
+		# todo: abort running up-/downgrades & recruitments & researches
 		if results.catapultsTargetNewLevel is 0
 			props.destination.deleteBuilding catapultsTarget
 		else catapultsTarget.level.reset results.catapultsTargetNewLevel
 		# todo: what about minimal levels?
+
+	# todo: conquer villages
 
 	# results.haul
 	hauled = haul props.destination.warehouse.stocks.resources(), props.units.haul()

@@ -1,4 +1,6 @@
 Building =			require '../core/Building'
+TimeoutQueue =		require '../util/TimeoutQueue'
+NumericValue =		require '../util/NumericValue'
 
 
 

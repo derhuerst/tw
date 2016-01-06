@@ -58,6 +58,7 @@ class Upgrade extends Timeout
 			@building.village.warehouse.stocks.resources().subtract @_resources
 		else throw new GameError "Not enough resources to upgrade #{this}."
 
+		# todo: check if enough workers
 		@building.village.farm.workers.subtract @_workers
 
 		duration = @building.config.costs.time @_targetLevel
@@ -71,7 +72,6 @@ class Upgrade extends Timeout
 		@building.emit 'upgrade.start', this
 
 	_onStop: =>
-		# todo: run timeout with passed time, see core/Movement
 		@building.village.warehouse.stocks.resources().add @_resources
 		@building.village.farm.workers.add @_workers
 		@building.emit 'upgrade.stop', this

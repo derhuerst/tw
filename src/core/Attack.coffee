@@ -30,6 +30,7 @@ class Attack extends Movement
 	# isAttack
 
 	# haul
+	# catapultsTarget
 
 
 

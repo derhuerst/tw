@@ -23,13 +23,11 @@ class Stocks
 	constructor: (props = {}) ->
 		@isStocks = true
 
-		if props.maxima and props.maxima.isResources
-			@maxima = props.maxima.clone()
+		if props.maxima?.isResources then @maxima = props.maxima.clone()
 		else @maxima = new Resources props.maxima
 		@maxima.on 'change', @_maximaOnChange
 
-		if props.production and props.production.isProduction
-			@production = props.production.clone()
+		if props.production?.isProduction then @production = props.production.clone()
 		else @production = new Production new Resources()
 		@production.on 'change', @_update
 

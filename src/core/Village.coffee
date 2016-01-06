@@ -115,6 +115,8 @@ class Village extends EventEmitter
 		if @[building.type]
 			throw new GameError "There already is a #{building.config.title} in the village."
 
+		# todo: check if `requirements` are met
+
 		@[building.type] = building
 		building.village = this
 

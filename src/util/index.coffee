@@ -15,5 +15,6 @@ module.exports =
 	Resources:		require './Resources'
 	Stocks:			require './Stocks'
 	Production:		require './Production'
+	Loyalty:		require './Loyalty'
 
 	Units:			require './Units'

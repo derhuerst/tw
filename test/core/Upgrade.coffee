@@ -3,7 +3,6 @@ assert =			require 'assert'
 sinon =				require 'sinon'
 
 Upgrade =			require '../../src/core/Upgrade'
-Village =			require '../../src/core/Village'
 Timeout =			require '../../src/util/Timeout'
 GameError =			require '../../src/util/GameError'
 {equalResources} =	require '../../test/helpers'

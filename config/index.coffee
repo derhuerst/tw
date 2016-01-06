@@ -23,10 +23,7 @@ module.exports =
 		size: 1000
 		spread: 10
 
-	initialStocks: new Stocks # todo?
-		wood: 1000
-		clay: 1000
-		iron: 1000
+	initialStocks: new Stocks wood: 500, clay: 500, iron: 400
 
 	nightBonus:
 		factor: 2
