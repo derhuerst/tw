@@ -2,44 +2,44 @@ assert =			require 'assert'
 sinon =				require 'sinon'
 {EventEmitter} =	require 'events'
 
-Morale =			require '../../src/util/Morale'
+Loyalty =			require '../../src/util/Loyalty'
 NumericValue =		require '../../src/util/NumericValue'
 
 
 
 
 
-describe 'Morale', ->
+describe 'Loyalty', ->
 
 	m = null
 	onChange = sinon.spy()
 	hour = null
 
 	beforeEach ->
-		m = new Morale 90
+		m = new Loyalty 90
 		m.on 'change', onChange
 		hour = 1000 * 60 * 60
 
 	afterEach -> onChange.reset()
 
 
-	it '`isMorale`', ->
-		assert.strictEqual m.isMorale, true
+	it '`isLoyalty`', ->
+		assert.strictEqual m.isLoyalty, true
 
 	it 'should inherit from `EventEmitter`', ->
 		assert m instanceof EventEmitter
 
 
 
-	describe 'Morale::constructor', ->
+	describe 'Loyalty::constructor', ->
 
 		it 'should use `100` as default value', ->
-			m = new Morale()
+			m = new Loyalty()
 			assert.strictEqual 0 + m, 100
 
 
 
-	describe 'Morale::reset', ->
+	describe 'Loyalty::reset', ->
 
 		it 'should return the instance', ->
 			assert.strictEqual m.reset(), m
@@ -71,7 +71,7 @@ describe 'Morale', ->
 
 
 
-	describe 'Morale::subtract', ->
+	describe 'Loyalty::subtract', ->
 
 		it 'should return the instance', ->
 			assert.strictEqual m.subtract(), m
@@ -99,7 +99,7 @@ describe 'Morale', ->
 
 	it 'should increment its value by `1` once an hour', ->
 		clock = sinon.useFakeTimers()
-		m = new Morale 90
+		m = new Loyalty 90
 		m.on 'change', onChange
 
 		clock.tick hour - 1
@@ -120,7 +120,7 @@ describe 'Morale', ->
 
 	it 'should increment its value not further than `100`', ->
 		clock = sinon.useFakeTimers()
-		m = new Morale 99
+		m = new Loyalty 99
 		m.on 'change', onChange
 
 		clock.tick 1 + 2 * hour
@@ -129,7 +129,7 @@ describe 'Morale', ->
 
 
 
-	describe 'Morale::valueOf', ->
+	describe 'Loyalty::valueOf', ->
 
 		it 'should return its value', ->
 			assert.strictEqual m.valueOf(), 90
@@ -137,7 +137,7 @@ describe 'Morale', ->
 
 
 
-	describe 'Morale::toString', ->
+	describe 'Loyalty::toString', ->
 
 		it 'should return a `String`', ->
 			assert.strictEqual typeof m.toString(), 'string'

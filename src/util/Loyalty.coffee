@@ -7,11 +7,11 @@ Duration =			require '../util/Duration'
 
 
 
-class Morale extends EventEmitter
+class Loyalty extends EventEmitter
 
 
 
-	# isMorale
+	# isLoyalty
 
 	# _value
 	# _interval
@@ -19,7 +19,7 @@ class Morale extends EventEmitter
 
 
 	constructor: (value = 100) ->
-		@isMorale = true
+		@isLoyalty = true
 		super()
 
 		@_value = value
@@ -69,10 +69,10 @@ class Morale extends EventEmitter
 
 
 
-	toString: -> "#{@_value}m"
+	toString: -> "#{@_value}l"
 
 
 
 
 
-module.exports = Morale
+module.exports = Loyalty

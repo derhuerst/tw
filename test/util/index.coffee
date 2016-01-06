@@ -13,6 +13,6 @@ require './TimeoutQueue'
 require './Resources'
 require './Production'
 require './Stocks'
-require './Morale'
+require './Loyalty'
 
 require './Units'
