@@ -5,6 +5,9 @@ require './World'
 
 require './Upgrade'
 require './Downgrade'
+
+require './Recruitment'
+
 require './fight'
 require './Movement'
 require './Attack'
