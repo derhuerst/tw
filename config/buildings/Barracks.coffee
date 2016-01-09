@@ -23,7 +23,8 @@ module.exports =
 		time: (lvl) -> Math.round 1800 * 1.2 ^ (lvl - 1)
 	requirements:
 		headquarter: 3
-	levels: [ # todo
+	timeFactor: -> 1 # todo: see below
+	levels: [
 		# level 1
 			timeFactor: 0.63
 		, # level 2

@@ -24,7 +24,8 @@ module.exports =
 	requirements:
 		headquarter: 10
 		smithy: 10
-	levels: [ # todo
+	timeFactor: -> 1 # todo: see below
+	levels: [
 		# level 1
 			timeFactor: 0.63
 		, # level 2
