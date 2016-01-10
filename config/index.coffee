@@ -1,5 +1,6 @@
 Duration =			require '../src/util/Duration'
 Stocks =			require '../src/util/Stocks'
+Resources =			require '../src/util/Resources'
 
 
 
@@ -32,6 +33,8 @@ module.exports =
 			return false if delta <= new Duration '8h'
 			return false if delta >= new Duration '22h'
 			return true
+
+	coins: new Resources wood: 28000, clay: 30000, iron: 25000
 
 	beginnerProtection: new Duration '5d'
 
