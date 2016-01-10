@@ -146,6 +146,33 @@ describe 'Village', ->
 
 
 
+	describe 'Resources::requirementsMet', ->
+
+		requirements = null
+		beforeEach -> requirements = headquarter: 1, warehouse: 1
+
+		it 'should return `true` when called without requirements', ->
+			result = v.requirementsMet {}
+			assert.strictEqual result, true
+			result = v.requirementsMet()
+			assert.strictEqual result, true
+
+		it 'should return `true` if all buildings have the required level', ->
+			result = v.requirementsMet requirements
+			assert.strictEqual result, true
+
+		it 'should return `false` if a building is missing', ->
+			requirements.academy = 1
+			result = v.requirementsMet requirements
+			assert.strictEqual result, false
+
+		it 'should return `false` if a building\' level isn\'t high enough', ->
+			requirements.headquarter = 10
+			result = v.requirementsMet requirements
+			assert.strictEqual result, false
+
+
+
 	describe 'Village::toString', ->
 
 		it 'should return a `String`', ->

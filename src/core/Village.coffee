@@ -143,6 +143,13 @@ class Village extends EventEmitter
 
 
 
+	requirementsMet: (requirements = {}) ->
+		for building, level of requirements
+			return false unless @[building]?.level >= level
+		return true
+
+
+
 	_recomputePoints: ->
 		result = 0
 		for type, traits of config.buildings
