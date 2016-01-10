@@ -22,14 +22,9 @@ module.exports =
 			resources:		new Resources wood: 50, clay: 30, iron: 10
 			time:			new Duration '17m'
 			workers:		1
-		minimumLevel:		0
-		maximumLevel:		1
-		initialLevel:		1
-		requirements: {}
-		research: [
-			time:			new Duration '1h6m'
-			resources:		new Resources()
-		]
+		research:
+			requirements:	barracks: 1
+			researched:		true
 
 
 
@@ -46,15 +41,9 @@ module.exports =
 			resources:		new Resources wood: 30, clay: 30, iron: 70
 			time:			new Duration '25m'
 			workers:		1
-		minimumLevel:		0
-		maximumLevel:		1
-		initialLevel:		1
-		requirements:
-			smithy:			1
-		research: [
-			time:			new Duration '1h39m'
-			resources:		new Resources()
-		]
+		research:
+			requirements:	smithy: 1
+			researched:		true
 
 
 
@@ -71,15 +60,11 @@ module.exports =
 			resources:		new Resources wood: 60, clay: 30, iron: 40
 			time:			new Duration '22m'
 			workers:		1
-		minimumLevel:		0
-		maximumLevel:		1
-		initialLevel:		0
-		requirements:
-			smithy:			2
-		research: [
-			time:			new Duration '1h55m30s'
+		research:
+			requirements:	smithy: 2
+			researched:		false
 			resources:		new Resources wood: 700, clay: 840, iron: 820
-		]
+			time:			new Duration '1h55m30s'
 
 
 
@@ -96,16 +81,10 @@ module.exports =
 			resources:		new Resources wood: 100, clay: 30, iron: 60
 			time:			new Duration '30m'
 			workers:		1
-		minimumLevel:		0
-		maximumLevel:		1
-		initialLevel:		0
-		requirements:
-			barracks:		5
-			smithy:			5
-		research: [
-			time:			new Duration '2h12m30s'
+		research:
+			requirements:	barracks: 5, smithy: 5
 			resources:		new Resources wood: 640, clay: 560, iron: 740
-		]
+			time:			new Duration '2h12m30s'
 
 
 
@@ -123,15 +102,11 @@ module.exports =
 			resources:		new Resources wood: 50, clay: 50, iron: 20
 			time:			new Duration '15m'
 			workers:		2
-		minimumLevel:		0
-		maximumLevel:		1
-		initialLevel:		0
-		requirements:
-			stable:			1
-		research: [
-			time:			new Duration '1h6m'
+		research:
+			requirements:	stable: 1
+			researched:		false
 			resources:		new Resources wood: 560, clay: 480, iron: 480
-		]
+			time:			new Duration '1h6m'
 
 
 
@@ -148,15 +123,11 @@ module.exports =
 			resources:		new Resources wood: 125, clay: 100, iron: 250
 			time:			new Duration '30m'
 			workers:		4
-		minimumLevel:		0
-		maximumLevel:		1
-		initialLevel:		0
-		requirements:
-			stable:			3
-		research: [
-			time:			new Duration '2h28m30s'
+		research:
+			requirements:	stable: 3
+			researched:		false
 			resources:		new Resources wood: 2200, clay: 2400, iron: 2000
-		]
+			time:			new Duration '2h28m30s'
 
 
 
@@ -173,15 +144,11 @@ module.exports =
 			resources:		new Resources wood: 2250, clay: 100, iron: 150
 			time:			new Duration '45m'
 			workers:		5
-		minimumLevel:		0
-		maximumLevel:		1
-		initialLevel:		0
-		requirements:
-			stable:			5
-		research: [
-			time:			new Duration '2h45m'
+		research:
+			requirements:	stable: 5
+			researched:		false
 			resources:		new Resources wood: 3000, clay: 2400, iron: 2000
-		]
+			time:			new Duration '2h45m'
 
 
 
@@ -198,16 +165,11 @@ module.exports =
 			resources:		new Resources wood: 200, clay: 150, iron: 600
 			time:			new Duration '1h'
 			workers:		6
-		minimumLevel:		0
-		maximumLevel:		1
-		initialLevel:		0
-		requirements:
-			stable:			10
-			smithy:			15
-		research: [
-			time:			new Duration '2h45m'
+		research:
+			requirements:	stable: 10, smithy: 15
+			researched:		false
 			resources:		new Resources wood: 3000, clay: 2400, iron: 2000
-		]
+			time:			new Duration '2h45m'
 
 
 
@@ -224,15 +186,11 @@ module.exports =
 			resources:		new Resources wood: 300, clay: 200, iron: 200
 			time:			new Duration '1h20m'
 			workers:		5
-		minimumLevel:		0
-		maximumLevel:		1
-		initialLevel:		0
-		requirements:
-			workshop:		1
-		research: [
-			time:			new Duration '2h11m50s'
+		research:
+			requirements:	workshop: 1
+			researched:		false
 			resources:		new Resources wood: 1200, clay: 1600, iron: 800
-		]
+			time:			new Duration '2h11m50s'
 
 
 
@@ -249,16 +207,11 @@ module.exports =
 			resources:		new Resources wood: 320, clay: 400, iron: 100
 			time:			new Duration '2h'
 			workers:		8
-		minimumLevel:		0
-		maximumLevel:		1
-		initialLevel:		0
-		requirements:
-			workshop:		2
-			smithy:			12
-		research: [
-			time:			new Duration '2h45m'
+		research:
+			requirements:	workshop: 2, smithy: 12
+			researched:		false
 			resources:		new Resources wood: 1600, clay: 2000, iron: 1200
-		]
+			time:			new Duration '2h45m'
 
 
 
@@ -275,11 +228,9 @@ module.exports =
 			resources:		new Resources wood: 20, clay: 20, iron: 40
 			time:			new Duration '6h'
 			workers:		100
-		minimumLevel:		1
-		maximumLevel:		1
-		initialLevel:		1
-		requirements: {}
-		research: []
+		research:
+			requirements:	statue: 1
+			researched:		true
 
 
 
@@ -297,9 +248,6 @@ module.exports =
 			time:			new Duration '5d' # todo: correct?
 			workers:		100
 			coins:			(lvl) -> lvl * (lvl + 1) / 2
-		minimumLevel:		1
-		maximumLevel:		1
-		initialLevel:		1
-		requirements:
-			academy:		1
-		research: []
+		research:
+			requirements:	academy: 1
+			researched:		true

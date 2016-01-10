@@ -22,8 +22,5 @@ module.exports =
 		iron: (lvl) -> Math.round 50 * 1.25 ^ (lvl - 1)
 		time: (lvl) -> Math.round 1800 * 1.2 ^ (lvl - 1)
 	requirements: {}
-	capacity:
-		wood: (lvl) -> Math.round 50 * 1.2501754918161 ^ (lvl - 1)
-		clay: (lvl) -> Math.round 60 * 1.249989176514 ^ (lvl - 1)
-		iron: (lvl) -> Math.round 50 * 1.2501754918161 ^ (lvl - 1)
+	capacity: (lvl) -> Math.round 112,4 * 0,2879 ^ lvl
 	# todo? "hide" with Math.round 150 * 1.333500530983 ^ (lvl - 1); what is this?
