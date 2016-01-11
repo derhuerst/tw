@@ -27,7 +27,7 @@ class Upgrade extends Timeout
 		if building?.isBuilding then @building = building or null
 		else throw new ReferenceError 'Missing `building` argument.'
 
-		@_targetLevel = 1 + @building.village.headquarter.anticipatedLevel @building
+		@_targetLevel = 1 + @building.village.headquarter.prospectiveLevel @building
 		@_resources = new Resources
 			wood: @building.config.costs.wood @_targetLevel
 			clay: @building.config.costs.clay @_targetLevel
@@ -46,7 +46,7 @@ class Upgrade extends Timeout
 	start: ->
 		return this if @running()
 
-		targetLevel = 1 + @building.village.headquarter.anticipatedLevel @building
+		targetLevel = 1 + @building.village.headquarter.prospectiveLevel @building
 		if targetLevel isnt @_targetLevel
 			throw new GameError "This #{@building.config.title} cannot be \
 			upgraded to level #{@_targetLevel} anymore."

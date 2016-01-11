@@ -27,7 +27,7 @@ class Downgrade extends Timeout
 		if building?.isBuilding then @building = building or null
 		else throw new ReferenceError 'Missing `building` argument.'
 
-		@_targetLevel = -1 + @building.village.headquarter.anticipatedLevel @building
+		@_targetLevel = -1 + @building.village.headquarter.prospectiveLevel @building
 		@_workers = @building.config.workers(@_targetLevel + 1) -
 			@building.config.workers(@_targetLevel)
 
@@ -42,7 +42,7 @@ class Downgrade extends Timeout
 	start: ->
 		return this if @running()
 
-		targetLevel = -1 + @building.village.headquarter.anticipatedLevel @building
+		targetLevel = -1 + @building.village.headquarter.prospectiveLevel @building
 		if targetLevel isnt @_targetLevel
 			throw new GameError "This #{@building.config.title} cannot be \
 			downgraded to level #{@_targetLevel} anymore."

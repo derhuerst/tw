@@ -69,7 +69,7 @@ class Headquarter extends Building
 
 
 
-	anticipatedLevel: (building) =>
+	prospectiveLevel: (building) =>
 		return 0 unless building?.isBuilding
 		return @constructions.timeouts()
 		.filter (construction) -> construction.building is building
