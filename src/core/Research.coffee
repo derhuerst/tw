@@ -13,60 +13,68 @@ class Research extends Timeout
 	# isResearch
 
 	# smithy
-	# type
+	# unit
 	# config
 
 
 
-	constructor: (smithy, type) ->
+	constructor: (smithy, unit) ->
 		@isResearch = true
+		super()
 
-		@smithy = smithy or null
-		@type = type of null
-		@config = config[@type].research or null
+		if smithy?.isSmithy then @smithy = smithy
+		else throw new ReferenceError 'Missing `smithy` argument.'
 
-		if @smithy.researched[@type]
-			throw new GameError "#{config[@type].title} is already researched."
+		if config[unit]?
+			@unit = unit
+			@config = config[@unit].research
+		else throw new ReferenceError 'Missing or invalid `unit` argument.'
 
-		super @config.duration.clone().multiply @smithy.timeFactor
-		# todo: compute duration during `start()`
+		if @config.researched
+			throw new GameError "#{config[@unit].title} is already researched."
 
-		@on 'start', @onStart
-		@on 'stop', @onStop
-		@on 'finish', @onFinish
+		@on 'start', @_onStart
+		@on 'stop', @_onStop
+		@on 'finish', @_onFinish
 
-
-
-	onStart: ->
-		@building.emit 'research.start', this
-
-
-	onStop: ->
-		smithy.village.warehouse.stocks.add @config.resources    # todo: multiply with 0.9?
-		@building.emit 'research.stop', this
-
-
-	onFinish: ->
-		@reasearched[type] = true
-		@building.emit 'research.finish', this
-		@building.emit 'research', this
+		return this
 
 
 
 	start: ->
 		return this if @running()
 
-		if @smithy.village.warehouse.stocks.update().moreThan @config.resources
-			@building.village.warehouse.stocks.subtract @config.resources
-		else
-			throw new GameError "Not enough resources to research #{this}."
-		#todo: move to constructor
+		if @smithy.researched[@unit]
+			throw new GameError "#{config[@unit].title} has already been researched."
+
+		if @smithy.village.warehouse.stocks.resources().moreThan @config.resources
+			@smithy.village.warehouse.stocks.resources().subtract @config.resources
+		else throw new GameError "Not enough resources to research #{this}."
+
+		unless @smithy.village.requirementsMet @config.requirements
+			throw new GameError "The requirements to research #{this} are not met."
+
+		@duration().reset @config.time.clone().multiply @smithy.timeFactor
 
 		return super()
 
 
 
-	toString: -> "* (#{@config.units[@type].title}"
+	_onStart: =>
+		@smithy.village.emit 'research.start', this
+
+	_onStop: =>
+		@smithy.village.warehouse.stocks.resources().add @config.resources
+		@smithy.village.emit 'research.stop', this
+
+	_onFinish: =>
+		@smithy.researched[@unit] = true
+		@smithy.village.emit 'research.finish', this
+		@smithy.village.emit 'research', this
+
+
+
+	toString: -> "* (#{@config.title})"
 
 
 
