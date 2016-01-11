@@ -7,6 +7,7 @@ require './Upgrade'
 require './Downgrade'
 
 require './Recruitment'
+require './Research'
 
 require './fight'
 require './Movement'
