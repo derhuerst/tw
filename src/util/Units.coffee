@@ -33,6 +33,8 @@ class Units extends EventEmitter
 		for type of config
 			@[type] = units[type] or 0
 
+		return this
+
 
 
 	_set: (units) ->

@@ -26,6 +26,8 @@ class Interval
 		@callback = if 'function' is typeof callback then callback else @noop
 		@_interval = null
 
+		return this
+
 
 
 	duration: -> @_duration

@@ -26,6 +26,8 @@ class Timeout extends EventEmitter
 		@_duration.on 'change', @_durationOnChange
 		@_timeout = @_started = null
 
+		return this
+
 
 
 	duration: -> @_duration

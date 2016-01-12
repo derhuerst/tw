@@ -22,6 +22,8 @@ class TimeoutQueue extends EventEmitter
 
 		@_timeouts = []
 
+		return this
+
 
 
 	timeouts: -> @_timeouts

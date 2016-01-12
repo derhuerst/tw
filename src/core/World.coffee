@@ -37,6 +37,8 @@ class World extends EventEmitter
 		else mapSize = config.map.size or 1000
 		@_map = size: mapSize
 
+		return this
+
 
 
 	addVillage: (village) =>

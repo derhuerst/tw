@@ -24,6 +24,8 @@ class Resources extends EventEmitter
 		@clay = values.clay or 0
 		@iron = values.iron or 0
 
+		return this
+
 
 
 	_set: (wood, clay, iron) ->

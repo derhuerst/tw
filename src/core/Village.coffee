@@ -107,6 +107,8 @@ class Village extends EventEmitter
 			else if traits.initialLevel > 0
 				@addBuilding new buildings[type] village: this
 
+		return this
+
 
 
 	addBuilding: (building) ->

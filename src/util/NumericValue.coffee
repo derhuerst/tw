@@ -22,6 +22,8 @@ class NumericValue extends EventEmitter
 		else @value = value or 0
 		@abbreviation = abbreviation or ''
 
+		return this
+
 
 
 	reset: (newValue = 0) ->

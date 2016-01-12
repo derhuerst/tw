@@ -34,6 +34,8 @@ class Stocks
 		@_resources = new Resources()
 		@_updated = Date.now()
 
+		return this
+
 
 
 	_maximaOnChange: =>

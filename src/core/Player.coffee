@@ -35,6 +35,8 @@ class Player extends EventEmitter
 		if props.villages
 			@addVillage village for village in props.villages
 
+		return this
+
 
 
 	addVillage: (village) ->

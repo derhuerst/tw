@@ -42,6 +42,8 @@ class Duration extends NumericValue
 		if duration.isDuration then duration = duration.valueOf()
 		@reset new _Duration(duration).valueOf()
 
+		return this
+
 
 
 	_valueOnChange: ->

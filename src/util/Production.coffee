@@ -32,6 +32,8 @@ class Production extends EventEmitter
 		else @duration = new Duration '1h'
 		@duration.on 'change', @_durationOnChange
 
+		return this
+
 
 
 	_resourcesOnChange: (before) =>

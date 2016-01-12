@@ -15,6 +15,8 @@ class Vector
 		@x = x or 0
 		@y = y or 0
 
+		return this
+
 
 
 	reset: ->
