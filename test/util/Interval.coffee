@@ -1,8 +1,10 @@
 assert =			require 'assert'
 sinon =				require 'sinon'
 
-Duration =		require '../../src/util/Duration'
-Interval =		require '../../src/util/Interval'
+container = require '../../src/container'
+require '../../src/util/Interval'
+Duration = container 'util.Duration'
+Interval = container 'util.Interval'
 
 
 

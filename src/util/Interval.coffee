@@ -1,70 +1,69 @@
-Duration =			require '../util/Duration'
+require './Duration'
+container = require '../container'
+
+module.exports = container.publish 'util.Interval', [
+	'util.Duration'
+], (Duration) ->
 
 
 
 
 
-class Interval
+	class Interval
 
 
 
-	# isInterval
+		# isInterval
 
-	# callback
-	# _duration
-	# _interval
+		# callback
+		# _duration
+		# _interval
 
-	noop: ->
-
-
-
-	constructor: (duration = 1000, callback = @noop) ->
-		@isInterval = true
-
-		@_duration = if duration.isDuration then duration else new Duration duration
-		@_duration.on 'change', @_durationOnChange
-		@callback = if 'function' is typeof callback then callback else @noop
-		@_interval = null
-
-		return this
+		noop: ->
 
 
 
-	duration: -> @_duration
+		constructor: (duration = 1000, callback = @noop) ->
+			@isInterval = true
 
-	_durationOnChange: =>
-		if @running()
-			clearInterval @_interval
-			@_interval = setInterval @_callback, @_duration.valueOf()
+			@_duration = if duration.isDuration then duration else new Duration duration
+			@_duration.on 'change', @_durationOnChange
+			@callback = if 'function' is typeof callback then callback else @noop
+			@_interval = null
 
-
-
-	start: ->
-		unless @running()
-			@_interval = setInterval @_callback, @_duration.valueOf()
-		return this
-
-
-	stop: ->
-		if @running() then clearInterval @_interval
-		return this
+			return this
 
 
 
-	_callback: => @callback()
+		duration: -> @_duration
+
+		_durationOnChange: =>
+			if @running()
+				clearInterval @_interval
+				@_interval = setInterval @_callback, @_duration.valueOf()
 
 
 
-	running: -> @_interval
+		start: ->
+			unless @running()
+				@_interval = setInterval @_callback, @_duration.valueOf()
+			return this
+
+
+		stop: ->
+			if @running() then clearInterval @_interval
+			return this
 
 
 
-	clone: -> new Interval @_duration, @callback
-
-	toString: -> "itv #{@duration}"
+		_callback: => @callback()
 
 
 
+		running: -> @_interval
 
 
-module.exports = Interval
+
+		clone: -> new Interval @_duration, @callback
+
+		toString: -> "itv #{@duration}"
