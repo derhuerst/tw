@@ -10,6 +10,7 @@
 	"license":			"MIT",
 	"dependencies": {
 		"coffee-script":		"^1.10.0",
+		"flacon":				"^0.3.0",
 		"lodash":				"^3.10.1",
 		"shortid":				"^2.2.4",
 		"duration-js":			"^3.3.4"
