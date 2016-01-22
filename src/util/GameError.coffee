@@ -1,20 +1,24 @@
-# We use the classical JavaScript inheritance pattern for greater flexibility here.
-# See http://stackoverflow.com/a/5251506
+container = require '../container'
 
-GameError = (message = '') ->
-	@isGameError = true
-
-	# mimic the `Error` class
-	@name = 'GameError'
-	@message = message
-	@stack = new Error().stack
-
-	return this
-
-GameError.prototype = new Error()
+module.exports = container.publish 'util.GameError', ->
 
 
 
 
 
-module.exports = GameError
+	# We use the classical JavaScript inheritance pattern for greater flexibility here.
+	# See http://stackoverflow.com/a/5251506
+
+	GameError = (message = '') ->
+		@isGameError = true
+
+		# mimic the `Error` class
+		@name = 'GameError'
+		@message = message
+		@stack = new Error().stack
+
+		return this
+
+	GameError.prototype = new Error()
+
+	GameError

@@ -1,6 +1,8 @@
 assert =		require 'assert'
 
-GameError =		require '../../src/util/GameError'
+container = require '../../src/container'
+require '../../src/util/GameError'
+GameError = container 'util.GameError'
 
 
 
