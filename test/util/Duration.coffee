@@ -1,8 +1,10 @@
 assert =			require 'assert'
 sinon =				require 'sinon'
 
-NumericValue =		require '../../src/util/NumericValue'
-Duration =			require '../../src/util/Duration'
+container = require '../../src/container'
+require '../../src/util/Duration'
+NumericValue = container 'util.NumericValue'
+Duration = container 'util.Duration'
 
 
 
