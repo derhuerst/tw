@@ -1,6 +1,8 @@
-assert =			require 'assert'
+assert = require 'assert'
 
-Vector =			require '../../src/util/Vector'
+container = require '../../src/container'
+require '../../src/util/Vector'
+Vector = container 'util.Vector'
 
 
 
