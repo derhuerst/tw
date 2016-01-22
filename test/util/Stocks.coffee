@@ -1,13 +1,15 @@
 assert =			require 'assert'
 sinon =				require 'sinon'
-
-Resources =			require '../../src/util/Resources'
-Duration =			require '../../src/util/Duration'
-Production =		require '../../src/util/Production'
-
-Stocks =			require '../../src/util/Stocks'
 {equalResources} =	require '../helpers'
 {equalProduction} =	require '../helpers'
+
+container = require '../../src/container'
+require '../../src/util/Duration'
+Duration = container 'util.Duration'
+require '../../src/util/Stocks'
+Resources = container 'util.Resources'
+Production = container 'util.Production'
+Stocks = container 'util.Stocks'
 
 
 
