@@ -2,8 +2,11 @@ assert =			require 'assert'
 sinon =				require 'sinon'
 {EventEmitter} =	require 'events'
 
-Timeout =			require '../../src/util/Timeout'
-TimeoutQueue =		require '../../src/util/TimeoutQueue'
+container = require '../../src/container'
+require '../../src/util/TimeoutQueue'
+TimeoutQueue = container 'util.TimeoutQueue'
+require '../../src/util/Timeout'
+Timeout = container 'util.Timeout'
 
 
 
