@@ -2,7 +2,9 @@ assert =			require 'assert'
 sinon =				require 'sinon'
 {EventEmitter} =	require 'events'
 
-NumericValue =		require '../../src/util/NumericValue'
+container = require '../../src/container'
+require '../../src/util/NumericValue'
+NumericValue = container 'util.NumericValue'
 
 
 
