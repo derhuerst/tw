@@ -2,8 +2,11 @@ assert =			require 'assert'
 sinon =				require 'sinon'
 {EventEmitter} =	require 'events'
 
-Loyalty =			require '../../src/util/Loyalty'
-NumericValue =		require '../../src/util/NumericValue'
+container = require '../../src/container'
+require '../../src/util/NumericValue'
+NumericValue = container 'util.NumericValue'
+require '../../src/util/Loyalty'
+Loyalty = container 'util.Loyalty'
 
 
 
