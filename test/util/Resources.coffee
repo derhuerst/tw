@@ -1,8 +1,10 @@
 assert =			require 'assert'
 sinon =				require 'sinon'
-
-Resources =			require '../../src/util/Resources'
 {equalResources} =	require '../helpers'
+
+container = require '../../src/container'
+require '../../src/util/Resources'
+Resources = container 'util.Resources'
 
 
 
