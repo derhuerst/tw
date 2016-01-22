@@ -1,12 +1,13 @@
 assert =			require 'assert'
 sinon =				require 'sinon'
 {EventEmitter} =	require 'events'
-
-Resources =			require '../../src/util/Resources'
-Duration =			require '../../src/util/Duration'
-
-Production =		require '../../src/util/Production'
 {equalResources} =	require '../helpers'
+
+container = require '../../src/container'
+require '../../src/util/Production'
+Resources = container 'util.Resources'
+Duration = container 'util.Duration'
+Production = container 'util.Production'
 
 
 
