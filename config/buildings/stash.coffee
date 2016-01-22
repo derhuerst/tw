@@ -21,7 +21,7 @@ module.exports = container.publish 'config.buildings.stash', ->
 			iron: (lvl) -> Math.round 50 * 1.25 ^ (lvl - 1)
 			time: (lvl) -> Math.round 1800 * 1.2 ^ (lvl - 1)
 		requirements: {}
-		capacity: (lvl) -> Math.round 112,4 * 0,2879 ^ lvl
+		capacity: (lvl) -> Math.round 112.4 * 0.2879 ^ lvl
 		# todo? "hide" with Math.round 150 * 1.333500530983 ^ (lvl - 1); what is this?
 
 	}

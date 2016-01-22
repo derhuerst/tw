@@ -17,8 +17,8 @@ class Smithy extends Building
 
 	# isSmithy
 
-	# reasearches
-	# reasearched
+	# researches
+	# researched
 	# timeFactor
 
 
@@ -28,10 +28,10 @@ class Smithy extends Building
 		props.type = 'smithy'
 		super props
 
-		@reasearches = new TimeoutQueue()
-		@reasearched = {}
+		@researches = new TimeoutQueue()
+		@researched = {}
 		for type of config.units
-			@reasearched[type] = !!config.units[type].researched
+			@researched[type] = !!config.units[type].researched
 		@timeFactor = new NumericValue @config.timeFactor @level
 
 		@on 'upgrade.finish', @onConstructionFinish
@@ -50,7 +50,7 @@ class Smithy extends Building
 			throw new GameError "#{config.units[type].title} is already researched."
 
 		research = new Research this, type
-		@reasearches.add research
+		@researches.add research
 		return research
 
 

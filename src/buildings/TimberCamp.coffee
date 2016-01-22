@@ -21,16 +21,18 @@ class TimberCamp extends Building
 
 		@on 'upgrade.finish', @_updateVillageProduction
 		@on 'downgrade.finish', @_updateVillageProduction
-		@_updateVillageProduction()
+
+		process.nextTick @_updateVillageProduction()
 
 
 
 	_updateVillageProduction: =>
 		# todo: add a helper method to `Resources`
-		@village.warehouse.stocks.production.reset new Resources
-			wood: @config.production @level
-			clay: @village.warehouse.stocks.production.clay
-			iron: @village.warehouse.stocks.production.iron
+		if @village.warehouse?.stocks
+			@village.warehouse.stocks.production.reset new Resources
+				wood: @config.production @level
+				clay: @village.warehouse.stocks.production.clay
+				iron: @village.warehouse.stocks.production.iron
 
 
 

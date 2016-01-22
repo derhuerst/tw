@@ -30,10 +30,9 @@ class Stash extends Building
 
 
 
-	_updateCapacity: => @capacity.reset new Resources
-		wood: @config.capacity.wood @level
-		clay: @config.capacity.clay @level
-		iron: @config.capacity.iron @level
+	_updateCapacity: =>
+		capacity = @config.capacity @level
+		@capacity.reset new Resources wood: capacity, clay: capacity, iron: capacity
 
 
 

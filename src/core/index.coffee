@@ -11,7 +11,7 @@ module.exports =
 	Recruitment:		require './Recruitment'
 	Research:			require './Research'
 
-	Fight:				require './Fight'
+	fight:				require './fight'
 	Movement:			require './Movement'
 	Attack:				require './Attack'
 	Support:			require './Support'

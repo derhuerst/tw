@@ -27,10 +27,11 @@ class IronMine extends Building
 
 	_updateVillageProduction: =>
 		# todo: add a helper method to `Resources`
-		@village.warehouse.stocks.production.reset new Resources
-			wood: @village.warehouse.stocks.production.wood
-			clay: @village.warehouse.stocks.production.clay
-			iron: @config.production @level
+		if @village.warehouse?.stocks
+			@village.warehouse.stocks.production.reset new Resources
+				wood: @village.warehouse.stocks.production.wood
+				clay: @village.warehouse.stocks.production.clay
+				iron: @config.production @level
 
 
 
