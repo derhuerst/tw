@@ -1,16 +1,17 @@
-proxyquire =		require('proxyquire').noPreserveCache()
 assert =			require 'assert'
 sinon =				require 'sinon'
-
-config =			require '../../config/units'
-Duration =			require '../../src/util/Duration'
-Resources =			require '../../src/util/Resources'
 {equalUnits,
 equalResources,
 equalDuration} =	require '../helpers'
 
-Units =				proxyquire '../../src/util/Units',
-	'../../config/units':	stubbedConfig = {}
+stubbedConfig = {}
+
+container = require '../../src/container'
+require '../../src/util/Units'
+Duration = container 'util.Duration'
+Resources = container 'util.Resources'
+Units = container 'util.Units',
+	'config.units': -> stubbedConfig
 
 
 
