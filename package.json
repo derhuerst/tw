@@ -1,4 +1,5 @@
 {
+	"private":          true,
 	"name":				"tw",
 	"description":		"tw is an open source strategy browser game.",
 	"version":			"0.1.0",

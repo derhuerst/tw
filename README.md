@@ -1,5 +1,5 @@
 # tw – an open source strategy browser game.
 
-[![build status](https://img.shields.io/travis/derhuerst/tw.svg)](https://travis-ci.org/derhuerst/tw)
+**Unmaintained**
 
-todo
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
